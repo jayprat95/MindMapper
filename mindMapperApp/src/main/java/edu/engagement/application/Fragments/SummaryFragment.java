@@ -3,6 +3,7 @@ package edu.engagement.application.Fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.LinkedList;
 
 import edu.engagement.application.CardData;
 import edu.engagement.application.MainActivity;
@@ -36,14 +38,18 @@ public class SummaryFragment extends Fragment {
 			Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		View view = inflater.inflate(R.layout.card_recycle_view_activity, container, false);
-
-		
-		//setContentView(R.layout.recyclerview_activity);
-
-        rv= (RecyclerView)this.getActivity().findViewById(R.id.rv);
+		final FragmentActivity fragActivity = getActivity();
 
 
-        LinearLayoutManager llm = new LinearLayoutManager(this.getActivity());
+		CardData card = new CardData(5, 10, "1034", "32423");
+		CardData card2 = new CardData(5, 10, "1034", "32423");
+		cardDataList = new LinkedList<CardData>();
+		cardDataList.add(card);
+		cardDataList.add(card2);
+        rv= (RecyclerView)view.findViewById(R.id.rv);
+
+
+        LinearLayoutManager llm = new LinearLayoutManager(fragActivity);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
