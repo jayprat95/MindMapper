@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/baselineLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" 
+    android:background="#000000">
+     
+    <TextView 
+    	android:id="@+id/b_instructions"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content" 
+    	android:text="Make sure your Mindwave is on!"
+    	android:layout_centerHorizontal="true"
+    	android:layout_marginBottom="@dimen/activity_vertical_margin"
+    	android:textColor="#ffffff" />
+    
+    <!--  
+    <TextView 
+    	android:id="@+id/b_instructions"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content" 
+    	android:text="@string/baseline_instruction" 
+    	android:layout_centerHorizontal="true"
+    	android:layout_marginBottom="@dimen/activity_vertical_margin"
+    	android:textColor="#ffffff" />
+    
+    <TextView 
+    	android:id="@+id/b_score"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content" 
+		android:layout_below="@+id/b_instructions"
+    	android:layout_centerHorizontal="true"
+    	android:textStyle="bold"
+    	android:textSize="32sp"
+    	android:layout_marginBottom="@dimen/activity_vertical_margin"
+    	android:textColor="#ffffff" />
+    
+    <Button 
+        android:id="@+id/b_start"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:text="@string/baseline_start"
+    	android:layout_below="@+id/b_score"
+    	android:layout_centerHorizontal="true"
+    	android:background="@drawable/btn_blue_baseline"
+    	android:textColor="#ffffff" />
+    
+    <ImageView 
+        android:id="@+id/b_circle"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:contentDescription="@string/baseline_circle"
+    	android:src="@drawable/circ"
+    	android:layout_centerHorizontal="true"
+    	android:layout_centerVertical="true" /> -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:paddingLeft="100dp"
+        android:paddingRight="100dp"
+        android:paddingTop="40dp" >
+
+        <Button
+            android:id="@+id/btnStartService"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/start_service" />
+
+        <Button
+            android:id="@+id/btnStopService"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/btnStartService"
+            android:layout_alignStart="@+id/btnStartService" 
+            android:layout_below="@+id/annotate"
+            android:text="@string/stop_service"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/start"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/btnStartService"
+            android:layout_alignStart="@+id/btnStartService" 
+            android:layout_alignBottom="@+id/btnStartService"
+            android:text="Start"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/annotate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/btnStartService"
+            android:layout_alignStart="@+id/btnStartService" 
+            android:layout_below="@+id/stop"
+            android:text="Annotate"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/stop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/btnStartService"
+            android:layout_alignStart="@+id/btnStartService" 
+            android:layout_below="@+id/start"
+            android:text="Stop"
+            android:visibility="invisible" />
+
+        <!-- 
+			<ImageView
+            android:id="@+id/unplugged_dark"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="@+id/btnStartService"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="53dp"
+            android:src="@drawable/ic_unplugged_dark" />
+        
+         -->
+
+    </RelativeLayout>
+
+</RelativeLayout>
+<!-- From: file:/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/src/main/res/layout/baseline.xml -->

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/rowData"
+        android:text="ROW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    
+    <!--<TextView
+        android:id="@+id/date"
+        android:text="DATE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+     <TextView
+        android:id="@+id/details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:text="DETAILS" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="31dp"
+        android:layout_toLeftOf="@+id/details"
+        android:text="NAME" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="53dp"
+        android:layout_toLeftOf="@+id/name"
+        android:text="TIME" /> -->
+
+</RelativeLayout><!-- From: file:/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/src/main/res/layout/raw_database_item.xml -->

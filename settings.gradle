@@ -1,0 +1,3 @@
+include ':androidsupportv7cardview'
+include ':androidsupportv7recyclerview'
+include ':mindMapperApp'

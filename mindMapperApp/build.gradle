@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "edu.engagement.application"
+        minSdkVersion 11
+        targetSdkVersion 19
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.google.android.gms:play-services:+'
+    compile files('libs/HxMBT.jar')
+    compile files('libs/ThinkGear.jar')
+    compile files('libs/achartengine-1.1.0.jar')
+    compile files('libs/commons-codec-1.6.jar')
+    compile files('libs/commons-lang3-3.1.jar')
+    compile files('libs/commons-logging-1.1.1.jar')
+    compile files('libs/httpclient-4.2.5.jar')
+    compile files('libs/httpcore-4.2.4.jar')
+    compile files('libs/junit-4.4.jar')
+    compile files('libs/libthrift-1.0.0.jar')
+    compile files('libs/log4j-1.2.14.jar')
+    compile files('libs/mpandroidchartlibrary-1-7-4.jar')
+    compile files('libs/opencsv-3.1.jar')
+    compile files('libs/servlet-api-2.5.jar')
+    compile files('libs/slf4j-api-1.5.8.jar')
+    compile files('libs/slf4j-log4j12-1.5.8.jar')
+    compile 'com.android.support:cardview-v7:21.0.+'
+    compile 'com.android.support:recyclerview-v7:21.0.+'
+}
+
+android {
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+}

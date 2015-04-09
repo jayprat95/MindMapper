@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1" >
+
+    <TextView
+        android:id="@+id/EEGText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="75sp" />
+
+    <ImageView
+        android:id="@+id/attentionCircle"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+       	android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:padding="10dp" />
+
+</RelativeLayout><!-- From: file:/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/src/main/res/layout/real_time_fragment_layout.xml -->

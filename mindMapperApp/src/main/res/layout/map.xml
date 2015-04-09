@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Apparently we need to use a fragment instead of a MapView if we're going to use an ActionBar. -->
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mapView"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
