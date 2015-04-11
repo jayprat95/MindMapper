@@ -5,53 +5,70 @@ package edu.engagement.application;
  */
 public class CardData {
 
-	private double average;
+    private double average;
 
-	/* We want to express the variance in terms of percentage */
-	private double variance;
-	
-	private String location;
+    /* We want to express the variance in terms of percentage */
+    private double variance;
 
-	/*
-	 * A special message. Example would be
-	 * "This is your most attentive location!"
-	 */
-	private String label;
+    private String location;
 
-	/*
-	 * Constructor
-	 */
-	public CardData() {
-		this.average = 0;
-		this.variance = 0;
-		this.location = "";
-		this.label = "";
-	}
+    /*
+     * A special message. Example would be
+     * "This is your most attentive location!"
+     */
+    private String label;
 
-	/*
-	 * Constructor
-	 */
-	public CardData(double av, double var, String loc, String lab) {
-		this.average = av;
-		this.variance = var;
-		this.location = loc;
-		this.label = lab;
-	}
+    /*
+     * Constructor
+     */
+    public CardData() {
+        this.average = 0;
+        this.variance = 0;
+        this.location = "";
+        this.label = "";
+    }
 
-	public double getAverage() {
-		return this.average;
-	}
+    /*
+     * Constructor
+     */
+    public CardData(double av, double var, String loc, String lab) {
+        this.average = av;
+        this.variance = var;
+        this.location = loc;
+        this.label = lab;
+    }
 
-	public double getVariance() {
-		return this.variance;
-	}
+    // Getters
+    public double getAverage() {
+        return this.average;
+    }
 
-	public String getLocation() {
-		return this.location;
-	}
+    public double getVariance() {
+        return this.variance;
+    }
 
-	public String getLabel() {
-		return this.label;
-	}
+    public String getLocation() {
+        return this.location;
+    }
 
+    public String getLabel() {
+        return this.label;
+    }
+
+    // Setters
+    public void setAverage(double av) {
+        this.average = av;
+    }
+
+    public void setVariance(double var) {
+        this.variance = var;
+    }
+
+    public void setLocation(String loc) {
+        this.location = loc;
+    }
+
+    public void setLabel(String lab) {
+        this.label = lab;
+    }
 }
