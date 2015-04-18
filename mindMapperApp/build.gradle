@@ -39,6 +39,7 @@ dependencies {
     compile files('libs/slf4j-log4j12-1.5.8.jar')
     compile 'com.android.support:cardview-v7:21.0.+'
     compile 'com.android.support:recyclerview-v7:21.0.+'
+    compile 'com.android.support:appcompat-v7:21.0.+'
 }
 
 android {

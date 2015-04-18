@@ -33,6 +33,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -61,8 +63,20 @@ import edu.engagement.application.Fragments.ReflectionGraphFragment;
 import edu.engagement.application.Fragments.SummaryFragment;
 import edu.engagement.application.Fragments.XYGraphFragment;
 import edu.engagement.application.SlidingDrawer.SlidingDrawer;
+import edu.engagement.application.SlidingTab.*;
 
 public class MainActivity extends FragmentActivity {
+
+
+    /** Sliding Tabs variables */
+    private Toolbar toolbar;
+    private ViewPager pager;
+    private ViewPagerAdapter adapter;
+    private SlidingTabLayout tabs;
+    private CharSequence Titles[]={"MapView","RealTime", "GraphView", "CardView"};
+    private int Numboftabs = 4;
+
+
 
 	ActionMode mActionMode = null;
 	
@@ -71,7 +85,7 @@ public class MainActivity extends FragmentActivity {
 	private int gpsKey = 0;
 	
     private CharSequence mTitle;
-    private SlidingDrawer drawer;
+    //private SlidingDrawer drawer;
 
     public final String MAP_TAG = "MAP_FRAGMENT";
     public final String REAL_TIME_TAG = "REAL_TIME_FRAGMENT";
@@ -235,14 +249,53 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
+
+
+
+
+
+
+        /** Sliding Tabs Shit */
+
+        // Creating The Toolbar and setting it as the Toolbar for the activity
+
+        toolbar = (Toolbar) findViewById(R.id.sliding_tab_tool_bar);
+        //setSupportActionBar(toolbar);
+
+
+        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
+        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
+
+        // Assigning ViewPager View and setting the adapter
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+
+        // Assiging the Sliding Tab Layout View
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.tabsScrollColor);
+            }
+        });
+
+        // Setting the ViewPager For the SlidingTabsLayout
+        tabs.setViewPager(pager);
+
+        /** End of Sliding Tabs Shit */
+
+
 		
 		System.out.println("Opened data source (DB)");
 		
 		initActionBar();
 		
-		drawer = new SlidingDrawer(this);
+	//	drawer = new SlidingDrawer(this);
 		
-		switchToFragment(MAP_TAG);
+		//switchToFragment(MAP_TAG);
 		//switchToFragment(DATABASE_TAG);
 	}
 	
@@ -276,22 +329,22 @@ public class MainActivity extends FragmentActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        drawer.getDrawerToggle().syncState();
+        //drawer.getDrawerToggle().syncState();
     }
  
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawer.getDrawerToggle().onConfigurationChanged(newConfig);
+        //drawer.getDrawerToggle().onConfigurationChanged(newConfig);
     }
  
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
-        if (drawer.getDrawerToggle().onOptionsItemSelected(item)) {
-            return true;
-        }
+//        if (drawer.getDrawerToggle().onOptionsItemSelected(item)) {
+//            return true;
+//        }
         // Handle your other action bar items...
  
         return super.onOptionsItemSelected(item);
@@ -355,61 +408,61 @@ public class MainActivity extends FragmentActivity {
 
 
 	public void switchToFragment(String FRAGMENT_TAG) {
-		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
-				.beginTransaction();
-
-		if (getFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
-			realTime = false;
-			if (FRAGMENT_TAG.equals(MAP_TAG)) {
-				if (mapFragment == null)
-					mapFragment = new MapFrag();
-				fragmentTransaction.replace(R.id.content_frame, mapFragment,
-						MAP_TAG).commit();
-
-			} else if (FRAGMENT_TAG.equals(REAL_TIME_TAG)) {
-				if (realFragment == null)
-					realFragment = new RealTimeDataFragment();
-				fragmentTransaction.replace(R.id.content_frame, realFragment,
-						REAL_TIME_TAG).commit();
-				realTime = true;
-			} else if (FRAGMENT_TAG.equals(GRAPH_LIST_TAG)) {
-				graphFragment = new GraphListFragment();
-				fragmentTransaction.replace(R.id.content_frame, graphFragment,
-						GRAPH_LIST_TAG).commit();
-
-				xyGraphFragment = new XYGraphFragment();
-				fragmentTransaction = fragmentManager.beginTransaction();
-				fragmentTransaction.replace(R.id.fragment1, xyGraphFragment,
-						XY_GRAPH_TAG).commit();
-
-				rangeGraphFragment = new RangeGraphFragment();
-				fragmentTransaction = fragmentManager.beginTransaction();
-				fragmentTransaction.replace(R.id.fragment2, rangeGraphFragment,
-						RANGE_GRAPH_TAG).commit();
-
-			} else if (FRAGMENT_TAG.equals(BASELINE_TAG)) {
-				if (baselineFragment == null)
-					baselineFragment = new BaselineFragment();
-				fragmentTransaction.replace(R.id.content_frame,
-						baselineFragment, BASELINE_TAG).commit();
-			} else if (FRAGMENT_TAG.equals(DATABASE_TAG)) {
-				if (databaseFragment == null)
-					databaseFragment = new DatabaseFragment();
-				fragmentTransaction.replace(R.id.content_frame,
-						databaseFragment, DATABASE_TAG).commit();
-			} else if (FRAGMENT_TAG.equals(REFLECTION_GRAPH_TAG)) {
-				if (reflectionGraphFragment == null)
-					reflectionGraphFragment = new ReflectionGraphFragment();
-				fragmentTransaction.replace(R.id.content_frame,
-						reflectionGraphFragment, REFLECTION_GRAPH_TAG).commit();
-			} else if (FRAGMENT_TAG.equals(SUMMARY_TAG)) {
-				if (summaryFragment == null)
-					summaryFragment = new SummaryFragment();
-				fragmentTransaction.replace(R.id.content_frame,
-						summaryFragment, SUMMARY_TAG).commit();
-			}
-		}
+//		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+//		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
+//				.beginTransaction();
+//
+//		if (getFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
+//			realTime = false;
+//			if (FRAGMENT_TAG.equals(MAP_TAG)) {
+//				if (mapFragment == null)
+//					mapFragment = new MapFrag();
+//				fragmentTransaction.replace(R.id.content_frame, mapFragment,
+//						MAP_TAG).commit();
+//
+//			} else if (FRAGMENT_TAG.equals(REAL_TIME_TAG)) {
+//                if (realFragment == null)
+//                    realFragment = new RealTimeDataFragment();
+//                fragmentTransaction.replace(R.id.content_frame, realFragment,
+//						REAL_TIME_TAG).commit();
+//				realTime = true;
+//			} else if (FRAGMENT_TAG.equals(GRAPH_LIST_TAG)) {
+//				graphFragment = new GraphListFragment();
+//				fragmentTransaction.replace(R.id.content_frame, graphFragment,
+//						GRAPH_LIST_TAG).commit();
+//
+//				xyGraphFragment = new XYGraphFragment();
+//				fragmentTransaction = fragmentManager.beginTransaction();
+//				fragmentTransaction.replace(R.id.fragment1, xyGraphFragment,
+//						XY_GRAPH_TAG).commit();
+//
+//				rangeGraphFragment = new RangeGraphFragment();
+//				fragmentTransaction = fragmentManager.beginTransaction();
+//				fragmentTransaction.replace(R.id.fragment2, rangeGraphFragment,
+//						RANGE_GRAPH_TAG).commit();
+//
+//			} else if (FRAGMENT_TAG.equals(BASELINE_TAG)) {
+//				if (baselineFragment == null)
+//					baselineFragment = new BaselineFragment();
+//				fragmentTransaction.replace(R.id.content_frame,
+//						baselineFragment, BASELINE_TAG).commit();
+//			} else if (FRAGMENT_TAG.equals(DATABASE_TAG)) {
+//				if (databaseFragment == null)
+//					databaseFragment = new DatabaseFragment();
+//				fragmentTransaction.replace(R.id.content_frame,
+//						databaseFragment, DATABASE_TAG).commit();
+//			} else if (FRAGMENT_TAG.equals(REFLECTION_GRAPH_TAG)) {
+//				if (reflectionGraphFragment == null)
+//					reflectionGraphFragment = new ReflectionGraphFragment();
+//				fragmentTransaction.replace(R.id.content_frame,
+//						reflectionGraphFragment, REFLECTION_GRAPH_TAG).commit();
+//			} else if (FRAGMENT_TAG.equals(SUMMARY_TAG)) {
+//				if (summaryFragment == null)
+//					summaryFragment = new SummaryFragment();
+//				fragmentTransaction.replace(R.id.content_frame,
+//						summaryFragment, SUMMARY_TAG).commit();
+//			}
+//		}
 	}
 	
 	//Generate temporary test data

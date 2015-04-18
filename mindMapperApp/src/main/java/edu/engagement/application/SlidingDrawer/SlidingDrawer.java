@@ -37,8 +37,8 @@ public class SlidingDrawer{
         menuItems.addAll(Arrays.asList(new String[]{"Connect", "Realtime", "Reflection", "Knowledge", "Summary"/*, "Database"*/}));
 
 
-        mDrawerLayout = (DrawerLayout) listener.findViewById(R.id.main_layout);
-        mDrawerList = (ListView) listener.findViewById(R.id.left_drawer);
+       // mDrawerLayout = (DrawerLayout) listener.findViewById(R.id.main_layout);
+        //mDrawerList = (ListView) listener.findViewById(R.id.left_drawer);
  
         // Set the adapter for the list view
         mDrawerList.setAdapter(new SlidingDrawerAdapter<String>(listener,

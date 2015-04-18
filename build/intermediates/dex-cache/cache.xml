@@ -2,284 +2,291 @@
 <items version="2" >
 
     <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.3/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-c0c65cb3276781c76c54bebee30d9e63fd85939a.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/mpandroidchartlibrary-1-7-4.jar"
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/mpandroidchartlibrary-1-7-4.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="c685e45ac6491e51640ce3571606ac22dfd4a6a3">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/mpandroidchartlibrary-1-7-4-b12e744ac8e2fc412c00a9c226b47e1110a53626.jar" />
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/mpandroidchartlibrary-1-7-4-efd8ec093482b10eca58140df05e7daae5a58ea7.jar" />
     </item>
     <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a96b762bde4139de855735f175ec4d17dca55a6d">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-8d47f2706e483fb24109bce7e3bf9b655eead005.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-925eec1adbf159bc5394a83003aea31e68e16a1e.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/ThinkGear.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b4f0f0a355dcc5315e5bef25b775beaa52b2d208">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/ThinkGear-d8840bb85efbcbfb7756aac3a11ce16310df0ffb.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/commons-codec-1.6.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b7f0fc8f61ecadeb3695f0b9464755eee44374d4">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-codec-1.6-094309cdf9412188a26eb8de9c7131c72c2f56fa.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/junit-4.4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="8f35ee1f35d2dadbb5029991449ee90c1bab4d4a">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/junit-4.4-8df798a1981ef67f34a4d412d35657d3f5932a78.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/slf4j-log4j12-1.5.8.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="da00a151c4db31b5be23e5f2b9f528735fddc384">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/slf4j-log4j12-1.5.8-ed6fff34e40a2d953582e6dab796695b0c074a09.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/servlet-api-2.5.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="5959582d97d8b61f4d154ca9e495aafd16726e34">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/servlet-api-2.5-97f71923a134a24feaacb69c0fb858b0e7dbc5bc.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/libthrift-1.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="35bb6647217bcf5888424a58ca5e1c0f62d3082e">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/libthrift-1.0.0-a434ee5b175fb6e2a57b12d8e6ef0481b6925b9c.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4cd0b093824b3228fffc21ea369b98d0b1db6566">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-af4311927f22d09d76cb7ac426e120f516dacdd2.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/commons-lang3-3.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="905075e6c80f206bbe6cf1e809d2caa69f420c76">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-lang3-3.1-e1b64457eaf2aa1a69ad09ab344d421789a878be.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="fb04b12526b0073c7fb1ebb70c5842d82ee95596">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-31353d6fa04213432541c803c467899029481eef.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="055783146ba9654a725442563be78cad303aad1f">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-87d6c43f3c713cd02f15578d1cd253999478f20d.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/commons-logging-1.1.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="5043bfebc3db072ed80fbd362e7caf00e885d8ae">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-logging-1.1.1-6cdc80517e4ee401b20c977652a2d9dcdcdebdf4.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="0e8228b4bc69c6a2c8d7c18498a77e53417d2574">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-f1746a1498fdfb850b4cb925173c46f0a6e3af8e.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/7.0.0/classes.jar"
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/7.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="41b3870cbe5fa546d8095b5b89d42cb69f3dd175">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-8f119c14cb0b008a0a610db52cfd085d1e64a891.jar" />
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-09cd8ac47039fbd0e56a090f073d5a4e43a2bf0f.jar" />
     </item>
     <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/achartengine-1.1.0.jar"
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/7.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="9932e3fb9fbe54e80873e77f72a99f79e33b3250">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/achartengine-1.1.0-7f5232c05be59966774ceb600810be3731e88b10.jar" />
+        sha1="055783146ba9654a725442563be78cad303aad1f">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-f6abcee5472e5029b655f11eafc58b052614084a.jar" />
     </item>
     <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="c976518693e89ad44fbfccfc654941eaec198d08">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-8752b62a9f4f810384375baa83e131717e5afe13.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-0e158eada216e4a63c4a07bd33f701a55f2ff8f8.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="9224bc4c54ba95147c7eabd874573763c07cb6be">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-9ff2f004c2a2164bd7ccbec1073bb35f73bc2313.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3c0b099f9de16b265ecd6122fcb603e7d0d29f90">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-f4a2b98816947346aaf915861acc9e49db35badf.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3033cc3a2c68dff3e5b646d6d084bdbdf7d00b25">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-17b489a538ca89e15ba9592eacae58ebfa708c49.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-7e17f97162d06a55fee46968b5d62de5b9f5d109.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/httpcore-4.2.4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3b7f38df6de5dd8b500e602ae8c2dd5ee446f883">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/httpcore-4.2.4-0f82fc122cae8c74a19fea51fb09df947af48292.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="1c5a76debf0c2857ccad422c4a80ed785982f8df">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-d2806fb6bd6262e7881526f9c95b45439842dbed.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e3d791b42eaa90416cd0b2d2e608092794a3baa4">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-708994d8a7dc2c9ee861cf674c17e78d2aa72c97.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="ef5f051e7308febe289dc93c67c5f32785b4260a">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-6324585692a29e5fb3e7adfaee6f7b61e0d58914.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="29fd6d3794b71491c2789708cd8d03c71feb8954">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-c0d73be2618419aae6032b439b8c3c6315ed1a13.jar" />
-    </item>
-    <item
-        jar="/Applications/adt-bundle-mac-x86_64-20130729/sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-6a9bf66ac37a912a6273aea9a50c77b3656bdcd5.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/opencsv-3.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="100f1f66bcade989c73eabd3d56ac39df47317df">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/opencsv-3.1-beee37bd19bbb2dd7089fdb7abde1b207bad680c.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a08d65794b844d8e7540bf9a33859bf3b2482d7f">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-57cc69df4c83a76c182ad9f61fb3ac970e2f7136.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-02ffb075d74205577c107a88dae283eb19ed0b23.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-3ef28494945bf109836b8c092cb8b6fb5c6077d6.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/httpclient-4.2.5.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="666e26e76f2e87d84e4f16acb546481ae1b8e9a6">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/httpclient-4.2.5-1f4583aa8ea783d9281aeafa24f686382826bd7f.jar" />
-    </item>
-    <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/slf4j-api-1.5.8.jar"
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/slf4j-api-1.5.8.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="2aaf496dfd551adb9b079f58a7e2d55eb383fc82">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/slf4j-api-1.5.8-6ec77b149a19ffffceb45d72ceb757b7297da581.jar" />
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/slf4j-api-1.5.8-8fb720d762ded0c43d3631748f83471440c237cc.jar" />
     </item>
     <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/log4j-1.2.14.jar"
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/commons-codec-1.6.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="03b254c872b95141751f414e353a25c2ac261b51">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/log4j-1.2.14-5bb27106b26362534db0588bf7c95b661a829f62.jar" />
+        sha1="b7f0fc8f61ecadeb3695f0b9464755eee44374d4">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-codec-1.6-e6866b195440c93bcbeed04dbc9188e30b240ccd.jar" />
     </item>
     <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.0.0/classes.jar"
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-8d6c29bc15fffc4ee7b12f9f505adec1730da41a.jar" />
+        sha1="9224bc4c54ba95147c7eabd874573763c07cb6be">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-00bd72c13f1ea554edf04d64c18202e4eb042c0d.jar" />
     </item>
     <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-appstate/7.0.0/classes.jar"
+        jar="/home/ducky/Documents/Develop/Android/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="7ff613bf78ab057293892fdbd4169eda899c89b9">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-20e325e444fc1a4a9ba29de4d368f34d94caecc5.jar" />
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-4c537255733b3a478040759eac71c99b1b50510b.jar" />
     </item>
     <item
-        jar="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/libs/HxMBT.jar"
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="ef5f051e7308febe289dc93c67c5f32785b4260a">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-386e516a2d8650e77280ae8fa123bf4de479bf06.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="c976518693e89ad44fbfccfc654941eaec198d08">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-b354433698e7d9adc0b901497f2fb8183de5bfaf.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/HxMBT.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="a0f231edd201f26ebb42244dd8a18ffcb07e462b">
-        <dex dex="/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/HxMBT-52d347fd51e7a95e76fa318a1b94c443b6b37939.jar" />
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/HxMBT-9c20033d3f935ce9dcba3cef5fe4febb4564320d.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-48f8d08c2b9001e081fc0e6c9f9f063e84a76190.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-1a1ccbddd21e88ba479090c0fe64caf181f0420f.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/slf4j-log4j12-1.5.8.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="da00a151c4db31b5be23e5f2b9f528735fddc384">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/slf4j-log4j12-1.5.8-d4a1fbcd9ef490f383beb364e102701098826b01.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/libthrift-1.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="35bb6647217bcf5888424a58ca5e1c0f62d3082e">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/libthrift-1.0.0-ef1128a41514ad6a0cbf0b964c86ad90bbeb4dff.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3033cc3a2c68dff3e5b646d6d084bdbdf7d00b25">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-621e66108bff4c04b3ecf23f56abddd141eba02e.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/httpcore-4.2.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3b7f38df6de5dd8b500e602ae8c2dd5ee446f883">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/httpcore-4.2.4-23f77432013e356f425f2344b547258473860313.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/log4j-1.2.14.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="03b254c872b95141751f414e353a25c2ac261b51">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/log4j-1.2.14-1b3a9fd45cfcbab7c09423464a10f7a483dc22e1.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/httpclient-4.2.5.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="666e26e76f2e87d84e4f16acb546481ae1b8e9a6">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/httpclient-4.2.5-68cc02b82a9aef0225434eca42babb41d3091188.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/servlet-api-2.5.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="5959582d97d8b61f4d154ca9e495aafd16726e34">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/servlet-api-2.5-a630314e8d83c7c64dfa59c70b6f42eb2201206e.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e3d791b42eaa90416cd0b2d2e608092794a3baa4">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-e142877bcf09547b84d010ea160873757f6856b2.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/ThinkGear.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b4f0f0a355dcc5315e5bef25b775beaa52b2d208">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/ThinkGear-f8d6f801e2135389d1af8b598bef38e598a0329a.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="fb04b12526b0073c7fb1ebb70c5842d82ee95596">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-28830327d8e4bce404e38de9189a9c4e75eae95c.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4cd0b093824b3228fffc21ea369b98d0b1db6566">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-8c5cded23b39a76599841b3d5805bc15d4fc1df4.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3c0b099f9de16b265ecd6122fcb603e7d0d29f90">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-3f6ff5fe6ab8dd77db6552dc6e26462d16688cc2.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a96b762bde4139de855735f175ec4d17dca55a6d">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-be290870b0e4fa67759c06477ec01894e7c37ca8.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-631de8912e368c687f3de4da6b47f535f208cf1d.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1c5a76debf0c2857ccad422c4a80ed785982f8df">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-7a2ec8ed1691af08a3009c14d3e785b282668e68.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/opencsv-3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="100f1f66bcade989c73eabd3d56ac39df47317df">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/opencsv-3.1-53c8ec73ccff5b266a1cec9d69706c5f1cf9fe99.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-55cd64cce04a2f3a91802cb677941def3c86e638.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a08d65794b844d8e7540bf9a33859bf3b2482d7f">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-39c6a75548a6f932ea5ff83e6fbea70594610bd3.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="29fd6d3794b71491c2789708cd8d03c71feb8954">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-167ccd723b866cfb03b484aa56b72380584bedc6.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-ce5510637457b7b59de21b3d15b0221d4c727802.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-2619eb779d1b64079bd328400cdca870229dce67.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/commons-lang3-3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="905075e6c80f206bbe6cf1e809d2caa69f420c76">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-lang3-3.1-26aa22415010307e2a3b3ac285aa92b7eb41727b.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-appstate/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7ff613bf78ab057293892fdbd4169eda899c89b9">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-c5ae8d4f60bf927a2503ddf89951607bb25fc173.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-9d12910524abfb828eb7dbd73a4add75f07995a0.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-09e6b24b9859744908d21673e28a0be36885381a.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0e8228b4bc69c6a2c8d7c18498a77e53417d2574">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-da53041d1fbc54d619481918eeb430c4d4d0c3e2.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/commons-logging-1.1.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="5043bfebc3db072ed80fbd362e7caf00e885d8ae">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-logging-1.1.1-8f51d876c73e8e1903fa0b5d9dc6c7e33e3fa8dc.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/achartengine-1.1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9932e3fb9fbe54e80873e77f72a99f79e33b3250">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/achartengine-1.1.0-93831abe1d7d6e2fe0cbced5472625331c95fa89.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/libs/junit-4.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="8f35ee1f35d2dadbb5029991449ee90c1bab4d4a">
+        <dex dex="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/junit-4.4-1f3e6ef13c52079f250345d10130194b41e06e43.jar" />
     </item>
 
 </items>

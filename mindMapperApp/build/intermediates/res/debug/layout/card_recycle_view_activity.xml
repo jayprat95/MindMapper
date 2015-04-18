@@ -10,4 +10,4 @@
         android:layout_height="match_parent" >
     </android.support.v7.widget.RecyclerView>
 </LinearLayout>
-<!-- From: file:/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/src/main/res/layout/card_recycle_view_activity.xml -->
+<!-- From: file:/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/src/main/res/layout/card_recycle_view_activity.xml -->
