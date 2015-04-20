@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/androidsupportv7recyclerview/src/main/assets"/></dataSet><dataSet config="debug"><source path="/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/androidsupportv7recyclerview/src/debug/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/home/kyle/workStation/project/MindMapper/androidsupportv7recyclerview/src/main/assets"/></dataSet><dataSet config="debug"><source path="/home/kyle/workStation/project/MindMapper/androidsupportv7recyclerview/src/debug/assets"/></dataSet></merger>

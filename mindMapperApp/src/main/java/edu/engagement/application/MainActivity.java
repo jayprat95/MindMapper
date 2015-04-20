@@ -1,12 +1,7 @@
 package edu.engagement.application;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 import java.util.Queue;
 
 
@@ -21,38 +16,25 @@ import java.util.Queue;
 //import zephyr.android.HxMBT.BTClient;
 //import zephyr.android.HxMBT.ZephyrProtocol;
 import android.app.ActionBar;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.neurosky.thinkgear.TGDevice;
-import com.neurosky.thinkgear.TGEegPower;
-import com.neurosky.thinkgear.TGRawMulti;
 
-import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Fragments.BaselineFragment;
 import edu.engagement.application.Fragments.DatabaseFragment;
 import edu.engagement.application.Fragments.GraphListFragment;
@@ -62,10 +44,10 @@ import edu.engagement.application.Fragments.RealTimeDataFragment;
 import edu.engagement.application.Fragments.ReflectionGraphFragment;
 import edu.engagement.application.Fragments.SummaryFragment;
 import edu.engagement.application.Fragments.XYGraphFragment;
-import edu.engagement.application.SlidingDrawer.SlidingDrawer;
 import edu.engagement.application.SlidingTab.*;
+import edu.engagement.application.fabbutton.FloatingActionButton;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements FloatingActionButton.OnCheckedChangeListener{
 
 
     /** Sliding Tabs variables */
@@ -287,12 +269,16 @@ public class MainActivity extends FragmentActivity {
 
         /** End of Sliding Tabs Shit */
 
-
 		
 		System.out.println("Opened data source (DB)");
 		
 		initActionBar();
-		
+
+        /** Begin of fab button shit */
+        // Make this {@link Fragment} listen for changes in both FABs.
+        FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.fab_1);
+        fab1.setOnCheckedChangeListener(this);
+        /** End of fab button shit */
 	//	drawer = new SlidingDrawer(this);
 		
 		//switchToFragment(MAP_TAG);
@@ -581,4 +567,27 @@ public class MainActivity extends FragmentActivity {
 			rangeGraphFragment.redraw();
 		}
 	}
+
+    /**
+     * Called when the checked state of a FAB has changed.
+     *
+     * @param fabView   The FAB view whose state has changed.
+     * @param isChecked The new checked state of buttonView.
+     */
+
+    @Override
+    public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
+        // When a FAB is toggled, log the action.
+        switch (fabView.getId()){
+            case R.id.fab_1:
+//                Log.d(TAG, String.format("FAB 1 was %s.", isChecked ? "checked" : "unchecked"));
+                Toast.makeText(this, String.format("FAB 1 was %s.", isChecked ? "checked" : "unchecked"), Toast.LENGTH_SHORT).show();
+                break;
+//            case R.id.fab_2:
+//                Toast.makeText(getActivity(),String.format("FAB  was %s.", isChecked ? "checked" : "unchecked"),Toast.LENGTH_SHORT).show();
+//                break;
+            default:
+                break;
+        }
+    }
 }
