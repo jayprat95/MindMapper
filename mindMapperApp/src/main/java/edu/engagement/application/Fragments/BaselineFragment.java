@@ -156,6 +156,7 @@ public class BaselineFragment extends Fragment implements Runnable,
     }
 
     private void stopClicked() {
+        //
         // if (stop.getText().equals("Stop")) {
         // stop.setText("Resume");
         // start.setVisibility(View.VISIBLE);
