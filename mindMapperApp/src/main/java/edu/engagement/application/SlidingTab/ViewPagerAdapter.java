@@ -42,9 +42,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 mapFragment = new MapFrag();
             return mapFragment;
         } else if (position == 1) {
-            graphFragment = new GraphListFragment();            //				if (summaryFragment == null)
+            realFragment = new RealTimeDataFragment();            //				if (summaryFragment == null)
 //					summaryFragment = new SummaryFragment();
-            return graphFragment;
+            return realFragment;
         } else if (position == 2) {
             if (reflectionGraphFragment == null)
                 reflectionGraphFragment = new ReflectionGraphFragment();
