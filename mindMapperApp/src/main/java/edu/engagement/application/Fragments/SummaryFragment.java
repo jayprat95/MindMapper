@@ -6,10 +6,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -19,9 +19,8 @@ import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
 import edu.engagement.application.RVAdapter;
-import edu.engagement.application.fabbutton.FloatingActionButton;
 
-public class SummaryFragment extends Fragment{
+public class SummaryFragment extends Fragment {
 
     private MainActivity activity;
 
@@ -62,12 +61,14 @@ public class SummaryFragment extends Fragment{
 
         rv = (RecyclerView) view.findViewById(R.id.rv);
 
+
         LinearLayoutManager llm = new LinearLayoutManager(fragActivity);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
         //initializeData();
         initializeAdapter();
+
 
         return view;
     }
@@ -112,8 +113,7 @@ public class SummaryFragment extends Fragment{
 
     /**
      * Get mean
-     *
-     * @param data       data from DB
+     * @param data data from DB
      * @param indexOfAtt the column index of attention in each row
      * @return mean
      */
@@ -127,8 +127,7 @@ public class SummaryFragment extends Fragment{
 
     /**
      * Get variance
-     *
-     * @param data       data from DB
+     * @param data data from DB
      * @param indexOfAtt the column index of attention in each row
      * @return Variance
      */
@@ -138,5 +137,6 @@ public class SummaryFragment extends Fragment{
             temp += (mean - a[indexOfAtt]) * (mean - a[indexOfAtt]);
         return temp / data.size();
     }
+
 
 }

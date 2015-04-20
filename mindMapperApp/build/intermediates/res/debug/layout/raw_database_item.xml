@@ -42,4 +42,4 @@
         android:layout_toLeftOf="@+id/name"
         android:text="TIME" /> -->
 
-</RelativeLayout><!-- From: file:/home/kyle/workStation/project/MindMapper/mindMapperApp/src/main/res/layout/raw_database_item.xml -->
+</RelativeLayout><!-- From: file:/home/ducky/AndroidstudioProjects/BioMetrics/MindMapper/mindMapperApp/src/main/res/layout/raw_database_item.xml -->

@@ -36,15 +36,9 @@ public class MapFrag extends Fragment {
 		super.onCreate(savedInstanceState);
 		View view = inflater.inflate(R.layout.map, container, false);
 		intent = this.getActivity().getIntent();
-
-
+		
+		
 		// Data source
-
-//        /** Begin of fab button shit */
-//        // Make this {@link Fragment} listen for changes in both FABs.
-//        FloatingActionButton fab1 = (FloatingActionButton) view.findViewById(R.id.fab_1);
-////        fab1.setOnCheckedChangeListener(this);
-//        /** End of fab button shit */
 
 		// Grab the map fragment.
 		mapFrag = (SupportMapFragment) getChildFragmentManager()

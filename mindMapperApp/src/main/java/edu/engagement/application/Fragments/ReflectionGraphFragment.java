@@ -27,28 +27,28 @@ import edu.engagement.application.Database.DataPointSource;
 public class ReflectionGraphFragment extends Fragment implements OnChartValueSelectedListener  {
 	private MainActivity activity;
 	private LineChart mChart;
-
+		
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.activity = (MainActivity) activity;
 	}
-
+	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.reflection_graphs, container, false);
-
+        
         try{
 			DataPointSource dataSource = new DataPointSource(this.getActivity()
 					.getApplicationContext());
 			dataSource.open();
 //			loadReflectionData(dataSource);
 			System.out.println("Trying to graph load data points ");
-
+			
 			mChart = (LineChart) view.findViewById(R.id.chart);
 			mChart.setOnChartValueSelectedListener(this);
-
+			
 			// if enabled, the chart will always start at zero on the y-axis
 	        mChart.setStartAtZero(true);
 
@@ -56,7 +56,7 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
 	        mChart.setDrawYValues(false);
 
 	        mChart.setDrawBorder(false);
-
+	        
 	        mChart.setDrawLegend(false);
 
 	        // no description text
@@ -78,10 +78,10 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
 
 	        mChart.setDrawGridBackground(false);
 	        mChart.setDrawVerticalGrid(false);
-
+	        
 //	        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 //	        mChart.setValueTypeface(tf);
-
+	        
 //	        XLabels x = mChart.getXLabels();
 //	        x.setTypeface(tf);
 //	        
@@ -94,14 +94,14 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
 			loadReflectionData(dataSource);
 
 	        mChart.animateXY(2000, 2000);
-
+	         
 	        // dont forget to refresh the drawing
 	        mChart.invalidate();
-
+			
 		}catch(Exception e){
 			System.out.println("Reflection Graph Fragment: " + e.getMessage());
 		}
-
+        
         return view;
     }
 
@@ -110,58 +110,58 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
     {
         super.onActivityCreated(savedInstanceState);
     }
-
+    
     @Override
     public void onValueSelected(Entry e, int dataSetIndex) {
         Toast.makeText(this.activity, e.toString(), Toast.LENGTH_SHORT).show();
     }
-
+    
     @Override
     public void onNothingSelected() {
 
     }
-
+    
     private void loadReflectionData(DataPointSource dpSource){
     	List<double[]> results = dpSource.getDayGraphDataset();
-
+    	
     	//timestamp starts 1417546011230
     	long currentTime = System.currentTimeMillis();
-
+    	
     	/* 
 		 * 0 - timestamp
 		 * 1 - Attention
 		 */
-
-    	 ArrayList<String> xVals = new ArrayList<String>();
+    	
+    	 ArrayList<String> xVals = new ArrayList<String>();         
          //for(double[] pointArray : results)
-    	 for(int i = results.size() - 1; i >= 0; i--)
+    	 for(int i = results.size() - 1; i >= 0; i--) 
      	 {
     		 double[] pointArray = results.get(i);
         	 if(pointArray[1] != 0){
         		 xVals.add(i/*pointArray[0]-currentTime*/ + "");
         		 System.out.println("Add xVal: " + i/*pointArray[0]-currentTime*/);
         	 }
-         }
+         } 
 
          ArrayList<Entry> vals1 = new ArrayList<Entry>();
 
          //for(double[] pointArray : results)
-    	 for(int i = results.size() - 1; i >= 0; i--)
+    	 for(int i = results.size() - 1; i >= 0; i--) 
      	 {
     		 double[] pointArray = results.get(i);
         	 if(pointArray[1] != 0){
         		 vals1.add(new Entry((float)pointArray[1], (int)(i/*pointArray[0]-currentTime*/)));
         		 System.out.println("Add vals1: (" + pointArray[1] + ", " + (i/*pointArray[0]-currentTime*/) + ")");
         	 }
-         }
-
-
+         } 
+         
+    	
     	// create a dataset and give it a type
         LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
         set1.setDrawCubic(false);
         set1.setCubicIntensity(0.2f);
         set1.setDrawFilled(false);
-        set1.setDrawCircles(true);
+        set1.setDrawCircles(true); 
         set1.setLineWidth(2f);
         set1.setCircleSize(5f);
         set1.setHighLightColor(Color.rgb(244, 117, 117));
@@ -175,7 +175,7 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
 
         // set data
         mChart.setData(data);
-
+    	
 //    	List<double[]> results = dpSource.getMapDataset();
 //		
 //		for(int i=0; i < results.size(); i++){
@@ -186,13 +186,13 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
 //				System.out.print(data[j] + ", ");
 //			}
 //		}
-
+    	
 //    	for(double[] pointArray : results)
 //		{
 //		//	addPoint(pointArray[2], pointArray[3], radius, getEngagementColor(pointArray[1], 100));
 //		}
     }
-
+    
     private void setData(int count, float range) {
 
         ArrayList<String> xVals = new ArrayList<String>();
@@ -209,13 +209,13 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
                                                            // 0.1) / 10);
             vals1.add(new Entry(val, i));
         }
-
+        
         // create a dataset and give it a type
         LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
         set1.setDrawCubic(true);
         set1.setCubicIntensity(0.2f);
         set1.setDrawFilled(true);
-        set1.setDrawCircles(false);
+        set1.setDrawCircles(false); 
         set1.setLineWidth(2f);
         set1.setCircleSize(5f);
         set1.setHighLightColor(Color.rgb(244, 117, 117));
