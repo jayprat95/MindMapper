@@ -10,17 +10,10 @@ import java.util.Set;
 import java.util.Queue;
 
 
-
-
-
-
-
-
-
-
 //import zephyr.android.HxMBT.BTClient;
 //import zephyr.android.HxMBT.ZephyrProtocol;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -41,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,22 +62,29 @@ import edu.engagement.application.SlidingTab.*;
 public class MainActivity extends FragmentActivity {
 
 
-    /** Sliding Tabs variables */
+    /**
+     * Sliding Tabs variables
+     */
     private Toolbar toolbar;
     private ViewPager pager;
     private ViewPagerAdapter adapter;
     private SlidingTabLayout tabs;
-    private CharSequence Titles[]={"MapView","RealTime", "GraphView", "CardView"};
+    private CharSequence Titles[] = {"MapView", "RealTime", "GraphView", "CardView"};
     private int Numboftabs = 4;
 
+    /**
+     * Fab Button variables
+     */
+    private ImageButton fab;
+    private boolean fabClicked;
+    private boolean serviceStarted;
 
+    ActionMode mActionMode = null;
 
-	ActionMode mActionMode = null;
-	
-	private static final int PORT = 7911;
-	final boolean rawEnabled = true;
-	private int gpsKey = 0;
-	
+    private static final int PORT = 7911;
+    final boolean rawEnabled = true;
+    private int gpsKey = 0;
+
     private CharSequence mTitle;
     //private SlidingDrawer drawer;
 
@@ -95,8 +96,8 @@ public class MainActivity extends FragmentActivity {
     public final String DATABASE_TAG = "DATABASE_FRAGMENT";
     public final String REFLECTION_GRAPH_TAG = "REFLECTION_GRAPH_FRAGMENT";
     public final String SUMMARY_TAG = "SUMMARY_FRAGMENT";
-    
- 
+
+
     private MapFrag mapFragment;
     private RealTimeDataFragment realFragment;
     private GraphListFragment graphFragment;
@@ -105,53 +106,55 @@ public class MainActivity extends FragmentActivity {
     private DatabaseFragment databaseFragment;
     private ReflectionGraphFragment reflectionGraphFragment;
     private SummaryFragment summaryFragment;
-    
+
     /* Having issues with android
      * Packaging all functions here for now so I can change easy if a mistake is found
-     */ 
+     */
     public final String BASELINE_TAG = "BASELINE_FRAGMENT";
     private BaselineFragment baselineFragment;
     private double baselineTotal;
     private double baselineNum;
     private boolean baselineMode = false;
     public static final String BASELINE_AVG_KEY = "avg";
-    
+
     //testing why queue is only 1 item
     private int tempCounter = 0;
-    
-    //if the realtime fragment is running. need to change this. sloppy way to know current fragment
-  	private boolean realTime = false;
-  	private Queue<Integer> recentAttentionLevels = new LinkedList<Integer>();
-    
-    // Method to start the service
-    public void startService(View view) {
-    	
-    	System.out.println("=======================================================================WAHOOOO");
-    	
-		/* Place Picker Experiment */
-		int PLACE_PICKER_REQUEST = 1;
-		PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-		Context context = this.getApplicationContext();
-		try {
-			// Start the intent by requesting a result,
-			// identified by a request code.
-			startActivityForResult(builder.build(context),
-					PLACE_PICKER_REQUEST);
-			// PlacePicker.getPlace(builder, context);
 
-		} catch (GooglePlayServicesRepairableException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (GooglePlayServicesNotAvailableException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    	
-       startService(new Intent(getBaseContext(), MindwaveService.class));
-       
-       
+    //if the realtime fragment is running. need to change this. sloppy way to know current fragment
+    private boolean realTime = false;
+    private Queue<Integer> recentAttentionLevels = new LinkedList<Integer>();
+
+    // Method to start the service
+    public void startService() {
+
+        if (!serviceStarted) {
+            serviceStarted = true;
+
+//            Toast.makeText(this, "service started", Toast.LENGTH_SHORT).show();
+		/* Place Picker Experiment */
+            int PLACE_PICKER_REQUEST = 1;
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            Context context = this.getApplicationContext();
+            try {
+                // Start the intent by requesting a result,
+                // identified by a request code.
+                startActivityForResult(builder.build(context),
+                        PLACE_PICKER_REQUEST);
+                // PlacePicker.getPlace(builder, context);
+
+            } catch (GooglePlayServicesRepairableException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (GooglePlayServicesNotAvailableException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+
+            startService(new Intent(getBaseContext(), MindwaveService.class));
+        }
+
     }
-    
+
 //	/*
 //	 * Callback method that is called after user selects a location.
 //	 */
@@ -184,75 +187,70 @@ public class MainActivity extends FragmentActivity {
 
     // Method to stop the service
     public void stopService(View view) {
-       stopService(new Intent(getBaseContext(), MindwaveService.class));
+        stopService(new Intent(getBaseContext(), MindwaveService.class));
     }
-    
-    
+
+
     public void startBaselineMode() {
-    	baselineTotal = 0;
-    	baselineNum = 0;
-    	baselineMode = true;
+        baselineTotal = 0;
+        baselineNum = 0;
+        baselineMode = true;
     }
-    
+
     public void exitBaselineMode() {
-    	baselineMode = false;
-    	storeBaseline((float) (baselineTotal / baselineNum));
-    	baselineFragment.setScore(Double.toString(baselineTotal / baselineNum));
+        baselineMode = false;
+        storeBaseline((float) (baselineTotal / baselineNum));
+        baselineFragment.setScore(Double.toString(baselineTotal / baselineNum));
     }
-    
+
     // Store baseline in persistent storage
     public void storeBaseline(float avg) {
-		SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-		editor.putFloat(BASELINE_AVG_KEY, (float) 10.0);
-		editor.commit();
-		System.out.println("Storing baseline value: " + baselineTotal / baselineNum);
-	}
-	
-    // Read baseline from persistent storage
-	public float readBaseline() {
-		SharedPreferences prefs = getPreferences(MODE_PRIVATE); 
-		float avg = prefs.getFloat(BASELINE_AVG_KEY, -1);
-		System.out.println("Received baseline value: " + avg);
-		return avg;
-	}
-	
-	// Method is used to reset the baseline
-	// Used when user wants to re-establish their baseline
-	public void resetBaseline() {
-		SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-		editor.putFloat(BASELINE_AVG_KEY, (float) -1);
-		editor.commit();
-	}
-    
-	
-	public void setAttentionText(int attention){
-		recentAttentionLevels.add(new Integer(attention));
-		recentAttentionLevels.add(new Integer(tempCounter));
-		System.out.println("RecentAttentionLevels: " + recentAttentionLevels.toString());
-		System.out.println("RecentAttentionLevels size: " + recentAttentionLevels.size());
-		if(recentAttentionLevels.size() > 5){
-			recentAttentionLevels.remove();
-		}
-		if(realTime && realFragment!=null){
-			Queue<Integer> copyAttention = recentAttentionLevels;
-//			realFragment.setAttention(recentAttentionLevels);
-			realFragment.setAttention(copyAttention);
+        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+        editor.putFloat(BASELINE_AVG_KEY, (float) 10.0);
+        editor.commit();
+        System.out.println("Storing baseline value: " + baselineTotal / baselineNum);
+    }
 
-		}
-	}
-	
+    // Read baseline from persistent storage
+    public float readBaseline() {
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        float avg = prefs.getFloat(BASELINE_AVG_KEY, -1);
+        System.out.println("Received baseline value: " + avg);
+        return avg;
+    }
+
+    // Method is used to reset the baseline
+    // Used when user wants to re-establish their baseline
+    public void resetBaseline() {
+        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+        editor.putFloat(BASELINE_AVG_KEY, (float) -1);
+        editor.commit();
+    }
+
+
+    public void setAttentionText(int attention) {
+        recentAttentionLevels.add(new Integer(attention));
+        recentAttentionLevels.add(new Integer(tempCounter));
+        System.out.println("RecentAttentionLevels: " + recentAttentionLevels.toString());
+        System.out.println("RecentAttentionLevels size: " + recentAttentionLevels.size());
+        if (recentAttentionLevels.size() > 5) {
+            recentAttentionLevels.remove();
+        }
+        if (realTime && realFragment != null) {
+            Queue<Integer> copyAttention = recentAttentionLevels;
+//			realFragment.setAttention(recentAttentionLevels);
+            realFragment.setAttention(copyAttention);
+
+        }
+    }
+
     /* END */
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_main);
-
-
-
-
+        setContentView(R.layout.activity_main);
 
 
         /** Sliding Tabs Shit */
@@ -264,7 +262,7 @@ public class MainActivity extends FragmentActivity {
 
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);
@@ -287,57 +285,76 @@ public class MainActivity extends FragmentActivity {
 
         /** End of Sliding Tabs Shit */
 
+        /** Fab Button Shit */
+        fab = (ImageButton) findViewById(R.id.fabButton);
+        fabClicked = false;
+        serviceStarted = false;
+        final Activity thisActivity = this; // Use this for the toast
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fabClicked == false) {
+                    fabClicked = true;
+                    Toast.makeText(thisActivity, "Connecting to Mind wave device", Toast.LENGTH_LONG).show();
+                }
+                // Move to real time fragment
+                pager.setCurrentItem(1, true);
+                startService();
+            }
+        });
+        /** End of Fab Button Shit */
 
-		
-		System.out.println("Opened data source (DB)");
-		
-		initActionBar();
-		
-	//	drawer = new SlidingDrawer(this);
-		
-		//switchToFragment(MAP_TAG);
-		//switchToFragment(DATABASE_TAG);
-	}
-	
 
-	private void initActionBar(){
-		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setDisplayShowHomeEnabled(true);
+        System.out.println("Opened data source (DB)");
 
-		// Creates a contextual action bar that allows the user to connect
-		mActionMode = startActionMode(mActionModeCallback);
-	}
-	
+        initActionBar();
+
+        //	drawer = new SlidingDrawer(this);
+
+        //switchToFragment(MAP_TAG);
+        //switchToFragment(DATABASE_TAG);
+    }
+
+
+    private void initActionBar() {
+        // Set up the action bar.
+        final ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+        // Creates a contextual action bar that allows the user to connect
+        mActionMode = startActionMode(mActionModeCallback);
+    }
+
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
         getActionBar().setTitle(mTitle);
     }
- 
-	@Override
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		//only do this if it is the reflection view
+        //only do this if it is the reflection view
         //Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
         //return true;
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         //drawer.getDrawerToggle().syncState();
     }
- 
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         //drawer.getDrawerToggle().onConfigurationChanged(newConfig);
     }
- 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Pass the event to ActionBarDrawerToggle, if it returns
@@ -346,68 +363,63 @@ public class MainActivity extends FragmentActivity {
 //            return true;
 //        }
         // Handle your other action bar items...
- 
+
         return super.onOptionsItemSelected(item);
     }
 
 
-	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback()
-	{
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
-		// Called when the action mode is created; startActionMode() was called
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu)
-		{
-			// Inflate a menu resource providing context menu items
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.reflection, menu);
-			return true;
-		}
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.reflection, menu);
+            return true;
+        }
 
-		// Called each time the action mode is shown. Always called after
-		// onCreateActionMode, but
-		// may be called multiple times if the mode is invalidated.
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu)
-		{
-			return false; // Return false if nothing is done
-		}
+        // Called each time the action mode is shown. Always called after
+        // onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
 
-		// Called when the user selects a contextual menu item
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item)
-		{
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
 //			
-			int itemId = item.getItemId();
-			if (itemId == R.id.action_connect) {
-				return true;
-			} else {
-				return false;
-			}
-		}
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_connect) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
-		// Called when the user exits the action mode
-		@Override
-		public void onDestroyActionMode(ActionMode mode)
-		{
-			//mActionMode = null;
-			MainActivity.this.onBackPressed();
-		}
-	};
-	@Override
-	public void onBackPressed(){
-		super.onBackPressed();
-	}
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            //mActionMode = null;
+            MainActivity.this.onBackPressed();
+        }
+    };
 
-	@Override
-	public void onDestroy()
-	{
-		super.onDestroy();
-	}
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
 
-	public void switchToFragment(String FRAGMENT_TAG) {
+    public void switchToFragment(String FRAGMENT_TAG) {
 //		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 //		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
 //				.beginTransaction();
@@ -463,9 +475,9 @@ public class MainActivity extends FragmentActivity {
 //						summaryFragment, SUMMARY_TAG).commit();
 //			}
 //		}
-	}
-	
-	//Generate temporary test data
+    }
+
+    //Generate temporary test data
 //	public void generateRandomData()
 //	{
 //		double lat;
@@ -553,32 +565,32 @@ public class MainActivity extends FragmentActivity {
 //		
 //		return results;
 //	}
-	@Override
-	public void onStart(){
-		super.onStart();
-		//generateRandomData();
-		//start timer to check location every minute
-		
-	}
-	@Override
-	public void onPause(){
-		super.onPause();
-	}
-	public static double round(double unrounded, int precision, int roundingMode)
-	{
-	    BigDecimal bd = new BigDecimal(unrounded);
-	    BigDecimal rounded = bd.setScale(precision, roundingMode);
-	    return rounded.doubleValue();
-	}
-	public void redrawGraphs(){
-		
-		if(xyGraphFragment != null)
-		{
-			xyGraphFragment.redraw();
-		}
-		if(rangeGraphFragment != null)
-		{
-			rangeGraphFragment.redraw();
-		}
-	}
+    @Override
+    public void onStart() {
+        super.onStart();
+        //generateRandomData();
+        //start timer to check location every minute
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    public static double round(double unrounded, int precision, int roundingMode) {
+        BigDecimal bd = new BigDecimal(unrounded);
+        BigDecimal rounded = bd.setScale(precision, roundingMode);
+        return rounded.doubleValue();
+    }
+
+    public void redrawGraphs() {
+
+        if (xyGraphFragment != null) {
+            xyGraphFragment.redraw();
+        }
+        if (rangeGraphFragment != null) {
+            rangeGraphFragment.redraw();
+        }
+    }
 }
