@@ -19,6 +19,7 @@
     <layouts>
       <layout url="file://$PROJECT_DIR$/mindMapperApp/src/main/res/layout/activity_main.xml">
         <config>
+          <state>Landscape</state>
           <theme>@style/Base.Theme.AppCompat</theme>
         </config>
       </layout>
@@ -86,51 +87,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="activity_main.xml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="activity_main.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/res/layout/activity_main.xml">
           <provider selected="true" editor-type-id="android-designer">
             <state />
           </provider>
           <provider editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="558" max-vertical-offset="1746">
-              <caret line="40" column="26" selection-start-line="40" selection-start-column="26" selection-end-line="40" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="713" max-vertical-offset="1728">
+              <caret line="57" column="39" selection-start-line="57" selection-start-column="39" selection-end-line="57" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="real_time_fragment_layout.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="real_time_fragment_layout.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/res/layout/real_time_fragment_layout.xml">
           <provider selected="true" editor-type-id="android-designer">
             <state />
           </provider>
           <provider editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1350">
-              <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="4" max-vertical-offset="1314">
+              <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.189655" vertical-offset="4751" max-vertical-offset="10836">
-              <caret line="271" column="58" selection-start-line="271" selection-start-column="58" selection-end-line="271" selection-end-column="58" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#4601#4610#0" expanded="true" />
-                <element signature="e#9940#10153#0" expanded="true" />
-                <element signature="e#10142#10143#0" expanded="true" />
-                <element signature="e#10539#10990#0" expanded="true" />
-                <element signature="e#10979#10980#0" expanded="true" />
-                <element signature="e#14478#14479#0" expanded="true" />
-                <element signature="e#14515#14516#0" expanded="true" />
-                <element signature="e#14560#14561#0" expanded="true" />
-                <element signature="e#14593#14594#0" expanded="true" />
-                <element signature="e#20068#20069#0" expanded="true" />
-                <element signature="e#20099#20100#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -138,8 +116,8 @@
       <file leaf-file-name="RealTimeDataFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/Fragments/RealTimeDataFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.2413793" vertical-offset="626" max-vertical-offset="2862">
-              <caret line="42" column="17" selection-start-line="42" selection-start-column="17" selection-end-line="42" selection-end-column="17" />
+            <state vertical-scroll-proportion="-1.0" vertical-offset="626" max-vertical-offset="2862">
+              <caret line="38" column="4" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -2763,8 +2741,8 @@
         <option value="$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/SlidingTab/ViewPagerAdapter.java" />
         <option value="$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/Fragments/RealTimeDataFragment.java" />
         <option value="$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/MainActivity.java" />
-        <option value="$PROJECT_DIR$/mindMapperApp/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/mindMapperApp/src/main/res/layout/real_time_fragment_layout.xml" />
+        <option value="$PROJECT_DIR$/mindMapperApp/src/main/res/layout/activity_main.xml" />
       </list>
     </option>
   </component>
@@ -3457,7 +3435,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1365" y="0" width="1922" height="1081" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890365" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -3471,9 +3449,9 @@
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32991013" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32694355" sideWeight="0.49520767" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32800853" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31842387" sideWeight="0.5473908" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32800853" sideWeight="0.5" order="13" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32800853" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31842387" sideWeight="0.5473908" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31842387" sideWeight="0.45260915" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22417465" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32784638" sideWeight="0.5" order="14" side_tool="true" content_ui="tabs" />
@@ -3871,20 +3849,27 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/Fragments/BaselineFragment.java">
+    <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/SlidingTab/SlidingTabStrip.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6498">
-          <caret line="38" column="26" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
+        <state vertical-scroll-proportion="-4.8965516" vertical-offset="904" max-vertical-offset="2556">
+          <caret line="76" column="20" selection-start-line="76" selection-start-column="11" selection-end-line="76" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/Fragments/RealTimeDataFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.0" vertical-offset="626" max-vertical-offset="2862">
+          <caret line="38" column="4" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="4" />
           <folding>
-            <element signature="e#11003#11092#0" expanded="true" />
-            <element signature="e#11085#11086#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.189655" vertical-offset="4751" max-vertical-offset="10836">
+        <state vertical-scroll-proportion="0.22965641" vertical-offset="4751" max-vertical-offset="10836">
           <caret line="271" column="58" selection-start-line="271" selection-start-column="58" selection-end-line="271" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -3903,28 +3888,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/Fragments/RealTimeDataFragment.java">
+    <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/Fragments/BaselineFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.2413793" vertical-offset="626" max-vertical-offset="2862">
-          <caret line="42" column="17" selection-start-line="42" selection-start-column="17" selection-end-line="42" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6498">
+          <caret line="38" column="26" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#11003#11092#0" expanded="true" />
+            <element signature="e#11085#11086#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/java/edu/engagement/application/SlidingTab/SlidingTabStrip.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.8965516" vertical-offset="904" max-vertical-offset="2556">
-          <caret line="76" column="20" selection-start-line="76" selection-start-column="11" selection-end-line="76" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/res/layout/activity_main.xml">
+    <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/res/layout/real_time_fragment_layout.xml">
       <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="558" max-vertical-offset="1746">
-          <caret line="40" column="26" selection-start-line="40" selection-start-column="26" selection-end-line="40" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="4" max-vertical-offset="1314">
+          <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
           <folding />
         </state>
       </provider>
@@ -3932,10 +3910,10 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/res/layout/real_time_fragment_layout.xml">
+    <entry file="file://$PROJECT_DIR$/mindMapperApp/src/main/res/layout/activity_main.xml">
       <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1350">
-          <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="713" max-vertical-offset="1728">
+          <caret line="57" column="39" selection-start-line="57" selection-start-column="39" selection-end-line="57" selection-end-column="39" />
           <folding />
         </state>
       </provider>

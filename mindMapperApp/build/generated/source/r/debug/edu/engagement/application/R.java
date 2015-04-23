@@ -1851,10 +1851,10 @@ containing a value of this type.
         public static final int action_bar_spinner=0x7f0a0001;
         public static final int action_bar_subtitle=0x7f0a0034;
         public static final int action_bar_title=0x7f0a0033;
-        public static final int action_bargraph=0x7f0a0081;
-        public static final int action_connect=0x7f0a007f;
+        public static final int action_bargraph=0x7f0a0083;
+        public static final int action_connect=0x7f0a0081;
         public static final int action_context_bar=0x7f0a0047;
-        public static final int action_map=0x7f0a0080;
+        public static final int action_map=0x7f0a0082;
         public static final int action_menu_divider=0x7f0a0002;
         public static final int action_menu_presenter=0x7f0a0003;
         public static final int action_mode_bar=0x7f0a0043;
@@ -1883,7 +1883,7 @@ containing a value of this type.
         public static final int card_label=0x7f0a0071;
         public static final int card_location=0x7f0a006e;
         public static final int card_variance=0x7f0a0070;
-        public static final int chart=0x7f0a0079;
+        public static final int chart=0x7f0a007b;
         public static final int checkbox=0x7f0a003e;
         public static final int classic=0x7f0a0030;
         public static final int collapseActionView=0x7f0a001d;
@@ -1920,6 +1920,7 @@ containing a value of this type.
         public static final int image=0x7f0a0038;
         public static final int listMode=0x7f0a0009;
         public static final int list_item=0x7f0a003a;
+        public static final int locationTextView=0x7f0a007a;
         public static final int mapView=0x7f0a0072;
         public static final int match_parent=0x7f0a002b;
         public static final int middle=0x7f0a0016;
@@ -1960,20 +1961,21 @@ containing a value of this type.
         public static final int stop=0x7f0a005e;
         public static final int strict_sandbox=0x7f0a0028;
         public static final int submit_area=0x7f0a0051;
-        public static final int tab1=0x7f0a007b;
-        public static final int tab2=0x7f0a007c;
-        public static final int tab3=0x7f0a007d;
-        public static final int tabHost=0x7f0a007a;
+        public static final int tab1=0x7f0a007d;
+        public static final int tab2=0x7f0a007e;
+        public static final int tab3=0x7f0a007f;
+        public static final int tabHost=0x7f0a007c;
         public static final int tabMode=0x7f0a000b;
         public static final int tabs=0x7f0a0055;
         public static final int terrain=0x7f0a001b;
+        public static final int textView=0x7f0a0079;
         public static final int textView1=0x7f0a0074;
         public static final int title=0x7f0a003c;
         public static final int up=0x7f0a0008;
         public static final int useLogo=0x7f0a0012;
         public static final int withText=0x7f0a0020;
         public static final int wrap_content=0x7f0a0023;
-        public static final int xy_chart=0x7f0a007e;
+        public static final int xy_chart=0x7f0a0080;
     }
     public static final class integer {
         public static final int abc_max_action_buttons=0x7f0b0000;
