@@ -34,7 +34,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,7 +75,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Fab Button variables
      */
-    private ImageButton fab;
+    private TextView fab;
     private boolean fabClicked;
     private boolean serviceStarted;
 
@@ -286,7 +286,7 @@ public class MainActivity extends FragmentActivity {
         /** End of Sliding Tabs Shit */
 
         /** Fab Button Shit */
-        fab = (ImageButton) findViewById(R.id.fabButton);
+        fab = (TextView) findViewById(R.id.fabButton);
         fabClicked = false;
         serviceStarted = false;
         final Activity thisActivity = this; // Use this for the toast

@@ -39,6 +39,9 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
 	
 	private TextView attentionText;
 	private ImageView drawingImageView;
+
+    // Fab Button
+    private TextView fabButton;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -54,9 +57,9 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
         //activity.switchToFragment(REAL_TIME_FRAG);
         
         // Set up initial screen layout
-        attentionText = (TextView) view.findViewById(R.id.EEGText);
+        attentionText = (TextView) view.findViewById(R.id.attentionCircle);
         System.out.println("attention text view initialized");
-        drawingImageView = (ImageView) view.findViewById(R.id.attentionCircle);
+        fabButton = (TextView)activity.findViewById(R.id.fabButton);
         
         return view;
     }
@@ -65,6 +68,12 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+//        fabButton.setVisibility(View.INVISIBLE);
     }
     
     @Override

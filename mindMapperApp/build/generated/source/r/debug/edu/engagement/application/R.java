@@ -1823,27 +1823,27 @@ containing a value of this type.
         public static final int common_signin_btn_text_normal_light=0x7f020055;
         public static final int common_signin_btn_text_pressed_dark=0x7f020056;
         public static final int common_signin_btn_text_pressed_light=0x7f020057;
-        public static final int gradient_black=0x7f020058;
-        public static final int green_btn=0x7f020059;
-        public static final int hack=0x7f02005a;
-        public static final int ic_bargraph_dark=0x7f02005b;
-        public static final int ic_bt=0x7f02005c;
-        public static final int ic_dotted_map=0x7f02005d;
-        public static final int ic_launcher=0x7f02005e;
-        public static final int ic_lightbulb=0x7f02005f;
-        public static final int ic_lightbulb_shine=0x7f020060;
-        public static final int ic_meditation=0x7f020061;
-        public static final int ic_plusone_medium_off_client=0x7f020062;
-        public static final int ic_plusone_small_off_client=0x7f020063;
-        public static final int ic_plusone_standard_off_client=0x7f020064;
-        public static final int ic_plusone_tall_off_client=0x7f020065;
-        public static final int ic_time=0x7f020066;
-        public static final int ic_unplugged_dark=0x7f020067;
-        public static final int powered_by_google_dark=0x7f020068;
-        public static final int powered_by_google_light=0x7f020069;
+        public static final int fab_circle=0x7f020058;
+        public static final int gradient_black=0x7f020059;
+        public static final int green_btn=0x7f02005a;
+        public static final int hack=0x7f02005b;
+        public static final int ic_bargraph_dark=0x7f02005c;
+        public static final int ic_bt=0x7f02005d;
+        public static final int ic_dotted_map=0x7f02005e;
+        public static final int ic_launcher=0x7f02005f;
+        public static final int ic_lightbulb=0x7f020060;
+        public static final int ic_lightbulb_shine=0x7f020061;
+        public static final int ic_meditation=0x7f020062;
+        public static final int ic_plusone_medium_off_client=0x7f020063;
+        public static final int ic_plusone_small_off_client=0x7f020064;
+        public static final int ic_plusone_standard_off_client=0x7f020065;
+        public static final int ic_plusone_tall_off_client=0x7f020066;
+        public static final int ic_time=0x7f020067;
+        public static final int ic_unplugged_dark=0x7f020068;
+        public static final int powered_by_google_dark=0x7f020069;
+        public static final int powered_by_google_light=0x7f02006a;
     }
     public static final class id {
-        public static final int EEGText=0x7f0a0076;
         public static final int action_bar=0x7f0a0046;
         public static final int action_bar_activity_content=0x7f0a0000;
         public static final int action_bar_container=0x7f0a0045;
@@ -1851,10 +1851,10 @@ containing a value of this type.
         public static final int action_bar_spinner=0x7f0a0001;
         public static final int action_bar_subtitle=0x7f0a0034;
         public static final int action_bar_title=0x7f0a0033;
-        public static final int action_bargraph=0x7f0a0080;
-        public static final int action_connect=0x7f0a007e;
+        public static final int action_bargraph=0x7f0a0081;
+        public static final int action_connect=0x7f0a007f;
         public static final int action_context_bar=0x7f0a0047;
-        public static final int action_map=0x7f0a007f;
+        public static final int action_map=0x7f0a0080;
         public static final int action_menu_divider=0x7f0a0002;
         public static final int action_menu_presenter=0x7f0a0003;
         public static final int action_mode_bar=0x7f0a0043;
@@ -1865,7 +1865,7 @@ containing a value of this type.
         public static final int adjust_width=0x7f0a0018;
         public static final int always=0x7f0a001c;
         public static final int annotate=0x7f0a005c;
-        public static final int attentionCircle=0x7f0a0077;
+        public static final int attentionCircle=0x7f0a0076;
         public static final int b_instructions=0x7f0a0059;
         public static final int baselineLayout=0x7f0a0058;
         public static final int beginning=0x7f0a0014;
@@ -1873,6 +1873,8 @@ containing a value of this type.
         public static final int btnStartService=0x7f0a005a;
         public static final int btnStopService=0x7f0a005b;
         public static final int button=0x7f0a0062;
+        public static final int button1=0x7f0a0077;
+        public static final int button2=0x7f0a0078;
         public static final int buttonWrapper=0x7f0a0061;
         public static final int buyButton=0x7f0a0029;
         public static final int buy_now=0x7f0a002d;
@@ -1881,7 +1883,7 @@ containing a value of this type.
         public static final int card_label=0x7f0a0071;
         public static final int card_location=0x7f0a006e;
         public static final int card_variance=0x7f0a0070;
-        public static final int chart=0x7f0a0078;
+        public static final int chart=0x7f0a0079;
         public static final int checkbox=0x7f0a003e;
         public static final int classic=0x7f0a0030;
         public static final int collapseActionView=0x7f0a001d;
@@ -1958,10 +1960,10 @@ containing a value of this type.
         public static final int stop=0x7f0a005e;
         public static final int strict_sandbox=0x7f0a0028;
         public static final int submit_area=0x7f0a0051;
-        public static final int tab1=0x7f0a007a;
-        public static final int tab2=0x7f0a007b;
-        public static final int tab3=0x7f0a007c;
-        public static final int tabHost=0x7f0a0079;
+        public static final int tab1=0x7f0a007b;
+        public static final int tab2=0x7f0a007c;
+        public static final int tab3=0x7f0a007d;
+        public static final int tabHost=0x7f0a007a;
         public static final int tabMode=0x7f0a000b;
         public static final int tabs=0x7f0a0055;
         public static final int terrain=0x7f0a001b;
@@ -1971,7 +1973,7 @@ containing a value of this type.
         public static final int useLogo=0x7f0a0012;
         public static final int withText=0x7f0a0020;
         public static final int wrap_content=0x7f0a0023;
-        public static final int xy_chart=0x7f0a007d;
+        public static final int xy_chart=0x7f0a007e;
     }
     public static final class integer {
         public static final int abc_max_action_buttons=0x7f0b0000;
