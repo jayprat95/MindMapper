@@ -63,6 +63,9 @@
     <color name="common_signin_btn_light_text_disabled">#FFAAAAAA</color>
     <color name="common_signin_btn_light_text_focused">#FF737373</color>
     <color name="common_signin_btn_light_text_pressed">@android:color/white</color>
+    <!-- From: file:/home/kyle/workStation/project/MindMapper/mindMapperApp/src/main/res/values/annotation_bar_colors.xml -->
+    <eat-comment/>
+    <color name="default_screen_bg">#f9f9f9</color>
     <!-- From: file:/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <color name="dim_foreground_disabled_material_dark">#80bebebe</color>
@@ -73,6 +76,11 @@
     <color name="highlighted_text_material_light">#66009688</color>
     <color name="hint_foreground_material_dark">@color/bright_foreground_disabled_material_dark</color>
     <color name="hint_foreground_material_light">@color/bright_foreground_disabled_material_light</color>
+    <!-- From: file:/home/kyle/workStation/project/MindMapper/mindMapperApp/src/main/res/values/annotation_bar_colors.xml -->
+    <eat-comment/>
+    <color name="light_gray_header_color">#646663</color>
+    <!-- From: file:/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <eat-comment/>
     <color name="link_text_material_dark">@color/material_deep_teal_200</color>
     <color name="link_text_material_light">@color/material_deep_teal_500</color>
     <color name="material_blue_grey_800">#ff37474f</color>
@@ -90,6 +98,12 @@
     <color name="primary_text_disabled_material_light">#39000000</color>
     <color name="ripple_material_dark">#40ffffff</color>
     <color name="ripple_material_light">#40000000</color>
+    <!-- From: file:/home/kyle/workStation/project/MindMapper/mindMapperApp/src/main/res/values/annotation_bar_colors.xml -->
+    <eat-comment/>
+    <color name="rounded_container_bg">#222222</color>
+    <color name="rounded_container_border">#3b3f44</color>
+    <!-- From: file:/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <eat-comment/>
     <color name="secondary_text_default_material_dark">#b3ffffff</color>
     <color name="secondary_text_default_material_light">#8a000000</color>
     <color name="secondary_text_disabled_material_dark">#36ffffff</color>

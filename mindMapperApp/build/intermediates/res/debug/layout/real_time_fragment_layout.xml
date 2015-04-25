@@ -4,9 +4,20 @@
     android:layout_height="wrap_content"
     android:layout_weight="1" >
 
+    <Button
+        android:id="@+id/real_time_fragment_close"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right|center_vertical"
+        android:background="@android:drawable/btn_dialog"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
     <TextView
         android:id="@+id/attentionCircle"
-        android:layout_width="250dp"
+        android:layout_width="270dp"
         android:layout_height="270dp"
         android:padding="10dp"
         android:text="aa"
@@ -24,20 +35,22 @@
         android:text="Start"
         android:id="@+id/button1"
         android:layout_alignTop="@+id/attentionCircle"
-        android:layout_toLeftOf="@+id/button2"
-        android:layout_toStartOf="@+id/button2"
-        android:layout_marginRight="58dp"
-        android:layout_marginEnd="270dp" />
+        android:layout_alignParentRight="true"
+        android:background="@color/wallet_holo_blue_light"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="49dp"
+        android:layout_marginEnd="49dp" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Stop"
+        android:background="@color/wallet_holo_blue_light"
         android:id="@+id/button2"
-        android:layout_marginRight="78dp"
-        android:layout_marginEnd="78dp"
-        android:layout_alignTop="@+id/button1"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/attentionCircle"
+        android:layout_toRightOf="@+id/attentionCircle"
+        android:layout_toEndOf="@+id/attentionCircle"
+        android:layout_marginLeft="56dp"
+        android:layout_marginStart="56dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,10 +60,26 @@
         android:gravity="center"
         android:id="@+id/textView"
         android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/button2"
-        android:layout_alignEnd="@+id/button2"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_alignStart="@+id/button1" />
+        android:layout_alignLeft="@+id/annotation_bar"
+        android:layout_alignStart="@+id/annotation_bar"
+        android:layout_alignRight="@+id/annotation_bar"
+        android:layout_alignEnd="@+id/annotation_bar" />
+
+    <SeekBar
+        android:id="@+id/annotation_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/progressbar"
+        android:secondaryProgress="0"
+        android:layout_above="@+id/textViewMedium"
+        android:layout_alignRight="@+id/button1"
+        android:progressBackgroundTint="@color/wallet_holo_blue_light"
+        android:layout_alignEnd="@+id/button1"
+        android:layout_alignLeft="@+id/button2"
+        android:layout_alignStart="@+id/button2"
+        android:indeterminate="false" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -64,5 +93,49 @@
         android:layout_alignRight="@+id/attentionCircle"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="50dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Low"
+        android:id="@+id/textViewLow"
+        android:layout_below="@+id/annotation_bar"
+        android:layout_alignLeft="@+id/annotation_bar"
+        android:layout_alignStart="@+id/annotation_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="High"
+        android:id="@+id/textViewHigh"
+        android:layout_below="@+id/annotation_bar"
+        android:layout_alignRight="@+id/annotation_bar"
+        android:layout_alignEnd="@+id/annotation_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Medium"
+        android:gravity="center"
+        android:id="@+id/textViewMedium"
+        android:layout_above="@id/locationTextView"
+        android:layout_toRightOf="@+id/textViewLow"
+        android:layout_toLeftOf="@+id/textViewHigh"
+        android:layout_toStartOf="@+id/textViewHigh" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/commentText"
+        android:layout_marginTop="10dp"
+        android:layout_alignTop="@+id/locationTextView"
+        android:background="@color/wallet_holo_blue_light"
+        android:hint="Annotation"
+        android:layout_toLeftOf="@+id/textViewHigh"
+        android:layout_alignLeft="@+id/textViewMedium"
+        android:layout_alignStart="@+id/textViewMedium" />
 
 </RelativeLayout><!-- From: file:/home/kyle/workStation/project/MindMapper/mindMapperApp/src/main/res/layout/real_time_fragment_layout.xml -->

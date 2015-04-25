@@ -341,6 +341,7 @@ public class MainActivity extends FragmentActivity {
             pager.setVisibility(View.INVISIBLE);
             tabs.setVisibility(View.INVISIBLE);
             frameLayout.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.INVISIBLE);
             switchToFragment("REAL_TIME_FRAGMENT");
         }
         else
@@ -348,6 +349,7 @@ public class MainActivity extends FragmentActivity {
             toolbar.setVisibility(View.VISIBLE);
             pager.setVisibility(View.VISIBLE);
             tabs.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.VISIBLE);
             frameLayout.setVisibility(View.INVISIBLE);
 
         }
