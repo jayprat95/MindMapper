@@ -69,8 +69,8 @@ public class MainActivity extends FragmentActivity {
     private ViewPager pager;
     private ViewPagerAdapter adapter;
     private SlidingTabLayout tabs;
-    private CharSequence Titles[] = {"MapView", "RealTime", "GraphView", "CardView"};
-    private int Numboftabs = 4;
+    private CharSequence Titles[] = {"MapView", "GraphView", "CardView"};
+    private int Numboftabs = 3;
 
     /**
      * Fab Button variables
