@@ -37,6 +37,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.FrameLayout;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -62,6 +63,11 @@ import edu.engagement.application.SlidingTab.*;
 public class MainActivity extends FragmentActivity {
 
 
+    public enum state
+    {
+        ANNOTATION_STATE, SLIDING_TABS_STATE;
+
+    }
     /**
      * Sliding Tabs variables
      */
@@ -80,6 +86,9 @@ public class MainActivity extends FragmentActivity {
     private boolean serviceStarted;
 
     ActionMode mActionMode = null;
+
+    /** Container for the annotations view */
+    private FrameLayout frameLayout;
 
     private static final int PORT = 7911;
     final boolean rawEnabled = true;
@@ -252,6 +261,8 @@ public class MainActivity extends FragmentActivity {
 
         setContentView(R.layout.activity_main);
 
+        frameLayout = (FrameLayout)findViewById(R.id.content_frame);
+
 
         /** Sliding Tabs Shit */
 
@@ -298,8 +309,11 @@ public class MainActivity extends FragmentActivity {
                     Toast.makeText(thisActivity, "Connecting to Mind wave device", Toast.LENGTH_LONG).show();
                 }
                 // Move to real time fragment
-                pager.setCurrentItem(1, true);
-                startService();
+//                pager.setCurrentItem(1, true);
+                //switchToFragment("REAL_TIME_FRAGMENT");
+                changeState(state.ANNOTATION_STATE);
+
+                //startService();
             }
         });
         /** End of Fab Button Shit */
@@ -315,6 +329,30 @@ public class MainActivity extends FragmentActivity {
         //switchToFragment(DATABASE_TAG);
     }
 
+    /** Changes the apps's gobal state, and all
+     * relevant GUI will change to reflect on the state*
+     * @param someState a new state */
+    public void changeState(state someState)
+    {
+
+        if(someState == state.ANNOTATION_STATE)
+        {
+            toolbar.setVisibility(View.INVISIBLE);
+            pager.setVisibility(View.INVISIBLE);
+            tabs.setVisibility(View.INVISIBLE);
+            frameLayout.setVisibility(View.VISIBLE);
+            switchToFragment("REAL_TIME_FRAGMENT");
+        }
+        else
+        {
+            toolbar.setVisibility(View.VISIBLE);
+            pager.setVisibility(View.VISIBLE);
+            tabs.setVisibility(View.VISIBLE);
+            frameLayout.setVisibility(View.INVISIBLE);
+
+        }
+
+    }
 
     private void initActionBar() {
         // Set up the action bar.
@@ -420,17 +458,21 @@ public class MainActivity extends FragmentActivity {
 
 
     public void switchToFragment(String FRAGMENT_TAG) {
-//		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-//		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
-//				.beginTransaction();
-//
-//		if (getFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
-//			realTime = false;
-//			if (FRAGMENT_TAG.equals(MAP_TAG)) {
-//				if (mapFragment == null)
-//					mapFragment = new MapFrag();
-//				fragmentTransaction.replace(R.id.content_frame, mapFragment,
-//						MAP_TAG).commit();
+		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
+
+		if (getFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
+            realTime = false;
+            if (FRAGMENT_TAG.equals(REAL_TIME_TAG)) {
+                if (realFragment == null)
+                    realFragment = new RealTimeDataFragment();
+                fragmentTransaction.replace((R.id.content_frame), realFragment,
+                        REAL_TIME_TAG).commit();
+
+
+            }
+        }
 //
 //			} else if (FRAGMENT_TAG.equals(REAL_TIME_TAG)) {
 //                if (realFragment == null)
@@ -476,6 +518,7 @@ public class MainActivity extends FragmentActivity {
 //			}
 //		}
     }
+
 
     //Generate temporary test data
 //	public void generateRandomData()

@@ -4,6 +4,15 @@
     android:layout_height="wrap_content"
     android:layout_weight="1" >
 
+    <Button
+        android:id="@+id/real_time_fragment_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="right|center_vertical"
+        android:background="@android:drawable/btn_dialog" />
+
+
     <TextView
         android:id="@+id/attentionCircle"
         android:layout_width="250dp"
@@ -46,11 +55,21 @@
         android:text="How Attentive are you?"
         android:gravity="center"
         android:id="@+id/textView"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/button1"
         android:layout_alignRight="@+id/button2"
-        android:layout_alignEnd="@+id/button2"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_alignStart="@+id/button1" />
+        android:layout_alignEnd="@+id/button2" />
+
+    <SeekBar
+        android:id="@+id/annotation_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/progressbar"
+        android:secondaryProgress="0"
+        android:layout_below="@+id/textView"
+        android:layout_toRightOf="@+id/attentionCircle"
+        android:layout_toEndOf="@+id/attentionCircle" />
 
     <TextView
         android:layout_width="wrap_content"

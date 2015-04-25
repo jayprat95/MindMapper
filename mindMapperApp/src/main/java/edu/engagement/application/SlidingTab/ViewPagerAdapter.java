@@ -45,10 +45,15 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             if (reflectionGraphFragment == null)
                 reflectionGraphFragment = new ReflectionGraphFragment();
             return reflectionGraphFragment;
-        } else {
+        } else if(position == 2){
             if (summaryFragment == null)
                 summaryFragment = new SummaryFragment();
             return summaryFragment;
+        }
+        else {
+            if (realFragment == null)
+                realFragment = new RealTimeDataFragment();
+            return realFragment;
         }
 
 

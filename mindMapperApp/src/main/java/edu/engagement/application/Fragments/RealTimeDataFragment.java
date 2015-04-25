@@ -1,37 +1,31 @@
 package edu.engagement.application.Fragments;
 
 import java.util.Queue;
-import java.util.Set;
-
-import zephyr.android.HxMBT.BTClient;
-
-import com.neurosky.thinkgear.TGDevice;
 
 import edu.engagement.application.MainActivity;
-import edu.engagement.application.NewConnectedListener;
 import edu.engagement.application.R;
-import edu.engagement.application.R.layout;
+
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.SeekBar;
 import android.widget.Toast;
+import android.widget.Button;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 public class RealTimeDataFragment extends Fragment implements OnClickListener{
 	
@@ -42,6 +36,12 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
 
     // Fab Button
     private TextView fabButton;
+
+    // Annotation bar
+    private SeekBar annotationBar = null;
+
+    // CLOSE button
+    private Button closeButton;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -52,14 +52,85 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+
+
+        /* Place Picker Experiment */
+        int PLACE_PICKER_REQUEST = 1;
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        Context context = this.getActivity().getApplicationContext();
+        try {
+            // Start the intent by requesting a result,
+            // identified by a request code.
+            startActivityForResult(builder.build(context),
+                    PLACE_PICKER_REQUEST);
+            // PlacePicker.getPlace(builder, context);
+
+        } catch (GooglePlayServicesRepairableException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+
+
+
+
+
+
+
         View view = inflater.inflate(R.layout.real_time_fragment_layout, container, false);
-        
+
+        // Close Button
+        closeButton = (Button)view.findViewById(R.id.real_time_fragment_close);
+        closeButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.changeState(MainActivity.state.SLIDING_TABS_STATE);
+            }
+        });
+
         //activity.switchToFragment(REAL_TIME_FRAG);
         
         // Set up initial screen layout
         attentionText = (TextView) view.findViewById(R.id.attentionCircle);
         System.out.println("attention text view initialized");
         fabButton = (TextView)activity.findViewById(R.id.fabButton);
+
+        // Annotation Bar Stuff
+
+        annotationBar = (SeekBar) view.findViewById(R.id.annotation_bar);
+        annotationBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChanged = 0;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChanged = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                Toast.makeText(activity,"seek bar progress:"+progressChanged,
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
         
         return view;
     }
