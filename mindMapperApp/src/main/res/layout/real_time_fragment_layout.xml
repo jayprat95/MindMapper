@@ -32,8 +32,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
-        android:id="@+id/button1"
+        android:text="Stop"
+        android:id="@+id/stop"
         android:layout_alignTop="@+id/attentionCircle"
         android:layout_alignParentRight="true"
         android:background="@color/wallet_holo_blue_light"
@@ -43,9 +43,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop"
+        android:text="Start"
         android:background="@color/wallet_holo_blue_light"
-        android:id="@+id/button2"
+        android:id="@+id/start"
         android:layout_alignTop="@+id/attentionCircle"
         android:layout_toRightOf="@+id/attentionCircle"
         android:layout_toEndOf="@+id/attentionCircle"
@@ -58,12 +58,13 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="How Attentive are you?"
         android:gravity="center"
-        android:id="@+id/textView"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/annotation_bar"
-        android:layout_alignStart="@+id/annotation_bar"
-        android:layout_alignRight="@+id/annotation_bar"
-        android:layout_alignEnd="@+id/annotation_bar" />
+        android:id="@+id/annotationTextView"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/start"
+        android:layout_alignLeft="@+id/start"
+        android:layout_alignStart="@+id/start"
+        android:layout_alignRight="@+id/stop"
+        android:layout_alignEnd="@+id/stop" />
 
     <SeekBar
         android:id="@+id/annotation_bar"
@@ -73,12 +74,13 @@
         android:progress="0"
         android:progressDrawable="@drawable/progressbar"
         android:secondaryProgress="0"
-        android:layout_above="@+id/textViewMedium"
-        android:layout_alignRight="@+id/button1"
+        android:layout_below="@+id/annotationTextView"
+        android:layout_marginTop="20dp"
+        android:layout_alignRight="@+id/stop"
         android:progressBackgroundTint="@color/wallet_holo_blue_light"
-        android:layout_alignEnd="@+id/button1"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_alignStart="@+id/button2"
+        android:layout_alignEnd="@+id/stop"
+        android:layout_alignLeft="@+id/start"
+        android:layout_alignStart="@+id/start"
         android:indeterminate="false" />
 
     <TextView
@@ -121,7 +123,8 @@
         android:text="Medium"
         android:gravity="center"
         android:id="@+id/textViewMedium"
-        android:layout_above="@id/locationTextView"
+        android:layout_below="@+id/annotation_bar"
+        android:layout_marginBottom="20dp"
         android:layout_toRightOf="@+id/textViewLow"
         android:layout_toLeftOf="@+id/textViewHigh"
         android:layout_toStartOf="@+id/textViewHigh" />
@@ -130,12 +133,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/commentText"
-        android:layout_marginTop="10dp"
-        android:layout_alignTop="@+id/locationTextView"
         android:background="@color/wallet_holo_blue_light"
         android:hint="Annotation"
-        android:layout_toLeftOf="@+id/textViewHigh"
+        android:layout_above="@+id/locationTextView"
+        android:layout_alignRight="@+id/textViewMedium"
+        android:layout_alignEnd="@+id/textViewMedium"
         android:layout_alignLeft="@+id/textViewMedium"
         android:layout_alignStart="@+id/textViewMedium" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/submit"
+        android:background="@color/wallet_holo_blue_light"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/commentText"
+        android:layout_alignLeft="@+id/stop"
+        android:layout_alignStart="@+id/stop"
+        android:layout_alignRight="@+id/stop"
+        android:layout_alignEnd="@+id/stop" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/cancel"
+        android:background="@color/wallet_holo_blue_light"
+        android:layout_alignBottom="@+id/submit"
+        android:layout_alignLeft="@+id/start"
+        android:layout_alignStart="@+id/start"
+        android:layout_alignRight="@+id/start"
+        android:layout_alignEnd="@+id/start" />
 
 </RelativeLayout>
