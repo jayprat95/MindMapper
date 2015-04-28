@@ -58,13 +58,13 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="How Attentive are you?"
         android:gravity="center"
-        android:id="@+id/annotationTextView"
+        android:id="@+id/annotationInputView"
         android:layout_marginTop="20dp"
         android:layout_below="@id/start"
         android:layout_alignLeft="@+id/start"
         android:layout_alignStart="@+id/start"
-        android:layout_alignRight="@+id/stop"
-        android:layout_alignEnd="@+id/stop" />
+        android:layout_alignRight="@+id/annotation_bar"
+        android:layout_alignEnd="@+id/annotation_bar" />
 
     <SeekBar
         android:id="@+id/annotation_bar"
@@ -74,7 +74,7 @@
         android:progress="0"
         android:progressDrawable="@drawable/progressbar"
         android:secondaryProgress="0"
-        android:layout_below="@+id/annotationTextView"
+        android:layout_below="@+id/annotationInputView"
         android:layout_marginTop="20dp"
         android:layout_alignRight="@+id/stop"
         android:progressBackgroundTint="@color/wallet_holo_blue_light"
@@ -132,7 +132,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/commentText"
+        android:id="@+id/annotationInput"
         android:background="@color/wallet_holo_blue_light"
         android:hint="Annotation"
         android:layout_above="@+id/locationTextView"
@@ -148,7 +148,7 @@
         android:id="@+id/submit"
         android:background="@color/wallet_holo_blue_light"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/commentText"
+        android:layout_below="@+id/annotationInput"
         android:layout_alignLeft="@+id/stop"
         android:layout_alignStart="@+id/stop"
         android:layout_alignRight="@+id/stop"
@@ -165,5 +165,21 @@
         android:layout_alignStart="@+id/start"
         android:layout_alignRight="@+id/start"
         android:layout_alignEnd="@+id/start" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="0%"
+        android:gravity="center"
+        android:ems="3"
+        android:id="@+id/annotationValue"
+        android:layout_above="@+id/cancel"
+        android:layout_alignTop="@+id/annotation_bar"
+        android:layout_alignBottom="@+id/annotation_bar"
+        android:layout_toLeftOf="@id/annotation_bar"
+        android:background="@color/wallet_holo_blue_light"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="2dp" />
 
 </RelativeLayout>

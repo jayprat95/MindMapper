@@ -40,6 +40,9 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
     // Annotation bar
     private SeekBar annotationBar = null;
 
+    // Annotation value
+    private TextView annotationValue;
+
     // CLOSE button
     private Button closeButton;
 	
@@ -97,6 +100,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
         attentionText = (TextView) view.findViewById(R.id.attentionCircle);
         System.out.println("attention text view initialized");
         fabButton = (TextView)activity.findViewById(R.id.fabButton);
+        annotationValue = (TextView)view.findViewById(R.id.annotationValue);
 
         // Annotation Bar Stuff
 
@@ -106,18 +110,20 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChanged = progress;
+                annotationValue.setText(progressChanged + "%");
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+//
+//                annotationValue.setText(progressChanged + "%");
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
-                Toast.makeText(activity,"seek bar progress:"+progressChanged,
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity,"seek bar progress:"+progressChanged,
+//                        Toast.LENGTH_SHORT).show();
 
             }
         });
