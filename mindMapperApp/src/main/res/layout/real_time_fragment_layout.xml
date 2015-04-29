@@ -135,6 +135,7 @@
         android:id="@+id/annotationInput"
         android:background="@color/wallet_holo_blue_light"
         android:hint="Annotation"
+        android:paddingLeft="5dip"
         android:layout_above="@+id/locationTextView"
         android:layout_alignRight="@+id/textViewMedium"
         android:layout_alignEnd="@+id/textViewMedium"

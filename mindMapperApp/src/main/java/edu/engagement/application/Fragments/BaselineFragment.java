@@ -152,8 +152,6 @@ public class BaselineFragment extends Fragment implements Runnable,
 		
 //		Bundle bundle = this.getActivity().getIntent().getExtras();
 //		System.out.println("WEEEEE");
-		
-
 	}
 
 	private void stopClicked() {

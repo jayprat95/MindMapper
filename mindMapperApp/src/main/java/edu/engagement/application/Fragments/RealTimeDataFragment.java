@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.SeekBar;
@@ -27,34 +28,38 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-public class RealTimeDataFragment extends Fragment implements OnClickListener{
-	
-	private MainActivity activity;
-	
-	private TextView attentionText;
-	private ImageView drawingImageView;
+public class RealTimeDataFragment extends Fragment implements OnClickListener {
+
+    private MainActivity activity;
+
+    private TextView attentionText;
+    private ImageView drawingImageView;
 
     // Fab Button
     private TextView fabButton;
 
-    // Annotation bar
+    // Attention circle
+    private TextView location;
+    // Annotation shit
     private SeekBar annotationBar = null;
-
-    // Annotation value
     private TextView annotationValue;
+    private EditText annotationInput;
 
     // CLOSE button
     private Button closeButton;
-	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = (MainActivity) activity;
-	}
-	
+    private Button startButton;
+    private Button stopButton;
+    private Button cancelButton;
+    private Button submitButton;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = (MainActivity) activity;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
         /* Place Picker Experiment */
@@ -77,36 +82,38 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
         }
 
 
-
-
-
-
-
-
         View view = inflater.inflate(R.layout.real_time_fragment_layout, container, false);
 
-        // Close Button
-        closeButton = (Button)view.findViewById(R.id.real_time_fragment_close);
-        closeButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.changeState(MainActivity.state.SLIDING_TABS_STATE);
-            }
-        });
 
         //activity.switchToFragment(REAL_TIME_FRAG);
-        
-        // Set up initial screen layout
+
+        // Set up initial screen layout and button listeners
         attentionText = (TextView) view.findViewById(R.id.attentionCircle);
+        location = (TextView) view.findViewById(R.id.locationTextView);
+        location.setText(activity.getLocation());
         System.out.println("attention text view initialized");
-        fabButton = (TextView)activity.findViewById(R.id.fabButton);
-        annotationValue = (TextView)view.findViewById(R.id.annotationValue);
+        fabButton = (TextView) activity.findViewById(R.id.fabButton);
+        annotationValue = (TextView) view.findViewById(R.id.annotationValue);
+        annotationInput = (EditText) view.findViewById(R.id.annotationInput);
+        startButton = (Button) view.findViewById(R.id.start);
+        stopButton = (Button) view.findViewById(R.id.stop);
+        cancelButton = (Button) view.findViewById(R.id.cancel);
+        submitButton = (Button) view.findViewById(R.id.submit);
+
+        startButton.setOnClickListener(this);
+        stopButton.setOnClickListener(this);
+        cancelButton.setOnClickListener(this);
+        submitButton.setOnClickListener(this);
+
+        // Close Button
+        closeButton = (Button) view.findViewById(R.id.real_time_fragment_close);
+        closeButton.setOnClickListener(this);
 
         // Annotation Bar Stuff
-
         annotationBar = (SeekBar) view.findViewById(R.id.annotation_bar);
         annotationBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChanged = 0;
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChanged = progress;
@@ -129,85 +136,89 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
         });
 
 
-
-
-
-
-
-
-
-
-        
         return view;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 //        fabButton.setVisibility(View.INVISIBLE);
     }
-    
+
     @Override
-	public void onClick(View view) {
-		switch (view.getId()) {
-//		case R.id.b_start:
-//			start();
-//			break;
-//		case R.id.b_circle:
-//			clicks++;
-//			delay = true;
-//			hideCircle();
-//			break;
-		}
-		
-	}
-    
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.real_time_fragment_close:
+                activity.changeState(MainActivity.state.SLIDING_TABS_STATE);
+                break;
+            case R.id.start:
+                // TODO start recording
+                Toast.makeText(getActivity(), "recording started", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.stop:
+                // TODO stop recording
+                Toast.makeText(getActivity(), "recording stop", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.cancel:
+                // clear annotation input
+                annotationInput.setText("");
+                break;
+            case R.id.submit:
+                // TODO submit annotation
+//                Toast.makeText(getActivity(),"recording started", Toast.LENGTH_SHORT).show();
+                annotationInput.setText("");
+                break;
+        }
+
+    }
+
+
     public void setAttention(Queue<Integer> attentionLevels) {
         System.out.println("attention text view initialized");
-        
-//        Integer[] levels = attentionLevels.toArray();
-        
-        if(attentionText != null){
-        	if(!attentionLevels.isEmpty()){
-//        		attentionText.setText(attentionLevels.peek().toString());
-        		attentionText.setText(attentionLevels.toString());
-        		attentionText.setVisibility(View.VISIBLE);
-        		
-        		Bitmap bitmap = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
-      		    Canvas canvas = new Canvas(bitmap);
 
-      		    // Circle
+//        Integer[] levels = attentionLevels.toArray();
+
+        if (attentionText != null) {
+            if (!attentionLevels.isEmpty()) {
+//        		attentionText.setText(attentionLevels.peek().toString());
+                attentionText.setText(attentionLevels.toString());
+                attentionText.setVisibility(View.VISIBLE);
+
+                Bitmap bitmap = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+
+                // Circle
 
 //      		    Paint paint = new Paint();
 //      		    paint.setColor(Color.GREEN);
 //      		    paint.setStyle(Paint.Style.STROKE);
 //      		    paint.setStrokeWidth(5);
-      		    float x = 100;
-      		    float y = 100;
-      		    //float radius = 20;
-      		    
-      		    while(!attentionLevels.isEmpty()){
-      		    	Paint paint = new Paint();
-          		    paint.setColor(Color.parseColor("#0A96D1"));//Color.GREEN);
-          		    paint.setStyle(Paint.Style.STROKE);
-          		    paint.setAntiAlias(true);
-          		    paint.setStrokeWidth((float) (Math.random()*6));
-      		    	//added a +5 to test without the headset on aka 0
-      		    	canvas.drawCircle(x, y, attentionLevels.poll().intValue()+5, paint);
+                float x = 100;
+                float y = 100;
+                //float radius = 20;
+
+                while (!attentionLevels.isEmpty()) {
+                    Paint paint = new Paint();
+                    paint.setColor(Color.parseColor("#0A96D1"));//Color.GREEN);
+                    paint.setStyle(Paint.Style.STROKE);
+                    paint.setAntiAlias(true);
+                    paint.setStrokeWidth((float) (Math.random() * 6));
+                    //added a +5 to test without the headset on aka 0
+                    canvas.drawCircle(x, y, attentionLevels.poll().intValue() + 5, paint);
 //      		    	canvas.drawCircle(x, y, attentionLevels.peek().intValue()+5, paint);
-      		    }
-      		    
-      		    drawingImageView.setImageBitmap(bitmap);
-        	}
+                }
+
+                drawingImageView.setImageBitmap(bitmap);
+            }
 //			attentionText.setText(attention);
 //			attentionText.setVisibility(View.VISIBLE);
-			
+
 //		    Bitmap bitmap = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
 //		    Canvas canvas = new Canvas(bitmap);
 //		    drawingImageView.setImageBitmap(bitmap);
@@ -222,8 +233,8 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener{
 //		    float y = 100;
 //		    //float radius = 20;
 //		    canvas.drawCircle(x, y, Integer.parseInt(attention), paint);
-		}
-	}
+        }
+    }
 
 }
 

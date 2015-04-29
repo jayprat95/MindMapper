@@ -78,6 +78,9 @@ public class MainActivity extends FragmentActivity {
     private CharSequence Titles[] = {"MapView", "GraphView", "CardView"};
     private int Numboftabs = 3;
 
+    // location from place picker
+    private String location = "";
+
     /**
      * Fab Button variables
      */
@@ -164,35 +167,44 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-//	/*
-//	 * Callback method that is called after user selects a location.
-//	 */
-//	@Override
-//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		if (requestCode == 1) {
-//			if (resultCode == this.RESULT_OK) {
-//				// Load the bundle from the activity's intent
-//				Bundle bundle = this.getIntent().getExtras();
-//
-//				// Initialize new bundle if it does not exist
-//				if (bundle == null) {
-//					bundle = new Bundle();
-//				}
-//				Place place = PlacePicker.getPlace(data,
-//						this.getApplicationContext());
-//
-//				// Save the location into the bundle
-//				bundle.putString("Location", "" + place.getName());
-//
-//				// Save the bundle into the activity
-//				this.getIntent().putExtras(bundle);
-//
-//				String toastMsg = String.format("Place: %s", place.getName());
-//				Toast.makeText(this.getApplicationContext(), toastMsg,
-//						Toast.LENGTH_LONG).show();
-//			}
-//		}
-//	}
+	/*
+	 * Callback method that is called after user selects a location.
+	 */
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 1) {
+			if (resultCode == this.RESULT_OK) {
+				// Load the bundle from the activity's intent
+				Bundle bundle = this.getIntent().getExtras();
+
+				// Initialize new bundle if it does not exist
+				if (bundle == null) {
+					bundle = new Bundle();
+				}
+				Place place = PlacePicker.getPlace(data,
+						this.getApplicationContext());
+
+				// Save the location into the bundle
+				bundle.putString("Location", "" + place.getName());
+                location = place.getName().toString();
+
+				// Save the bundle into the activity
+				this.getIntent().putExtras(bundle);
+
+				String toastMsg = String.format("Place: %s", place.getName());
+				Toast.makeText(this.getApplicationContext(), toastMsg,
+						Toast.LENGTH_LONG).show();
+			}
+		}
+	}
+
+    /**
+     * Get the current location from place picker
+     * @return locatioin name
+     */
+    public String getLocation(){
+        return this.location;
+    }
 
     // Method to stop the service
     public void stopService(View view) {
