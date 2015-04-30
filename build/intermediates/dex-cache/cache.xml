@@ -2,291 +2,291 @@
 <items version="2" >
 
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-d14a2b036376b868847d4a498c2cde8a538de41e.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-745064360727e05775af1603c8b7e8e4ce787fcd.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="055783146ba9654a725442563be78cad303aad1f">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-519d86ea97b443248efd7bb16cc18c0656614a78.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/junit-4.4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="8f35ee1f35d2dadbb5029991449ee90c1bab4d4a">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/junit-4.4-e92a4c740038c2ff67b61d3a8fa2716c059691ed.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/httpcore-4.2.4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3b7f38df6de5dd8b500e602ae8c2dd5ee446f883">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/httpcore-4.2.4-0877c390ec8a0d87808db8d476f39d054d9ed5df.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="fb04b12526b0073c7fb1ebb70c5842d82ee95596">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-03a8cae5f106b5ac87dd80de9ce36c7c4136aa1a.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/mpandroidchartlibrary-1-7-4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="c685e45ac6491e51640ce3571606ac22dfd4a6a3">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/mpandroidchartlibrary-1-7-4-175e534bd5a0df2e0d7e1798adb72419074b9970.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a96b762bde4139de855735f175ec4d17dca55a6d">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-7d55f1cc770d3167955e026ae6f7e449ca96cfac.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-e78c142070ff4b233d4443ff941f135004326096.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="ef5f051e7308febe289dc93c67c5f32785b4260a">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-141c29eaceb2dcdbf344ce5697e445eec8ae6fb7.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/httpclient-4.2.5.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="666e26e76f2e87d84e4f16acb546481ae1b8e9a6">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/httpclient-4.2.5-fce2fa4aa14cfd9ad31783761865899179336412.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/libthrift-1.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="35bb6647217bcf5888424a58ca5e1c0f62d3082e">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/libthrift-1.0.0-c69b7f7c2ebd37e665e7481ee61353ccaa33d14b.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="0e8228b4bc69c6a2c8d7c18498a77e53417d2574">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-968633ce6a8fcf590aa03f5cb80dde50dea99207.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/ThinkGear.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b4f0f0a355dcc5315e5bef25b775beaa52b2d208">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/ThinkGear-492b03ca3bbf4701e6070673f40b580102ddde2b.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3033cc3a2c68dff3e5b646d6d084bdbdf7d00b25">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-c1adf4dd0ff482be1097127b5094567cfa67140f.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.3/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-a4f1f4d18dd173581650f9d10d9f5a60c61510df.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="c976518693e89ad44fbfccfc654941eaec198d08">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-433015b6590a700b87a87bdc22ea5330293ddbc5.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3c0b099f9de16b265ecd6122fcb603e7d0d29f90">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-255b4731d1145a7d0522bd51ecf750badf6c9875.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="41b3870cbe5fa546d8095b5b89d42cb69f3dd175">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-0176ae3b5a5be9683f9121b12cc38737feb5b12b.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="1c5a76debf0c2857ccad422c4a80ed785982f8df">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-867a2ad931cfd71252ab8705d78fe427eba245d7.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/HxMBT.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a0f231edd201f26ebb42244dd8a18ffcb07e462b">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/HxMBT-68509f22b0677543a4dc0c6243dc32892f435c9d.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a08d65794b844d8e7540bf9a33859bf3b2482d7f">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-d90c7a9e72195f14974a33a2d2b1cefdb54d2665.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/SDK/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-d9c1c17dc5b462e3439f0f3480cb7170a8bf3341.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/commons-logging-1.1.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="5043bfebc3db072ed80fbd362e7caf00e885d8ae">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-logging-1.1.1-769bc7f27459c9012bcdbde64b920de6487b8562.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="29fd6d3794b71491c2789708cd8d03c71feb8954">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-58e88c12eb0c317f1ef14fa99c244eaa6ce6d08b.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/opencsv-3.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="100f1f66bcade989c73eabd3d56ac39df47317df">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/opencsv-3.1-4e8a37887ff5052c346b4fd4da6cc58083b19fe7.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/achartengine-1.1.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="9932e3fb9fbe54e80873e77f72a99f79e33b3250">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/achartengine-1.1.0-1dd82e140c6d8f0dc0d4edf58069315443121843.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.0.0/classes.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="9224bc4c54ba95147c7eabd874573763c07cb6be">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-bbe205e7e401432acde1a42e2651903dbed3af86.jar" />
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-3e221575884644088dc742fedec7832d388f0c9c.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/commons-lang3-3.1.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/opencsv-3.1.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="905075e6c80f206bbe6cf1e809d2caa69f420c76">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-lang3-3.1-b9385a560d9e1d3a01b8f13b8e438f7ba23d224b.jar" />
+        sha1="100f1f66bcade989c73eabd3d56ac39df47317df">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/opencsv-3.1-71a487eef7075d48a174f2f0d2b90ed68c4922e7.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/slf4j-api-1.5.8.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/7.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="2aaf496dfd551adb9b079f58a7e2d55eb383fc82">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/slf4j-api-1.5.8-ea834b323b237d6b2260cc6e0d67d06d73ab51d8.jar" />
+        sha1="3c0b099f9de16b265ecd6122fcb603e7d0d29f90">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-27c8f67fbaef52c89498553f78c761ae83963280.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/log4j-1.2.14.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="03b254c872b95141751f414e353a25c2ac261b51">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/log4j-1.2.14-88f49829db23d89117b2921e9f4984a5fbec5915.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/servlet-api-2.5.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="5959582d97d8b61f4d154ca9e495aafd16726e34">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/servlet-api-2.5-d9e957409ed77c2b68b340c7817ebbe37dada26c.jar" />
-    </item>
-    <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/commons-codec-1.6.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/commons-codec-1.6.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="b7f0fc8f61ecadeb3695f0b9464755eee44374d4">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-codec-1.6-107d709f12f0b692405643ec8a84ae5abe3e55ad.jar" />
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-codec-1.6-b56d4d669eaeca0a187fa27753b553738978422a.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-appstate/7.0.0/classes.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="7ff613bf78ab057293892fdbd4169eda899c89b9">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-b141d80a87422dd60284919fd9de65f7a50e6640.jar" />
+        sha1="29fd6d3794b71491c2789708cd8d03c71feb8954">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-0741f1f2e31aa7027b409fb376558fbbd2faa7ff.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/commons-logging-1.1.1.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-2dc29bbbeb8a02220c793ff75bf85c2663386eec.jar" />
+        sha1="5043bfebc3db072ed80fbd362e7caf00e885d8ae">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-logging-1.1.1-733b0383b325396f8360ebb54c01cd269eb56471.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.0.0/classes.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="e3d791b42eaa90416cd0b2d2e608092794a3baa4">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-902afd6c823eed1f294560cbf0f7401cb1912ae9.jar" />
+        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-557df968babc52001b821a003b94bae238ba8d08.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3033cc3a2c68dff3e5b646d6d084bdbdf7d00b25">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-a65521bc05b4f63b2834e03d3c13165faa491a65.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="ef5f051e7308febe289dc93c67c5f32785b4260a">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-be980476811923aa0b64653d7fc95a2eecd9a1ef.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="c976518693e89ad44fbfccfc654941eaec198d08">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-a3a497fefcdd8ca43739799d87068ac2fa977e89.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-6c699619295042df0232aae5ce5008ec8241a763.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="41b3870cbe5fa546d8095b5b89d42cb69f3dd175">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-06b721d33c89daeb90248530a239306b7957607f.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-708d16ae4de50fb49edda374c57c24dfe8116f3c.jar" />
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-3528f3b4725139dd7b630fc6fd9d063dba12ebe0.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.0.0/classes.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-6f84dac1525ead4d9431f167311f1edff93b29e5.jar" />
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-0ca1331d1bc37df1f384054680e124e532df23d7.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.0.0/classes.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/junit-4.4.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="4cd0b093824b3228fffc21ea369b98d0b1db6566">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-4e67bc16c3a864635ff935564e31b6a3329adfb9.jar" />
+        sha1="8f35ee1f35d2dadbb5029991449ee90c1bab4d4a">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/junit-4.4-11c3c907507ed7adaaf014f6f38a57869ad3d6bc.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/libs/slf4j-log4j12-1.5.8.jar"
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0e8228b4bc69c6a2c8d7c18498a77e53417d2574">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-60124ddc517fb4d6a0cd3ca2bbf7d31cf70e4b2c.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/libthrift-1.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="35bb6647217bcf5888424a58ca5e1c0f62d3082e">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/libthrift-1.0.0-12b53b30ffbeb1d74f6ef584263efe7419ffa8f7.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="055783146ba9654a725442563be78cad303aad1f">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-e92854668d6b7dce8685fa4e16b93d333e785999.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-appstate/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7ff613bf78ab057293892fdbd4169eda899c89b9">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-cd3c17ffb50821f9955b54a70e8c5cce77494760.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/slf4j-log4j12-1.5.8.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="da00a151c4db31b5be23e5f2b9f528735fddc384">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/slf4j-log4j12-1.5.8-e7f0b33ecf32c82c514b5268d6aceac6c01651aa.jar" />
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/slf4j-log4j12-1.5.8-644166caf3a8f9b65ddd691b57856213507e24c9.jar" />
     </item>
     <item
-        jar="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/classes.jar"
+        jar="/home/ducky/Documents/Develop/Android/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-4c537255733b3a478040759eac71c99b1b50510b.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1c5a76debf0c2857ccad422c4a80ed785982f8df">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-d86239b6ad23045109cf25f837670d8fef4478a0.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/commons-lang3-3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="905075e6c80f206bbe6cf1e809d2caa69f420c76">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/commons-lang3-3.1-ca4ac05f40985aab7950d6fb5c15216553c80ef2.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="fb04b12526b0073c7fb1ebb70c5842d82ee95596">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-49d4d0c334eed4286280c4e3a177a98da14231a3.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/httpclient-4.2.5.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="666e26e76f2e87d84e4f16acb546481ae1b8e9a6">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/httpclient-4.2.5-463c3d7cdcf10a4749ba43e58ab83095ce0d2b3d.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a08d65794b844d8e7540bf9a33859bf3b2482d7f">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-0b8b28ec53156242e05a1ae12ec08bad3170f1fa.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/slf4j-api-1.5.8.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2aaf496dfd551adb9b079f58a7e2d55eb383fc82">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/slf4j-api-1.5.8-e9fd8469a49085fee53b40dd6601a9746e42a2c9.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/httpcore-4.2.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3b7f38df6de5dd8b500e602ae8c2dd5ee446f883">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/httpcore-4.2.4-6b6e73f0dcac2b39c8e044576ab66d0f71944bb9.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4cd0b093824b3228fffc21ea369b98d0b1db6566">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-4056b6f43274d0974bb45b3405a4bdb52242c833.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/mpandroidchartlibrary-1-7-4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="c685e45ac6491e51640ce3571606ac22dfd4a6a3">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/mpandroidchartlibrary-1-7-4-ffd5713b0a102538e38fcd23b614e61d0758e178.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-fda987a16c927e37466effd8eadb7853f84816d9.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
-        <dex dex="/home/kyle/workStation/project/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-9090bef6ded366dd86eb270b566fa79365c8f154.jar" />
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-e825856ad3b98e59cea0c74dc3e8155e70d47873.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/log4j-1.2.14.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="03b254c872b95141751f414e353a25c2ac261b51">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/log4j-1.2.14-94bcc3070cb8d88a8b0b4389adf256e7cc66e802.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/achartengine-1.1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9932e3fb9fbe54e80873e77f72a99f79e33b3250">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/achartengine-1.1.0-ef8133ad6165a54a76ae854c248d477c2934c946.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/HxMBT.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a0f231edd201f26ebb42244dd8a18ffcb07e462b">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/HxMBT-0f70ea42491565f26a03fc20294b692fbe80a639.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a96b762bde4139de855735f175ec4d17dca55a6d">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-90cc688fa495da1478e59c3cf08780f9851b6356.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e3d791b42eaa90416cd0b2d2e608092794a3baa4">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-8c65b32393d0f36eb0b5cee64b140487661cf2b5.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-805cf27010c7dfe98db1a51df884d486d0bd4230.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/ThinkGear.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b4f0f0a355dcc5315e5bef25b775beaa52b2d208">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/ThinkGear-6ef9a5ae2081ffbb366ebc0fe9dc44cc86d709da.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/libs/servlet-api-2.5.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="5959582d97d8b61f4d154ca9e495aafd16726e34">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/servlet-api-2.5-cd20e699494ee863da1ed09c70201d8838e4ea4c.jar" />
+    </item>
+    <item
+        jar="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
+        <dex dex="/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/build/intermediates/pre-dexed/debug/classes-375d888b395323458bc99ea19117a79d71302bf3.jar" />
     </item>
 
 </items>

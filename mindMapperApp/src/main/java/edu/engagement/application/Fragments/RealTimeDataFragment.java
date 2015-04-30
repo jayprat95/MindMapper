@@ -7,12 +7,14 @@ import edu.engagement.application.R;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import android.widget.Button;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 public class RealTimeDataFragment extends Fragment implements OnClickListener {
@@ -91,6 +94,8 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         attentionText = (TextView) view.findViewById(R.id.attentionCircle);
         location = (TextView) view.findViewById(R.id.locationTextView);
         location.setText(activity.getLocation());
+        location.setSingleLine(true);
+        location.setEllipsize(TextUtils.TruncateAt.END);
         System.out.println("attention text view initialized");
         fabButton = (TextView) activity.findViewById(R.id.fabButton);
         annotationValue = (TextView) view.findViewById(R.id.annotationValue);
@@ -172,7 +177,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 break;
             case R.id.submit:
                 // TODO submit annotation
-                Toast.makeText(getActivity(),"Annotation saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Annotation saved", Toast.LENGTH_SHORT).show();
                 annotationInput.setText("");
                 annotationBar.setProgress(0);
                 break;
@@ -180,6 +185,36 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
     }
 
+    /*
+     * Callback method that is called after user selects a location.
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == activity.RESULT_OK) {
+                // Load the bundle from the activity's intent
+                Bundle bundle = activity.getIntent().getExtras();
+
+                // Initialize new bundle if it does not exist
+                if (bundle == null) {
+                    bundle = new Bundle();
+                }
+                Place place = PlacePicker.getPlace(data,
+                        activity.getApplicationContext());
+
+                // Save the location into the bundle
+                bundle.putString("Location", "" + place.getName());
+                location.setText(place.getName().toString());
+
+                // Save the bundle into the activity
+                activity.getIntent().putExtras(bundle);
+
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(activity.getApplicationContext(), toastMsg,
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
     public void setAttention(Queue<Integer> attentionLevels) {
         System.out.println("attention text view initialized");

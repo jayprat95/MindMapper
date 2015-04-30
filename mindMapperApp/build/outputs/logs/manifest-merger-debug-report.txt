@@ -295,7 +295,7 @@ MERGED from com.google.android.gms:play-services-base:7.0.0:21:9
 		ADDED from AndroidManifest.xml:39:7
 	android:value
 		ADDED from AndroidManifest.xml:40:7
-meta-data#com.google.android.maps.v2.API_KEY
+meta-data#com.google.android.geo.API_KEY
 ADDED from AndroidManifest.xml:41:9
 	android:name
 		ADDED from AndroidManifest.xml:42:7

@@ -142,11 +142,15 @@ public class MainActivity extends FragmentActivity {
         if (!serviceStarted) {
             serviceStarted = true;
 
+
             startService(new Intent(getBaseContext(), MindwaveService.class));
+
+            /** If Jayanth wants to get real data, uncommon this to get the service running */
+//            startService(new Intent(getBaseContext(), MindwaveService.class));
+
         }
 
     }
-
 
 
     /**
@@ -271,6 +275,7 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
                 if (fabClicked == false) {
                     fabClicked = true;
+                    fab.setText("Annotation");
                     Toast.makeText(thisActivity, "Connecting to Mind wave device", Toast.LENGTH_LONG).show();
                 }
                 // Move to real time fragment
@@ -278,7 +283,8 @@ public class MainActivity extends FragmentActivity {
                 //switchToFragment("REAL_TIME_FRAGMENT");
                 changeState(state.ANNOTATION_STATE);
 
-                startService();
+                /** If Jayanth wants to work on the real time eeg data uncommon this line to start the service */
+//                startService();
             }
         });
         /** End of Fab Button Shit */
@@ -445,8 +451,6 @@ public class MainActivity extends FragmentActivity {
                     realFragment = new RealTimeDataFragment();
                 fragmentTransaction.replace((R.id.content_frame), realFragment,
                         REAL_TIME_TAG).commit();
-
-
             }
         }
 //
@@ -611,5 +615,9 @@ public class MainActivity extends FragmentActivity {
         if (rangeGraphFragment != null) {
             rangeGraphFragment.redraw();
         }
+    }
+
+    public boolean fabClicked(){
+        return this.fabClicked;
     }
 }
