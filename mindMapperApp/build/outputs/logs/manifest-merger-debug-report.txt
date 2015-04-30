@@ -1,8 +1,6 @@
 -- Merging decision tree log ---
 manifest
 ADDED from AndroidManifest.xml:2:1
-	xmlns:android
-		ADDED from AndroidManifest.xml:2:11
 	package
 		ADDED from AndroidManifest.xml:3:5
 		INJECTED from AndroidManifest.xml:0:0
@@ -13,6 +11,8 @@ ADDED from AndroidManifest.xml:2:1
 		ADDED from AndroidManifest.xml:4:5
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
+	xmlns:android
+		ADDED from AndroidManifest.xml:2:11
 uses-sdk
 ADDED from AndroidManifest.xml:7:5
 MERGED from com.android.support:support-v4:22.0.0:20:5
@@ -141,10 +141,10 @@ ADDED from AndroidManifest.xml:18:5
 		ADDED from AndroidManifest.xml:18:22
 uses-feature#0x00020000
 ADDED from AndroidManifest.xml:19:5
-	android:required
-		ADDED from AndroidManifest.xml:19:52
 	android:glEsVersion
 		ADDED from AndroidManifest.xml:19:19
+	android:required
+		ADDED from AndroidManifest.xml:19:52
 application
 ADDED from AndroidManifest.xml:21:5
 MERGED from com.android.support:support-v4:22.0.0:22:5
@@ -233,10 +233,10 @@ MERGED from com.android.support:appcompat-v7:21.0.3:16:5
 MERGED from com.android.support:support-v4:22.0.0:22:5
 	android:label
 		ADDED from AndroidManifest.xml:24:9
-	android:allowBackup
-		ADDED from AndroidManifest.xml:22:9
 	android:uiOptions
 		ADDED from AndroidManifest.xml:26:9
+	android:allowBackup
+		ADDED from AndroidManifest.xml:22:9
 	android:icon
 		ADDED from AndroidManifest.xml:23:9
 	android:theme
@@ -291,16 +291,16 @@ MERGED from com.google.android.gms:play-services-base:7.0.0:21:9
 MERGED from com.google.android.gms:play-services-base:7.0.0:21:9
 MERGED from com.google.android.gms:play-services-base:7.0.0:21:9
 MERGED from com.google.android.gms:play-services-base:7.0.0:21:9
-	android:name
-		ADDED from AndroidManifest.xml:39:7
 	android:value
 		ADDED from AndroidManifest.xml:40:7
+	android:name
+		ADDED from AndroidManifest.xml:39:7
 meta-data#com.google.android.geo.API_KEY
 ADDED from AndroidManifest.xml:41:9
-	android:name
-		ADDED from AndroidManifest.xml:42:7
 	android:value
 		ADDED from AndroidManifest.xml:43:7
+	android:name
+		ADDED from AndroidManifest.xml:42:7
 activity#android.support.v7.widget.TestActivity
 ADDED from com.android.support:recyclerview-v7:21.0.3:18:9
 	android:label

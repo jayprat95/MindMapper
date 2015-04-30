@@ -1,10 +1,5 @@
 package edu.engagement.application.Fragments;
 
-import java.util.Queue;
-
-import edu.engagement.application.MainActivity;
-import edu.engagement.application.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,19 +12,24 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Button;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+
+import java.util.Queue;
+
+import edu.engagement.application.MainActivity;
+import edu.engagement.application.R;
 
 public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
@@ -271,6 +271,12 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 //		    //float radius = 20;
 //		    canvas.drawCircle(x, y, Integer.parseInt(attention), paint);
         }
+    }
+
+
+    public void setAttText(String str)
+    {
+        this.attentionText.setText(str);
     }
 
 }

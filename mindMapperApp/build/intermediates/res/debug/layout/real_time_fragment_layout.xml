@@ -87,7 +87,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Location"
+        android:text="location"
+        android:maxLength="16"
         android:gravity="center"
         android:id="@+id/locationTextView"
         android:layout_alignBottom="@+id/attentionCircle"
@@ -183,4 +184,4 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="2dp" />
 
-</RelativeLayout><!-- From: file:/home/ducky/AndroidstudioProjects/MindMapper/mindMapperApp/src/main/res/layout/real_time_fragment_layout.xml -->
+</RelativeLayout><!-- From: file:/Users/jayanthprathipati/Development/gitProjects/MindMapper/mindMapperApp/src/main/res/layout/real_time_fragment_layout.xml -->

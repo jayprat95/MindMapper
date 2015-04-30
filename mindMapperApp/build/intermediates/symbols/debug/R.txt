@@ -478,9 +478,10 @@ int drawable ic_plusone_standard_off_client 0x7f020065
 int drawable ic_plusone_tall_off_client 0x7f020066
 int drawable ic_time 0x7f020067
 int drawable ic_unplugged_dark 0x7f020068
-int drawable powered_by_google_dark 0x7f020069
-int drawable powered_by_google_light 0x7f02006a
-int drawable progressbar 0x7f02006b
+int drawable mcbryde 0x7f020069
+int drawable powered_by_google_dark 0x7f02006a
+int drawable powered_by_google_light 0x7f02006b
+int drawable progressbar 0x7f02006c
 int id action_bar 0x7f0a0046
 int id action_bar_activity_content 0x7f0a0000
 int id action_bar_container 0x7f0a0045
@@ -519,10 +520,9 @@ int id buyButton 0x7f0a0029
 int id buy_now 0x7f0a002d
 int id buy_with_google 0x7f0a002e
 int id cancel 0x7f0a0081
-int id card_average 0x7f0a0070
-int id card_label 0x7f0a0072
-int id card_location 0x7f0a006f
-int id card_variance 0x7f0a0071
+int id card_average 0x7f0a0071
+int id card_location 0x7f0a0070
+int id card_variance 0x7f0a0072
 int id chart 0x7f0a0083
 int id checkbox 0x7f0a003e
 int id classic 0x7f0a0030
@@ -570,6 +570,7 @@ int id never 0x7f0a001f
 int id none 0x7f0a000e
 int id normal 0x7f0a000a
 int id pager 0x7f0a0057
+int id person_photo 0x7f0a006f
 int id production 0x7f0a0026
 int id progress_circular 0x7f0a0005
 int id progress_horizontal 0x7f0a0006

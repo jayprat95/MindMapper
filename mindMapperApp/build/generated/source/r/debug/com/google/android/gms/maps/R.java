@@ -107,8 +107,8 @@ public final class R {
 		public static final int ic_plusone_small_off_client = 0x7f020064;
 		public static final int ic_plusone_standard_off_client = 0x7f020065;
 		public static final int ic_plusone_tall_off_client = 0x7f020066;
-		public static final int powered_by_google_dark = 0x7f020069;
-		public static final int powered_by_google_light = 0x7f02006a;
+		public static final int powered_by_google_dark = 0x7f02006a;
+		public static final int powered_by_google_light = 0x7f02006b;
 	}
 	public static final class id {
 		public static final int adjust_height = 0x7f0a0017;

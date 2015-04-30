@@ -6,13 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 import edu.engagement.application.CardData;
 import edu.engagement.application.Database.DataPointSource;
@@ -102,18 +101,24 @@ public class SummaryFragment extends Fragment {
         /** --------------- Test points for card View end------------------- **/
 
         CardData card = new CardData();
-//        CardData card2 = new CardData(5, 10, "1034", "32423");
+        CardData card2 = new CardData(5, 10, "1034", "32423");
         double mean = getMean(results, 1);
         double variance = getVariance(results, 1, mean);
         card.setAverage(mean);
         card.setVariance(variance);
 
+
+
+
+
+
         cardDataList.add(card);
+        cardDataList.add(card2);
     }
 
     /**
      * Get mean
-     * @param data data from DB
+     * @param data data from DB     
      * @param indexOfAtt the column index of attention in each row
      * @return mean
      */

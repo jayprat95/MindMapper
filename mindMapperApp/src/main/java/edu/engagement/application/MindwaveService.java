@@ -1,37 +1,34 @@
 package edu.engagement.application;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-
-
-//import com.google.android.gms.location.LocationListener;
-import com.neurosky.thinkgear.TGDevice;
-import com.neurosky.thinkgear.TGEegPower;
-import com.neurosky.thinkgear.TGRawMulti;
-
-import edu.engagement.application.Database.DataPointSource;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.location.Location;
-import android.location.LocationManager;
-import android.location.LocationListener;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.neurosky.thinkgear.TGDevice;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Calendar;
+import java.util.Random;
+
+import edu.engagement.application.Database.DataPointSource;
+
+//import com.google.android.gms.location.LocationListener;
 
 public class MindwaveService extends Service {
 	   
@@ -340,9 +337,11 @@ public class MindwaveService extends Service {
 					if(att != 0){
 						//dataSource.clearDatabase();
 						dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att, day, month);
-						System.out.println("YAHWOOOOOO");
 //						dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att);
 						System.out.println("MindwaveService: Gathereed Attention Data: " + att);
+
+
+
 					}
 					
 //					switchToFragment(REAL_TIME_TAG);

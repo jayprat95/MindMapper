@@ -1844,9 +1844,10 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f020066;
         public static final int ic_time=0x7f020067;
         public static final int ic_unplugged_dark=0x7f020068;
-        public static final int powered_by_google_dark=0x7f020069;
-        public static final int powered_by_google_light=0x7f02006a;
-        public static final int progressbar=0x7f02006b;
+        public static final int mcbryde=0x7f020069;
+        public static final int powered_by_google_dark=0x7f02006a;
+        public static final int powered_by_google_light=0x7f02006b;
+        public static final int progressbar=0x7f02006c;
     }
     public static final class id {
         public static final int action_bar=0x7f0a0046;
@@ -1887,10 +1888,9 @@ containing a value of this type.
         public static final int buy_now=0x7f0a002d;
         public static final int buy_with_google=0x7f0a002e;
         public static final int cancel=0x7f0a0081;
-        public static final int card_average=0x7f0a0070;
-        public static final int card_label=0x7f0a0072;
-        public static final int card_location=0x7f0a006f;
-        public static final int card_variance=0x7f0a0071;
+        public static final int card_average=0x7f0a0071;
+        public static final int card_location=0x7f0a0070;
+        public static final int card_variance=0x7f0a0072;
         public static final int chart=0x7f0a0083;
         public static final int checkbox=0x7f0a003e;
         public static final int classic=0x7f0a0030;
@@ -1938,6 +1938,7 @@ containing a value of this type.
         public static final int none=0x7f0a000e;
         public static final int normal=0x7f0a000a;
         public static final int pager=0x7f0a0057;
+        public static final int person_photo=0x7f0a006f;
         public static final int production=0x7f0a0026;
         public static final int progress_circular=0x7f0a0005;
         public static final int progress_horizontal=0x7f0a0006;
