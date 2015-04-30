@@ -68,10 +68,9 @@ public class MindwaveService extends Service {
 
 		  initBluetooth();
 		  connectToMindwave();
-		  generateRandomData();
-
-           generateDummyDataPoints();
-		  
+//		  generateRandomData();
+          generateDummyDataPoints();
+//
 		  // Register the listener with the Location Manager to receive location updates
 		  // need to change this to best provider
 //		  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 100, locationListener);
@@ -442,7 +441,7 @@ public class MindwaveService extends Service {
 
         Random r = new Random();
 
-        for(int i = 0; i < 100; i ++)
+        for(int i = 0; i < 200; i ++)
         {
             int temp = r.nextInt(99) + 1;
              /* Dummy Points */

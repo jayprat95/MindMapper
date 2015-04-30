@@ -20,7 +20,7 @@
         android:layout_width="270dp"
         android:layout_height="270dp"
         android:padding="10dp"
-        android:text="aa"
+        android:text="55"
         android:gravity="center"
         android:background="@drawable/fab_circle"
         android:textAppearance="?android:attr/textAppearanceLarge"
