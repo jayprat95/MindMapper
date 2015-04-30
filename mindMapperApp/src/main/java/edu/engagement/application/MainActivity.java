@@ -41,8 +41,6 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.neurosky.thinkgear.TGDevice;
 import com.neurosky.thinkgear.TGEegPower;
 import com.neurosky.thinkgear.TGRawMulti;
@@ -132,6 +130,8 @@ public class MainActivity extends FragmentActivity {
     //testing why queue is only 1 item
     private int tempCounter = 0;
 
+    private boolean realTimeInstantiated;
+
     //if the realtime fragment is running. need to change this. sloppy way to know current fragment
     private boolean realTime = false;
     private Queue<Integer> recentAttentionLevels = new LinkedList<Integer>();
@@ -142,60 +142,12 @@ public class MainActivity extends FragmentActivity {
         if (!serviceStarted) {
             serviceStarted = true;
 
-		/* Place Picker Experiment */
-            int PLACE_PICKER_REQUEST = 1;
-            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-            Context context = this.getApplicationContext();
-            try {
-                // Start the intent by requesting a result,
-                // identified by a request code.
-                startActivityForResult(builder.build(context),
-                        PLACE_PICKER_REQUEST);
-                // PlacePicker.getPlace(builder, context);
-
-            } catch (GooglePlayServicesRepairableException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-
             startService(new Intent(getBaseContext(), MindwaveService.class));
         }
 
     }
 
-	/*
-	 * Callback method that is called after user selects a location.
-	 */
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 1) {
-			if (resultCode == this.RESULT_OK) {
-				// Load the bundle from the activity's intent
-				Bundle bundle = this.getIntent().getExtras();
 
-				// Initialize new bundle if it does not exist
-				if (bundle == null) {
-					bundle = new Bundle();
-				}
-				Place place = PlacePicker.getPlace(data,
-						this.getApplicationContext());
-
-				// Save the location into the bundle
-				bundle.putString("Location", "" + place.getName());
-                location = place.getName().toString();
-
-				// Save the bundle into the activity
-				this.getIntent().putExtras(bundle);
-
-				String toastMsg = String.format("Place: %s", place.getName());
-				Toast.makeText(this.getApplicationContext(), toastMsg,
-						Toast.LENGTH_LONG).show();
-			}
-		}
-	}
 
     /**
      * Get the current location from place picker
@@ -273,6 +225,8 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         frameLayout = (FrameLayout)findViewById(R.id.content_frame);
+
+        realTimeInstantiated = false;
 
 
         /** Sliding Tabs Shit */
@@ -353,7 +307,16 @@ public class MainActivity extends FragmentActivity {
             tabs.setVisibility(View.INVISIBLE);
             frameLayout.setVisibility(View.VISIBLE);
             fab.setVisibility(View.INVISIBLE);
-            switchToFragment("REAL_TIME_FRAGMENT");
+
+            if (realTimeInstantiated == false)
+            {
+                switchToFragment("REAL_TIME_FRAGMENT");
+                realTimeInstantiated = true;
+            }
+
+
+
+
         }
         else
         {
