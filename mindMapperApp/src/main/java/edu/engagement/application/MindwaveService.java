@@ -429,6 +429,8 @@ public class MindwaveService extends Service {
     /** This is for VTURCS 2015. We were not able to finish, and needed some dummy points. */
     public void generateDummyDataPoints()
     {
+        //THIS IS RANDOM WEEEEE
+
         // Clear out our data base first
         // dataSource.clearDatabase();
 
