@@ -124,11 +124,18 @@ public class MapFrag extends Fragment {
 		/** --------------- Test points for place picker------------------- **/
 		double[] testPoint = new double[4];
 		testPoint[0] = 0;
-		testPoint[1] = 1;
+		testPoint[1] = 40;
 		testPoint[2] = 37.230632; // Latitude
-		testPoint[3] = -80.421675; // Longitude
+		testPoint[3] = -80.423106; // Longitude
+
+        double[] testPoint1 = new double[4];
+        testPoint1[0] = 0;
+        testPoint1[1] = 60;
+        testPoint1[2] = 37.233061; // Latitude
+        testPoint1[3] = -80.423106; // Longitude
 
 		results.add(testPoint);
+        results.add(testPoint1);
 
 		/** --------------- Test points for place picker------------------- **/
 

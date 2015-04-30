@@ -168,11 +168,13 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
             case R.id.cancel:
                 // clear annotation input
                 annotationInput.setText("");
+                annotationBar.setProgress(0);
                 break;
             case R.id.submit:
                 // TODO submit annotation
-//                Toast.makeText(getActivity(),"recording started", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"Annotation saved", Toast.LENGTH_SHORT).show();
                 annotationInput.setText("");
+                annotationBar.setProgress(0);
                 break;
         }
 

@@ -84,7 +84,7 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
 	        
 //	        XLabels x = mChart.getXLabels();
 //	        x.setTypeface(tf);
-//	        
+//
 //	        YLabels y = mChart.getYLabels();
 //	        y.setTypeface(tf);
 //	        y.setLabelCount(5);
@@ -177,10 +177,10 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
         mChart.setData(data);
     	
 //    	List<double[]> results = dpSource.getMapDataset();
-//		
+//
 //		for(int i=0; i < results.size(); i++){
 //			double[] data = results.get(i);
-//			
+//
 //			System.out.println("\nDay Graph Dataset results: " + i);
 //			for(int j=0; j < data.length; j++){
 //				System.out.print(data[j] + ", ");

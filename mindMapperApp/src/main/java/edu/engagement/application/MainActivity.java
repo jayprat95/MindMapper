@@ -142,7 +142,6 @@ public class MainActivity extends FragmentActivity {
         if (!serviceStarted) {
             serviceStarted = true;
 
-//            Toast.makeText(this, "service started", Toast.LENGTH_SHORT).show();
 		/* Place Picker Experiment */
             int PLACE_PICKER_REQUEST = 1;
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
@@ -325,7 +324,7 @@ public class MainActivity extends FragmentActivity {
                 //switchToFragment("REAL_TIME_FRAGMENT");
                 changeState(state.ANNOTATION_STATE);
 
-                //startService();
+                startService();
             }
         });
         /** End of Fab Button Shit */

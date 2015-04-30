@@ -121,7 +121,7 @@ public class DataPointSource
 
 		return new DataPoint(timeStamp, 0, 0, 0, 0, 0, ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8, gpsKey, 0, 0, 0);
 	}
-	
+
 	public DataPoint createDataPointGps(long timeStamp, int gpsKey, double latitude, double longitude, double accuracy)
 	{
 		ContentValues values = new ContentValues();
@@ -131,7 +131,7 @@ public class DataPointSource
 		values.put(DatabaseHelper.COLUMN_LATITUDE, latitude);
 		values.put(DatabaseHelper.COLUMN_ACCURACY, accuracy);
 
-		database.insert(DatabaseHelper.TABLE_GPS, null, values);
+		long testvalue = database.insert(DatabaseHelper.TABLE_GPS, null, values);
 
 		return new DataPoint(timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, latitude, longitude, accuracy);
 	}
@@ -200,7 +200,7 @@ public class DataPointSource
 		cursor.close();
 		return points;
 	}
-	
+
 	public List<EegAttention> getAllDataPointsAttention()
 	{
 		List<EegAttention> points = new ArrayList<EegAttention>();
@@ -220,7 +220,7 @@ public class DataPointSource
 		cursor.close();
 		return points;
 	}
-	
+
 	public List<EegRaw> getAllDataPointsRaw()
 	{
 		List<EegRaw> points = new ArrayList<EegRaw>();
@@ -239,11 +239,11 @@ public class DataPointSource
 		cursor.close();
 		return points;
 	}
-	
+
 	public List<double[]> getAllDataPointsGPS()
 	{
 		List<double[]> list = new ArrayList<double[]>();
-		double[] gps = new double[5]; 
+		double[] gps = new double[5];
 		Cursor cursor = database.query(DatabaseHelper.TABLE_GPS, null, null, null, null, null, null);
 		cursor.moveToLast();
 		int counter = 0;
@@ -266,9 +266,9 @@ public class DataPointSource
 		cursor.close();
 		return list;
 	}
-	
+
 	public List<double[]> getMaxDataset()
-	{	
+	{
 		System.out.println("getMaxDataset");
 
 //		Date date = new Date();
@@ -298,8 +298,8 @@ public class DataPointSource
 //			cursor.moveToPrevious();
 //		}
 //		cursor.close();
-		
-		
+
+
 		//test
 		double[] data = new double[5];
 		data[0] = 10;
@@ -308,7 +308,7 @@ public class DataPointSource
 		data[3] = 40;
 		data[4] = 50;
 		list.add(data);
-		
+
 		double[] data2 = new double[5];
 		data2[0] = 100;
 		data2[1] = 200;
@@ -316,24 +316,24 @@ public class DataPointSource
 		data2[3] = 400;
 		data2[4] = 500;
 		list.add(data2);
-		
+
 		return list;
 	}
-	
+
 	public List<double[]> getMapDataset(){
 		List<double[]> list = new ArrayList<double[]>();
 		String query;
-		
-		//selects the lat, long and AVERAGE attention level 
-		//associated with each unique gpskey  
+
+		//selects the lat, long and AVERAGE attention level
+		//associated with each unique gpskey
 	    query = "SELECT a.gps_key, AVG(a.Attention), b.Latitude, b.Longitude"
 				+ " FROM " + DatabaseHelper.TABLE_ATTENTION + " AS a "
 				+ " INNER JOIN " + DatabaseHelper.TABLE_GPS + " AS b "
 				+ " ON a.gps_key = b.gps_key"
-				+ " GROUP BY a.gps_key"; 
-		
-		Cursor cursor = database.rawQuery(query, null);		
-		
+				+ " GROUP BY a.gps_key";
+
+		Cursor cursor = database.rawQuery(query, null);
+
 		cursor.moveToLast();
 		while (!cursor.isBeforeFirst())
 		{
@@ -342,26 +342,26 @@ public class DataPointSource
 			data[1] = cursor.getDouble(1);
 			data[2] = cursor.getDouble(2);
 			data[3] = cursor.getDouble(3);
-			
+
 			list.add(data);
 			cursor.moveToPrevious();
 		}
 		cursor.close();
 		return list;
 	}
-	
+
 	public List<double[]> getDayGraphDataset()
 	{
 		List<double[]> list = new ArrayList<double[]>();
 		String query;
-		
+
 		//selects the attention level for every timestamp
 		query = "SELECT table_attention.Timestamp, table_attention.Attention, table_gps.Latitude, table_gps.Longitude, table_attention.day, table_attention.month FROM "
 				+ DatabaseHelper.TABLE_ATTENTION
 				+ "  INNER JOIN table_gps ON table_attention.gps_key=table_gps.gps_key where day = 27;";
-		
-		Cursor cursor = database.rawQuery(query, null);		
-		
+
+		Cursor cursor = database.rawQuery(query, null);
+
 		cursor.moveToLast();
 		while (!cursor.isBeforeFirst())
 		{
@@ -372,30 +372,30 @@ public class DataPointSource
 			data[3] = cursor.getDouble(3);
 			data[4] = cursor.getInt(4);
 			data[5] = cursor.getInt(5);
-			
+
 			list.add(data);
 			cursor.moveToPrevious();
 		}
 		cursor.close();
 		return list;
 	}
-	
+
 	public List<double[]> getFilteredDataset()
-	{	
+	{
 		Date date = new Date();
 		int earliestAge = (int) (date.getTime()/1000 - DataFilter.getDaysToLoad()*86400);
-		
+
 		String attentionFilter = DataFilter.getFilter();
 		double attentionThreshold = DataFilter.getAttentionThreshold();
-		
+
 		List<double[]> list = new ArrayList<double[]>();
-		
+
 		String query1 = getFirstFilterQuery(earliestAge);
-		
+
 		String query2 = getSecondFilterQuery(query1);
-		
-		Cursor cursor = database.rawQuery(query2, null);		
-		
+
+		Cursor cursor = database.rawQuery(query2, null);
+
 		cursor.moveToLast();
 		while (!cursor.isBeforeFirst())
 		{
@@ -413,27 +413,27 @@ public class DataPointSource
 	}
 	public String getFirstFilterQuery(int earliestTimestamp){
 		String query1;
-		
+
 		String attentionFilter = DataFilter.getFilter();
 		double attentionThreshold = DataFilter.getAttentionThreshold();
-		
+
 		if(attentionFilter == null || attentionFilter.equals("")){
-			
+
 			query1 = "SELECT a.Timestamp, Latitude, Longitude, Attention"
 					+ " FROM " + DatabaseHelper.TABLE_ATTENTION + " AS a "
 					+ " INNER JOIN " + DatabaseHelper.TABLE_GPS + " AS b "
 					+ " ON a." + DatabaseHelper.COLUMN_GPS_KEY + "=b." + DatabaseHelper.COLUMN_GPS_KEY
 					+ " WHERE a." + DatabaseHelper.COLUMN_TIMESTAMP + " > " + earliestTimestamp;
-			
+
 		}else if(attentionFilter.equals(SHOW_HIGH_ENGAGEMENT)){
-			
+
 			query1 = "SELECT a.Timestamp, Latitude, Longitude, Attention"
 					+ " FROM " + DatabaseHelper.TABLE_ATTENTION + " AS a "
 					+ " INNER JOIN " + DatabaseHelper.TABLE_GPS + " AS b "
 					+ " ON a." + DatabaseHelper.COLUMN_GPS_KEY + "=b." + DatabaseHelper.COLUMN_GPS_KEY
 					+ " WHERE a." + DatabaseHelper.COLUMN_TIMESTAMP + " > " + earliestTimestamp
 					+ " AND a." + DatabaseHelper.COLUMN_ATTENTION + ">" + attentionThreshold;
-		
+
 		}else {
 			query1 = "SELECT a.Timestamp, Latitude, Longitude, Attention"
 					+ " FROM " + DatabaseHelper.TABLE_ATTENTION + " AS a "
@@ -446,44 +446,44 @@ public class DataPointSource
 	}
 	public String getSecondFilterQuery(String query1){
 		String source = DataFilter.getSource();
-		
+
 		String query2;
 
 		if(source.contains("RangeGraphFragment")){
-			
+
 			query2 = "SELECT AVG(Timestamp) as Timestamp, Latitude, Longitude, MIN(Attention) as MinAttention, MAX(Attention) as MaxAttention, " +
 					"COUNT(*) AS Count FROM (" + query1 + ") GROUP BY Latitude, Longitude";
-			
+
 		}else {
-			
+
 			query2 = "SELECT AVG(Timestamp) as Timestamp, Latitude, Longitude, AVG(Attention) as Attention, " +
 					"COUNT(*) AS Count FROM (" + query1 + ") GROUP BY Latitude, Longitude";
-			
+
 		}
 		return query2;
 	}
-	
+
 	public String getMaxFilterQuery(){
 //		String query;
-		
+
 //		query = "SELECT Timestamp, Latitude, Longitude, Attention"
 //			  + " FROM " + DatabaseHelper.TABLE_ATTENTION 
 //			  + " LEFT JOIN " + DatabaseHelper.TABLE_GPS;
 		Date date = new Date();
 		int earliestAge = (int) (date.getTime()/1000 - DataFilter.getDaysToLoad()*86400);
-		
+
 		String query1 = getFirstFilterQuery(earliestAge);
-		
+
 		String query2 = getSecondFilterQuery(query1);
-		
+
 		return query2;
 	}
-	
+
 	public List<double[]> getAllAttentionPoints()
 	{
 		List<double[]> list = new ArrayList<double[]>();
 		double[] attn = new double[2];
-		
+
 		Cursor cursor = database.query(DatabaseHelper.TABLE_ATTENTION, null, null, null, null, null, null);
 		cursor.moveToLast();
 		while (!cursor.isBeforeFirst())
@@ -496,9 +496,9 @@ public class DataPointSource
 		cursor.close();
 		return list;
 	}
-	
+
 	public void writeToCSV(){
-		
+
 //		System.out.println("Writing to CSV");
 //		CSVWriter writer;
 		//------------------try
@@ -506,7 +506,7 @@ public class DataPointSource
 //			System.out.println("WritingNEWWRITER");
 //			writer = new CSVWriter(new FileWriter("/sdcard/brainwavedata.csv"), '\t');
 ////			
-		
+
 		//-------------------not this
 //			SQLiteStatement stmt = database.compileStatement("SELECT * FROM " + DatabaseHelper.TABLE_RAW);  //+ " WHERE code = ?");
 //			//stmt.bindString(1, "US");
@@ -552,7 +552,7 @@ public class DataPointSource
 //			e1.printStackTrace();
 //		}
 	}
-	
+
 //	private void exportChartCsv() {
 //        mDatabaseHelper = new DatabaseHelper(this);
 //        try {
@@ -594,7 +594,7 @@ public class DataPointSource
 //        }
 //        mDatabaseHelper.close();
 //    }
-	
+
 	public void clearDatabase()
 	{
 		database.delete(DatabaseHelper.TABLE_EEG, null, null);
