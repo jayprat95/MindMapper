@@ -358,7 +358,7 @@ public class DataPointSource
 		//selects the attention level for every timestamp
 		query = "SELECT table_attention.Timestamp, table_attention.Attention, table_gps.Latitude, table_gps.Longitude, table_attention.day, table_attention.month FROM "
 				+ DatabaseHelper.TABLE_ATTENTION
-				+ "  INNER JOIN table_gps ON table_attention.gps_key=table_gps.gps_key where day = 27;";
+				+ "  INNER JOIN table_gps ON table_attention.gps_key=table_gps.gps_key where day = 29;";
 
 		Cursor cursor = database.rawQuery(query, null);
 

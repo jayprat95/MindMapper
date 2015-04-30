@@ -4,10 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
-
-
-
-
+import java.util.Random;
 
 
 //import com.google.android.gms.location.LocationListener;
@@ -73,7 +70,9 @@ public class MindwaveService extends Service {
 			
 		  initBluetooth();
 		  connectToMindwave();
-		  generateRandomData();
+		  //generateRandomData();
+
+           generateDummyDataPoints();
 		  
 		  // Register the listener with the Location Manager to receive location updates
 		  // need to change this to best provider
@@ -426,4 +425,28 @@ public class MindwaveService extends Service {
 		  dataSource.close();
 		  System.out.println("Close service DB connection");
 	   }
+
+    /** This is for VTURCS 2015. We were not able to finish, and needed some dummy points. */
+    public void generateDummyDataPoints()
+    {
+        // Clear out our data base first
+        // dataSource.clearDatabase();
+
+        Calendar c =  Calendar.getInstance();
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        // The Calendar function returns the index of the month. (ex: Jan = 0, Feb = 1)
+        int month = (c.get(Calendar.MONTH) + 1);
+
+        Random r = new Random();
+
+        for(int i = 0; i < 100; i ++)
+        {
+            int temp = r.nextInt(99) + 1;
+             /* Dummy Points */
+            dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, temp , day, month);
+
+        }
+
+    }
 }
