@@ -142,60 +142,12 @@ public class MainActivity extends FragmentActivity {
         if (!serviceStarted) {
             serviceStarted = true;
 
-		/* Place Picker Experiment */
-            int PLACE_PICKER_REQUEST = 1;
-            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-            Context context = this.getApplicationContext();
-            try {
-                // Start the intent by requesting a result,
-                // identified by a request code.
-                startActivityForResult(builder.build(context),
-                        PLACE_PICKER_REQUEST);
-                // PlacePicker.getPlace(builder, context);
-
-            } catch (GooglePlayServicesRepairableException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-
-            startService(new Intent(getBaseContext(), MindwaveService.class));
+            /** If Jayanth wants to get real data, uncommon this to get the service running */
+//            startService(new Intent(getBaseContext(), MindwaveService.class));
         }
 
     }
 
-	/*
-	 * Callback method that is called after user selects a location.
-	 */
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 1) {
-			if (resultCode == this.RESULT_OK) {
-				// Load the bundle from the activity's intent
-				Bundle bundle = this.getIntent().getExtras();
-
-				// Initialize new bundle if it does not exist
-				if (bundle == null) {
-					bundle = new Bundle();
-				}
-				Place place = PlacePicker.getPlace(data,
-						this.getApplicationContext());
-
-				// Save the location into the bundle
-				bundle.putString("Location", "" + place.getName());
-                location = place.getName().toString();
-
-				// Save the bundle into the activity
-				this.getIntent().putExtras(bundle);
-
-				String toastMsg = String.format("Place: %s", place.getName());
-				Toast.makeText(this.getApplicationContext(), toastMsg,
-						Toast.LENGTH_LONG).show();
-			}
-		}
-	}
 
     /**
      * Get the current location from place picker
@@ -317,6 +269,7 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
                 if (fabClicked == false) {
                     fabClicked = true;
+                    fab.setText("Annotation");
                     Toast.makeText(thisActivity, "Connecting to Mind wave device", Toast.LENGTH_LONG).show();
                 }
                 // Move to real time fragment
@@ -324,7 +277,8 @@ public class MainActivity extends FragmentActivity {
                 //switchToFragment("REAL_TIME_FRAGMENT");
                 changeState(state.ANNOTATION_STATE);
 
-                startService();
+                /** If Jayanth wants to work on the real time eeg data uncommon this line to start the service */
+//                startService();
             }
         });
         /** End of Fab Button Shit */
@@ -482,8 +436,6 @@ public class MainActivity extends FragmentActivity {
                     realFragment = new RealTimeDataFragment();
                 fragmentTransaction.replace((R.id.content_frame), realFragment,
                         REAL_TIME_TAG).commit();
-
-
             }
         }
 //
@@ -648,5 +600,9 @@ public class MainActivity extends FragmentActivity {
         if (rangeGraphFragment != null) {
             rangeGraphFragment.redraw();
         }
+    }
+
+    public boolean fabClicked(){
+        return this.fabClicked;
     }
 }

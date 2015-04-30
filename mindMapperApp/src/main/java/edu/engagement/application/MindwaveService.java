@@ -68,7 +68,7 @@ public class MindwaveService extends Service {
 		  /**** DATABASE STUFF ****/
 		  dataSource = new DataPointSource(this.getApplicationContext());
 		  dataSource.open();
-			
+
 		  initBluetooth();
 		  connectToMindwave();
 		  generateRandomData();
@@ -305,8 +305,8 @@ public class MindwaveService extends Service {
 					break;
 				case TGDevice.MSG_RAW_DATA:
 					//#######SAVE ALL RATA DATA
-					
-					
+
+
 	                //System.out.println("Raw Data: " + msg.arg1);
 					break;
 				//testing this out. does it get heart rate?
