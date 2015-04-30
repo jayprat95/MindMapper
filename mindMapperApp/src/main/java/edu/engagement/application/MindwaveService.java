@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 
@@ -70,7 +71,7 @@ public class MindwaveService extends Service {
 			
 		  initBluetooth();
 		  connectToMindwave();
-		  //generateRandomData();
+		  generateRandomData();
 
            generateDummyDataPoints();
 		  
@@ -429,10 +430,10 @@ public class MindwaveService extends Service {
     /** This is for VTURCS 2015. We were not able to finish, and needed some dummy points. */
     public void generateDummyDataPoints()
     {
-        //THIS IS RANDOM WEEEEE
 
         // Clear out our data base first
-        // dataSource.clearDatabase();
+         //dataSource.clearDatabase();
+
 
         Calendar c =  Calendar.getInstance();
         int day = c.get(Calendar.DAY_OF_MONTH);
@@ -447,7 +448,6 @@ public class MindwaveService extends Service {
             int temp = r.nextInt(99) + 1;
              /* Dummy Points */
             dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, temp , day, month);
-
         }
 
     }
