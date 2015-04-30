@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -352,13 +353,17 @@ public class DataPointSource
 
 	public List<double[]> getDayGraphDataset()
 	{
-		List<double[]> list = new ArrayList<double[]>();
+        Calendar c =  Calendar.getInstance();
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+
+        List<double[]> list = new ArrayList<double[]>();
 		String query;
 
 		//selects the attention level for every timestamp
 		query = "SELECT table_attention.Timestamp, table_attention.Attention, table_gps.Latitude, table_gps.Longitude, table_attention.day, table_attention.month FROM "
 				+ DatabaseHelper.TABLE_ATTENTION
-				+ "  INNER JOIN table_gps ON table_attention.gps_key=table_gps.gps_key where day = 29;";
+				+ "  INNER JOIN table_gps ON table_attention.gps_key=table_gps.gps_key where day = "+day+";";
 
 		Cursor cursor = database.rawQuery(query, null);
 

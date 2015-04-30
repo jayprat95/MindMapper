@@ -284,7 +284,7 @@ public class MainActivity extends FragmentActivity {
                 changeState(state.ANNOTATION_STATE);
 
                 /** If Jayanth wants to work on the real time eeg data uncommon this line to start the service */
-//                startService();
+                startService();
             }
         });
         /** End of Fab Button Shit */
