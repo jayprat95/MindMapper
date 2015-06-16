@@ -58,6 +58,9 @@ import edu.engagement.application.Fragments.XYGraphFragment;
 import edu.engagement.application.SlidingDrawer.SlidingDrawer;
 import edu.engagement.application.SlidingTab.*;
 
+/**
+ * MainActivity June 16
+ */
 public class MainActivity extends FragmentActivity {
 
 

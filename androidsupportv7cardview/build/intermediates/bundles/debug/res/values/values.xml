@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/jayanthprathipati/Development/gitProjects/MindMapper/androidsupportv7cardview/src/main/res/values/values.xml -->
+    <!-- From: file:/home/kyle/workStation/project/MindMapper/androidsupportv7cardview/src/main/res/values/values.xml -->
     <eat-comment/>
     <color name="cardview_dark_background">#FF202020</color>
     <color name="cardview_light_background">#FFFAFAFA</color>
