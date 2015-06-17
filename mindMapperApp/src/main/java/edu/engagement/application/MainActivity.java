@@ -76,7 +76,7 @@ public class MainActivity extends FragmentActivity {
     private ViewPager pager;
     private ViewPagerAdapter adapter;
     private SlidingTabLayout tabs;
-    private CharSequence Titles[] = {"MapView", "GraphView", "CardView"};
+    private CharSequence Titles[] = {"Map", "Graph", "Summary"};
     private int Numboftabs = 3;
 
     // location from place picker

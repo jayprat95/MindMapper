@@ -8,6 +8,7 @@ android {
         applicationId "edu.engagement.application"
         minSdkVersion 11
         targetSdkVersion 19
+        multiDexEnabled true
     }
 
     buildTypes {

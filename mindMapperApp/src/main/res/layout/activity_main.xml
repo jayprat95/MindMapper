@@ -84,7 +84,7 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Connect"
+        android:text="Record"
         android:id="@+id/fabButton"
         android:gravity="center"
         android:layout_alignParentBottom="true"

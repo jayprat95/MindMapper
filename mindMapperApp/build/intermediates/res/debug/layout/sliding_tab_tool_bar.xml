@@ -5,4 +5,4 @@
     android:background="@color/ColorPrimary"
     android:elevation="2dp"
     android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
-    xmlns:android="http://schemas.android.com/apk/res/android" /><!-- From: file:/home/kyle/workStation/project/MindMapper/mindMapperApp/src/main/res/layout/sliding_tab_tool_bar.xml -->
+    xmlns:android="http://schemas.android.com/apk/res/android" /><!-- From: file:/C:/Users/Alex/AndroidStudioProjects/MindMapper/mindMapperApp/src/main/res/layout/sliding_tab_tool_bar.xml -->
