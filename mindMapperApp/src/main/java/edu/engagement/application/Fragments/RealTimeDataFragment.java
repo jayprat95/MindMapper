@@ -1,13 +1,16 @@
 package edu.engagement.application.Fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -52,8 +56,13 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     private Button closeButton;
     private Button startButton;
     private Button stopButton;
-    private Button cancelButton;
+    private Button pauseButton;
+    private Button resumeButton;
     private Button submitButton;
+
+    // The elapsed timer
+    private Chronometer timer;
+    private long elapsedTime = 0L;
 
     @Override
     public void onAttach(Activity activity) {
@@ -98,44 +107,43 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         location.setEllipsize(TextUtils.TruncateAt.END);
         System.out.println("attention text view initialized");
         fabButton = (TextView) activity.findViewById(R.id.fabButton);
-        annotationValue = (TextView) view.findViewById(R.id.annotationValue);
         annotationInput = (EditText) view.findViewById(R.id.annotationInput);
         startButton = (Button) view.findViewById(R.id.start);
         stopButton = (Button) view.findViewById(R.id.stop);
-        cancelButton = (Button) view.findViewById(R.id.cancel);
+        pauseButton = (Button) view.findViewById(R.id.pause);
+        resumeButton = (Button) view.findViewById(R.id.resume);
         submitButton = (Button) view.findViewById(R.id.submit);
+        timer = (Chronometer) view.findViewById(R.id.elapsedTime);
 
         startButton.setOnClickListener(this);
         stopButton.setOnClickListener(this);
-        cancelButton.setOnClickListener(this);
+        pauseButton.setOnClickListener(this);
+        resumeButton.setOnClickListener(this);
         submitButton.setOnClickListener(this);
+
 
         // Close Button
         closeButton = (Button) view.findViewById(R.id.real_time_fragment_close);
         closeButton.setOnClickListener(this);
 
-        // Annotation Bar Stuff
+//         Might not need this stuff since we're not displaying the slide bar value
+//         Annotation Bar Stuff
         annotationBar = (SeekBar) view.findViewById(R.id.annotation_bar);
         annotationBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChanged = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressChanged = progress;
-                annotationValue.setText(progressChanged + "%");
+
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//                annotationValue.setText(progressChanged + "%");
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
-//                Toast.makeText(activity,"seek bar progress:"+progressChanged,
-//                        Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -163,17 +171,64 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 activity.changeState(MainActivity.state.SLIDING_TABS_STATE);
                 break;
             case R.id.start:
-                // TODO start recording
+                // TODO start recording and timer
                 Toast.makeText(getActivity(), "recording started", Toast.LENGTH_SHORT).show();
+
+                // Change button states to pause and stop
+                startButton.setVisibility(View.GONE);
+                pauseButton.setVisibility(View.VISIBLE);
+                stopButton.setVisibility(View.VISIBLE);
+
+                timer.setFormat("[Total Time: %s]");
+                timer.setBase(SystemClock.elapsedRealtime());
+                timer.start();
+
+
+                break;
+            case R.id.pause:
+                Toast.makeText(getActivity(), "recording paused", Toast.LENGTH_SHORT).show();
+
+                // Hide pause button, and show resume button
+                pauseButton.setVisibility(View.GONE);
+                resumeButton.setVisibility(View.VISIBLE);
+
+                stopTimer();
+                break;
+            case R.id.resume:
+                Toast.makeText(getActivity(), "recording resumed", Toast.LENGTH_SHORT).show();
+
+                // Hide resume button, show pause button
+                resumeButton.setVisibility(View.GONE);
+                pauseButton.setVisibility(View.VISIBLE);
+
+                startTimer();
                 break;
             case R.id.stop:
-                // TODO stop recording
-                Toast.makeText(getActivity(), "recording stop", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.cancel:
-                // clear annotation input
-                annotationInput.setText("");
-                annotationBar.setProgress(0);
+                // TODO display confirmation message before stopping recording
+
+                stopTimer();
+
+                // display confirm dialog
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                dialogBuilder.setMessage("Do you want to finish your current recording session?");
+                dialogBuilder.setPositiveButton("Yes, I'm done.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        Toast.makeText(getActivity(), "stopped recording", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dialogBuilder.setNegativeButton("No, take me back.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        startTimer();
+                        Toast.makeText(getActivity(), "resumed recording", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                dialogBuilder.create().show();
+
                 break;
             case R.id.submit:
                 // TODO submit annotation
@@ -279,6 +334,15 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         this.attentionText.setText(str);
     }
 
+    private void startTimer() {
+        timer.setBase(SystemClock.elapsedRealtime() - elapsedTime);
+        timer.start();
+    }
+
+    private void stopTimer() {
+        elapsedTime = SystemClock.elapsedRealtime() - timer.getBase();
+        timer.stop();
+    }
 }
 
 
