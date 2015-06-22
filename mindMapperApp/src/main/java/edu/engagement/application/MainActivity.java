@@ -1,12 +1,8 @@
 package edu.engagement.application;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 import java.util.Queue;
 
 
@@ -14,17 +10,10 @@ import java.util.Queue;
 //import zephyr.android.HxMBT.ZephyrProtocol;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -34,16 +23,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.FrameLayout;
-
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.neurosky.thinkgear.TGDevice;
-import com.neurosky.thinkgear.TGEegPower;
-import com.neurosky.thinkgear.TGRawMulti;
 
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Fragments.BaselineFragment;
@@ -55,7 +37,6 @@ import edu.engagement.application.Fragments.RealTimeDataFragment;
 import edu.engagement.application.Fragments.ReflectionGraphFragment;
 import edu.engagement.application.Fragments.SummaryFragment;
 import edu.engagement.application.Fragments.XYGraphFragment;
-import edu.engagement.application.SlidingDrawer.SlidingDrawer;
 import edu.engagement.application.SlidingTab.*;
 
 /**
@@ -64,43 +45,8 @@ import edu.engagement.application.SlidingTab.*;
 public class MainActivity extends FragmentActivity {
 
 
-    public enum state
-    {
-        ANNOTATION_STATE, SLIDING_TABS_STATE;
-
-    }
-    /**
-     * Sliding Tabs variables
-     */
-    private Toolbar toolbar;
-    private ViewPager pager;
-    private ViewPagerAdapter adapter;
-    private SlidingTabLayout tabs;
-    private CharSequence Titles[] = {"Map", "Graph", "Summary"};
-    private int Numboftabs = 3;
-
-    // location from place picker
-    private String location = "";
-
-    /**
-     * Fab Button variables
-     */
-    private TextView fab;
-    private boolean fabClicked;
-    private boolean serviceStarted;
-
-    ActionMode mActionMode = null;
-
-    /** Container for the annotations view */
-    private FrameLayout frameLayout;
-
+    public static final String BASELINE_AVG_KEY = "avg";
     private static final int PORT = 7911;
-    final boolean rawEnabled = true;
-    private int gpsKey = 0;
-
-    private CharSequence mTitle;
-    //private SlidingDrawer drawer;
-
     public final String MAP_TAG = "MAP_FRAGMENT";
     public final String REAL_TIME_TAG = "REAL_TIME_FRAGMENT";
     public final String GRAPH_LIST_TAG = "GRAPH_LIST_FRAGMENT";
@@ -109,8 +55,36 @@ public class MainActivity extends FragmentActivity {
     public final String DATABASE_TAG = "DATABASE_FRAGMENT";
     public final String REFLECTION_GRAPH_TAG = "REFLECTION_GRAPH_FRAGMENT";
     public final String SUMMARY_TAG = "SUMMARY_FRAGMENT";
-
-
+    /* Having issues with android
+     * Packaging all functions here for now so I can change easy if a mistake is found
+     */
+    public final String BASELINE_TAG = "BASELINE_FRAGMENT";
+    final boolean rawEnabled = true;
+    ActionMode mActionMode = null;
+    /**
+     * Sliding Tabs variables
+     */
+    private Toolbar toolbar;
+    private ViewPager pager;
+    private ViewPagerAdapter adapter;
+    private SlidingTabLayout tabs;
+    //private SlidingDrawer drawer;
+    private CharSequence Titles[] = {"Map", "Graph", "Summary"};
+    private int Numboftabs = 3;
+    // location from place picker
+    private String location = "";
+    /**
+     * Fab Button variables
+     */
+    private TextView fab;
+    private boolean fabClicked;
+    private boolean serviceStarted;
+    /**
+     * Container for the annotations view
+     */
+    private FrameLayout frameLayout;
+    private int gpsKey = 0;
+    private CharSequence mTitle;
     private MapFrag mapFragment;
     private RealTimeDataFragment realFragment;
     private GraphListFragment graphFragment;
@@ -119,25 +93,61 @@ public class MainActivity extends FragmentActivity {
     private DatabaseFragment databaseFragment;
     private ReflectionGraphFragment reflectionGraphFragment;
     private SummaryFragment summaryFragment;
-
-    /* Having issues with android
-     * Packaging all functions here for now so I can change easy if a mistake is found
-     */
-    public final String BASELINE_TAG = "BASELINE_FRAGMENT";
     private BaselineFragment baselineFragment;
     private double baselineTotal;
     private double baselineNum;
     private boolean baselineMode = false;
-    public static final String BASELINE_AVG_KEY = "avg";
-
     //testing why queue is only 1 item
     private int tempCounter = 0;
-
     private boolean realTimeInstantiated;
-
     //if the realtime fragment is running. need to change this. sloppy way to know current fragment
     private boolean realTime = false;
     private Queue<Integer> recentAttentionLevels = new LinkedList<Integer>();
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.reflection, menu);
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after
+        // onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+
+//
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_connect) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            //mActionMode = null;
+            MainActivity.this.onBackPressed();
+        }
+    };
+
+    public static double round(double unrounded, int precision, int roundingMode) {
+        BigDecimal bd = new BigDecimal(unrounded);
+        BigDecimal rounded = bd.setScale(precision, roundingMode);
+        return rounded.doubleValue();
+    }
 
     // Method to start the service
     public void startService() {
@@ -148,19 +158,16 @@ public class MainActivity extends FragmentActivity {
 
             startService(new Intent(getBaseContext(), MindwaveService.class));
 
-            /** If Jayanth wants to get real data, uncommon this to get the service running */
-//            startService(new Intent(getBaseContext(), MindwaveService.class));
-
         }
 
     }
 
-
     /**
      * Get the current location from place picker
+     *
      * @return locatioin name
      */
-    public String getLocation(){
+    public String getLocation() {
         return this.location;
     }
 
@@ -168,7 +175,6 @@ public class MainActivity extends FragmentActivity {
     public void stopService(View view) {
         stopService(new Intent(getBaseContext(), MindwaveService.class));
     }
-
 
     public void startBaselineMode() {
         baselineTotal = 0;
@@ -206,6 +212,7 @@ public class MainActivity extends FragmentActivity {
         editor.commit();
     }
 
+    /* END */
 
     public void setAttentionText(int attention) {
         recentAttentionLevels.add(new Integer(attention));
@@ -223,15 +230,13 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    /* END */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
-        frameLayout = (FrameLayout)findViewById(R.id.content_frame);
+        frameLayout = (FrameLayout) findViewById(R.id.content_frame);
 
         realTimeInstantiated = false;
 
@@ -297,38 +302,50 @@ public class MainActivity extends FragmentActivity {
 
         initActionBar();
 
+        /** Start of loading debug dataset from src/main/assets and populate GPS data**/
+        // TODO: remove these after finishing the project
+        DataPointSource dataSource = new DataPointSource(this);
+        dataSource.open();
+        if (dataSource.doWeNeedMoreDebugData()) {
+            try {
+                dataSource.loadDebugAttentionDataSets(getResources().getAssets().open("EEG_table_attention_data.csv"));
+                dataSource.loadDebugGPSDataSets(getResources().getAssets().open("EEG_table_gps_data.csv"));
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.w(DataPointSource.class.getName(), "!!!IO exception in mainActivity about the csv file");
+            }
+        }
+        /** End of loading debug dataset from src/main/assets and pupulate GPS data**/
+
+
         //	drawer = new SlidingDrawer(this);
 
         //switchToFragment(MAP_TAG);
         //switchToFragment(DATABASE_TAG);
     }
 
-    /** Changes the apps's gobal state, and all
+    /**
+     * Changes the apps's gobal state, and all
      * relevant GUI will change to reflect on the state*
-     * @param someState a new state */
-    public void changeState(state someState)
-    {
+     *
+     * @param someState a new state
+     */
+    public void changeState(state someState) {
 
-        if(someState == state.ANNOTATION_STATE)
-        {
+        if (someState == state.ANNOTATION_STATE) {
             toolbar.setVisibility(View.INVISIBLE);
             pager.setVisibility(View.INVISIBLE);
             tabs.setVisibility(View.INVISIBLE);
             frameLayout.setVisibility(View.VISIBLE);
             fab.setVisibility(View.INVISIBLE);
 
-            if (realTimeInstantiated == false)
-            {
+            if (realTimeInstantiated == false) {
                 switchToFragment("REAL_TIME_FRAGMENT");
                 realTimeInstantiated = true;
             }
 
 
-
-
-        }
-        else
-        {
+        } else {
             toolbar.setVisibility(View.VISIBLE);
             pager.setVisibility(View.VISIBLE);
             tabs.setVisibility(View.VISIBLE);
@@ -390,47 +407,6 @@ public class MainActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.reflection, menu);
-            return true;
-        }
-
-        // Called each time the action mode is shown. Always called after
-        // onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-
-//			
-            int itemId = item.getItemId();
-            if (itemId == R.id.action_connect) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            //mActionMode = null;
-            MainActivity.this.onBackPressed();
-        }
-    };
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -443,11 +419,11 @@ public class MainActivity extends FragmentActivity {
 
 
     public void switchToFragment(String FRAGMENT_TAG) {
-		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
-				.beginTransaction();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
+                .beginTransaction();
 
-		if (getFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
+        if (getFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
             realTime = false;
             if (FRAGMENT_TAG.equals(REAL_TIME_TAG)) {
                 if (realFragment == null)
@@ -604,12 +580,6 @@ public class MainActivity extends FragmentActivity {
         super.onPause();
     }
 
-    public static double round(double unrounded, int precision, int roundingMode) {
-        BigDecimal bd = new BigDecimal(unrounded);
-        BigDecimal rounded = bd.setScale(precision, roundingMode);
-        return rounded.doubleValue();
-    }
-
     public void redrawGraphs() {
 
         if (xyGraphFragment != null) {
@@ -620,7 +590,12 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public boolean fabClicked(){
+    public boolean fabClicked() {
         return this.fabClicked;
+    }
+
+    public enum state {
+        ANNOTATION_STATE, SLIDING_TABS_STATE;
+
     }
 }

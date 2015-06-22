@@ -1,0 +1,13 @@
+-keep class null {
+    <init>();
+    void attachBaseContext(android.content.Context);
+}
+-keep class edu.engagement.application.MainActivity { <init>(); }
+-keep class edu.engagement.application.MindwaveService { <init>(); }
+-keep class android.support.v7.widget.TestActivity { <init>(); }
+-keep public class * extends android.app.backup.BackupAgent {
+    <init>();
+}
+-keep public class * extends java.lang.annotation.Annotation {
+    *;
+}

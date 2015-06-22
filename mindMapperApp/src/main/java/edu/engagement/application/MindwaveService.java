@@ -69,7 +69,7 @@ public class MindwaveService extends Service {
 		  initBluetooth();
 		  connectToMindwave();
 //		  generateRandomData();
-          generateDummyDataPoints();
+//          generateDummyDataPoints();
 //
 		  // Register the listener with the Location Manager to receive location updates
 		  // need to change this to best provider
@@ -117,21 +117,21 @@ public class MindwaveService extends Service {
 //			}
 		}
 	   
-	    //Generate temporary test data
-		public void generateRandomData()
-		{
-			double lat;
-			double lon;
-			int accuracy;
-			
-			gpsKey = (int)(Math.random() * 1000);
-			
-			lat = 37.2250322 + (Math.random() * 0.006);
-			lon = -80.428961 + (Math.random() * 0.01429);
-			accuracy = 1; //Temporary (isn't this whole function temporary? :) )
-			dataSource.createDataPointGps(System.currentTimeMillis(), gpsKey, lat, lon, accuracy);
-			System.out.println("Added GPS Data Point key: " + gpsKey);
-		}
+//	    //Generate temporary GPS test data
+//		public void generateRandomData()
+//		{
+//			double lat;
+//			double lon;
+//			int accuracy;
+//
+//			gpsKey = (int)(Math.random() * 1000);
+//
+//			lat = 37.2250322 + (Math.random() * 0.006);
+//			lon = -80.428961 + (Math.random() * 0.01429);
+//			accuracy = 1; //Temporary (isn't this whole function temporary? :) )
+//			dataSource.createDataPointGps(System.currentTimeMillis(), gpsKey, lat, lon, accuracy);
+//			System.out.println("Added GPS Data Point key: " + gpsKey);
+//		}
 		
 		// Define a listener that responds to location updates
 		LocationListener locationListener = new LocationListener() {
@@ -337,7 +337,8 @@ public class MindwaveService extends Service {
 						//dataSource.clearDatabase();
 						dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att, day, month);
 //						dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att);
-						System.out.println("MindwaveService: Gathereed Attention Data: " + att);
+						Log.w(MindwaveService.class.getName(), "MindwaveService: Gathereed Attention Data: " + att);
+//						System.out.println("MindwaveService: Gathereed Attention Data: " + att);
 
 
 
@@ -425,28 +426,28 @@ public class MindwaveService extends Service {
 		  System.out.println("Close service DB connection");
 	   }
 
-    /** This is for VTURCS 2015. We were not able to finish, and needed some dummy points. */
-    public void generateDummyDataPoints()
-    {
-
-        // Clear out our data base first
-         //dataSource.clearDatabase();
-
-
-        Calendar c =  Calendar.getInstance();
-        int day = c.get(Calendar.DAY_OF_MONTH);
-
-        // The Calendar function returns the index of the month. (ex: Jan = 0, Feb = 1)
-        int month = (c.get(Calendar.MONTH) + 1);
-
-        Random r = new Random();
-
-        for(int i = 0; i < 200; i ++)
-        {
-            int temp = r.nextInt(99) + 1;
-             /* Dummy Points */
-            dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, temp , day, month);
-        }
-
-    }
+//    /** This is for VTURCS 2015. We were not able to finish, and needed some dummy points. */
+//    public void generateDummyDataPoints()
+//    {
+//
+//        // Clear out our data base first
+//         //dataSource.clearDatabase();
+//
+//
+//        Calendar c =  Calendar.getInstance();
+//        int day = c.get(Calendar.DAY_OF_MONTH);
+//
+//        // The Calendar function returns the index of the month. (ex: Jan = 0, Feb = 1)
+//        int month = (c.get(Calendar.MONTH) + 1);
+//
+//        Random r = new Random();
+//
+//        for(int i = 0; i < 200; i ++)
+//        {
+//            int temp = r.nextInt(99) + 1;
+//             /* Dummy Points */
+//            dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, temp , day, month);
+//        }
+//
+//    }
 }
