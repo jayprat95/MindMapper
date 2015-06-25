@@ -152,7 +152,6 @@
             android:layout_below="@+id/annotationInputView"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
-            android:progressBackgroundTint="@color/wallet_holo_blue_light"
             android:indeterminate="false" />
 
         <TextView

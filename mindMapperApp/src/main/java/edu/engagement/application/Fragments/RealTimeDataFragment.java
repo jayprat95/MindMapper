@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
@@ -134,7 +137,14 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress *= 25;
+                if(progress <= 50){
+                    setProgressBarColor(annotationBar,Color.rgb( 255 - (255/100 * (100 - progress*2)), 255, 0));
 
+                }else{
+                    setProgressBarColor(annotationBar,Color.rgb( 255, 255 - (255/100 * (progress - 50)*2), 0));
+
+                }
             }
 
             @Override
@@ -332,6 +342,13 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     public void setAttText(String str)
     {
         this.attentionText.setText(str);
+    }
+
+    private void setProgressBarColor(SeekBar seakBar, int newColor){
+        LayerDrawable ld = (LayerDrawable) seakBar.getProgressDrawable();
+        ClipDrawable d1 = (ClipDrawable) ld.findDrawableByLayerId(R.id.progressShape);
+        d1.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
+
     }
 
     private void startTimer() {
