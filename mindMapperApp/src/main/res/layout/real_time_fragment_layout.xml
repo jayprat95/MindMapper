@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:background="#F5F5DC">
+    android:background="#F5F5DC"
+    android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" >
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <Button
             android:id="@+id/real_time_fragment_close"
@@ -48,14 +48,14 @@
         <!-- Linear layout for start/stop/pause/resume buttons -->
         <LinearLayout
             android:id="@+id/recordingStateButtons"
-            android:orientation="horizontal"
             android:layout_width="175dp"
             android:layout_height="50dp"
             android:layout_alignLeft="@id/attentionCircle"
             android:layout_alignRight="@id/attentionCircle"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/locationTextView"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/start"
@@ -63,146 +63,150 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="#4CC94C"
-                android:visibility="visible"
-                android:text="Start" />
+                android:text="Start"
+                android:visibility="visible" />
 
             <Button
                 android:id="@+id/pause"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"
                 android:layout_marginRight="3dp"
+                android:layout_weight="1"
                 android:background="#A6A6A6"
-                android:visibility="gone"
-                android:text="Pause" />
+                android:text="Pause"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/resume"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"
                 android:layout_marginRight="3dp"
+                android:layout_weight="1"
                 android:background="#4CC94C"
-                android:visibility="gone"
-                android:text="Resume" />
+                android:text="Resume"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/stop"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"
                 android:layout_marginLeft="3dp"
+                android:layout_weight="1"
                 android:background="#ff4444"
-                android:visibility="gone"
-                android:text="Stop" />
+                android:text="Stop"
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/locationTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/attentionCircle"
-            android:layout_alignRight="@id/attentionCircle"
-            android:layout_above="@id/recordingStateButtons"
-            android:gravity="center_horizontal|center_vertical"
-            android:maxLength="16"
-            android:text="Location"
-            android:textSize="19sp"
             android:drawableLeft="@drawable/ic_dotted_map"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="10dp"
-        android:layout_height="match_parent" >
-        <!-- Vertical rule in center of screen -->
-        <View
-            android:layout_width="2dp"
-            android:layout_height="fill_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="#000000" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" >
+            android:gravity="center_horizontal|center_vertical"
+            android:maxLength="26"
+            android:text="Location"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="19sp"
+            android:layout_alignRight="@+id/seek_bar_layout"
+            android:layout_alignEnd="@+id/seek_bar_layout"
+            android:layout_below="@+id/elapsedTime"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/annotationInputView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="How attentive are you right now?"
-            android:layout_marginTop="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:layout_below="@+id/recordingStateButtons"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-        <SeekBar
-            android:id="@+id/annotation_bar"
-            android:layout_width="fill_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:max="4"
-            android:progress="0"
-            android:secondaryProgress="0"
-            android:progressDrawable="@drawable/progressbar"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/annotationInputView"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:progressBackgroundTint="@color/wallet_holo_blue_light"
-            android:indeterminate="false" />
+            android:layout_weight="1"
+            android:id="@+id/seek_bar_layout"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
 
-        <TextView
-            android:id="@+id/textViewLow"
+            <SeekBar
+                android:id="@+id/annotation_bar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="false"
+                android:max="4"
+                android:progress="0"
+                android:progressBackgroundTint="@color/wallet_holo_blue_light"
+                android:progressDrawable="@drawable/progressbar"
+                android:secondaryProgress="0"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/textViewLow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/annotation_bar"
+                android:layout_below="@+id/annotation_bar"
+                android:text="Low" />
+
+            <TextView
+                android:id="@+id/textViewMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/annotation_bar"
+                android:layout_centerHorizontal="true"
+                android:text="Medium" />
+
+            <TextView
+                android:id="@+id/textViewHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/annotation_bar"
+                android:layout_below="@+id/annotation_bar"
+                android:text="High" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/annotation_bar"
-            android:layout_alignLeft="@id/annotation_bar"
-            android:text="Low"/>
+            android:layout_weight="1"
+            android:layout_below="@+id/seek_bar_layout"
+            android:layout_alignLeft="@+id/annotationInputView"
+            android:layout_alignStart="@+id/annotationInputView"
+            android:layout_alignRight="@+id/annotationInputView"
+            android:layout_alignEnd="@+id/annotationInputView"
+            android:layout_alignParentBottom="true">
 
-        <TextView
-            android:id="@+id/textViewMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/annotation_bar"
-            android:layout_centerHorizontal="true"
-            android:text="Medium" />
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="225dp"
+                android:layout_height="50dp"
+                android:background="@color/wallet_holo_blue_light"
+                android:text="Save Annotation"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/annotationInput"
+                android:layout_centerHorizontal="true" />
 
-        <TextView
-            android:id="@+id/textViewHigh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/annotation_bar"
-            android:layout_alignRight="@id/annotation_bar"
-            android:text="High" />
-
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="225dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:background="@color/wallet_holo_blue_light"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:text="Save Annotation"/>
-
-        <EditText
-            android:id="@+id/annotationInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@id/submit"
-            android:layout_alignLeft="@id/submit"
-            android:layout_alignRight="@id/submit"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:hint="Describe your experience"
-            android:textSize="15sp" />
+            <EditText
+                android:id="@+id/annotationInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Describe your experience"
+                android:textSize="15sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignLeft="@+id/submit"
+                android:layout_alignStart="@+id/submit"
+                android:layout_alignRight="@+id/submit"
+                android:layout_alignEnd="@+id/submit" />
+        </RelativeLayout>
 
     </RelativeLayout>
+
 </LinearLayout>
