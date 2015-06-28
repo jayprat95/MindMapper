@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
@@ -32,6 +35,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.Queue;
 
+import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.MindwaveService;
 import edu.engagement.application.R;
@@ -52,6 +56,9 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     private SeekBar annotationBar = null;
     private TextView annotationValue;
     private EditText annotationInput;
+
+    // Current self-perceived attention level
+    private AttentionLevel attentionLevel;
 
     // CLOSE button
     private Button closeButton;
@@ -127,15 +134,14 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         closeButton = (Button) view.findViewById(R.id.real_time_fragment_close);
         closeButton.setOnClickListener(this);
 
-//         Might not need this stuff since we're not displaying the slide bar value
-//         Annotation Bar Stuff
+        attentionLevel = AttentionLevel.LOW;
         annotationBar = (SeekBar) view.findViewById(R.id.annotation_bar);
         annotationBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressChanged = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                attentionLevel = AttentionLevel.fromInt(progress);
+                setProgressBarColor(seekBar, attentionLevel.getColor());
             }
 
             @Override
@@ -337,6 +343,12 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
     public void setAttText(String str) {
         this.attentionText.setText(str);
+    }
+
+    private void setProgressBarColor(SeekBar seekBar, int newColor) {
+        LayerDrawable ld = (LayerDrawable) seekBar.getProgressDrawable();
+        ClipDrawable d1 = (ClipDrawable) ld.findDrawableByLayerId(R.id.progressShape);
+        d1.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
     }
 
     private void startTimer() {
