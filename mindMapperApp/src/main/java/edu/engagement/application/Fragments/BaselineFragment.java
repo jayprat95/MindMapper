@@ -137,7 +137,7 @@ public class BaselineFragment extends Fragment implements Runnable,
 
 	/* ------------ states ------------ */
 	private void connectClicked() {
-		startService();
+//		startService();
 	}
 
 	private void startClicked() {
@@ -178,7 +178,7 @@ public class BaselineFragment extends Fragment implements Runnable,
 		stop.setVisibility(View.INVISIBLE);
 		disconnect.setVisibility(View.INVISIBLE);
 		annotate.setVisibility(View.INVISIBLE);
-		stopService();
+//		stopService();
 	}
 
 	// TODO Not sure if we use this  
@@ -199,40 +199,40 @@ public class BaselineFragment extends Fragment implements Runnable,
 	}
 
 	// Method to start the service
-	public void startService() {
-
-		/* Place Picker Experiment */
-		int PLACE_PICKER_REQUEST = 1;
-		PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-		Context context = activity.getApplicationContext();
-		try {
-			// Start the intent by requesting a result,
-			// identified by a request code.
-			startActivityForResult(builder.build(context), PLACE_PICKER_REQUEST);
-			// PlacePicker.getPlace(builder, context);
-
-		} catch (GooglePlayServicesRepairableException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (GooglePlayServicesNotAvailableException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		activity.startService(new Intent(activity.getBaseContext(),
-				MindwaveService.class));
-
-	}
-
-	// Method to stop the service, called after clicking disconnect
-	public void stopService() {
-
-		String toastMsg = "Stopped Service";
-		Toast.makeText(this.getActivity().getApplicationContext(), toastMsg,
-				Toast.LENGTH_LONG).show();
-		activity.stopService(new Intent(activity.getBaseContext(),
-				MindwaveService.class));
-	}
+//	public void startService() {
+//
+//		/* Place Picker Experiment */
+//		int PLACE_PICKER_REQUEST = 1;
+//		PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//		Context context = activity.getApplicationContext();
+//		try {
+//			// Start the intent by requesting a result,
+//			// identified by a request code.
+//			startActivityForResult(builder.build(context), PLACE_PICKER_REQUEST);
+//			// PlacePicker.getPlace(builder, context);
+//
+//		} catch (GooglePlayServicesRepairableException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (GooglePlayServicesNotAvailableException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//
+//		activity.startService(new Intent(activity.getBaseContext(),
+//				MindwaveService.class));
+//
+//	}
+//
+//	// Method to stop the service, called after clicking disconnect
+//	public void stopService() {
+//
+//		String toastMsg = "Stopped Service";
+//		Toast.makeText(this.getActivity().getApplicationContext(), toastMsg,
+//				Toast.LENGTH_LONG).show();
+//		activity.stopService(new Intent(activity.getBaseContext(),
+//				MindwaveService.class));
+//	}
 
 	/*
 	 * Callback method that is called after user selects a location(from start

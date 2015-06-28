@@ -33,6 +33,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import java.util.Queue;
 
 import edu.engagement.application.MainActivity;
+import edu.engagement.application.MindwaveService;
 import edu.engagement.application.R;
 
 public class RealTimeDataFragment extends Fragment implements OnClickListener {
@@ -172,16 +173,19 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 break;
             case R.id.start:
                 // TODO start recording and timer
-                Toast.makeText(getActivity(), "recording started", Toast.LENGTH_SHORT).show();
 
                 // Change button states to pause and stop
                 startButton.setVisibility(View.GONE);
                 pauseButton.setVisibility(View.VISIBLE);
                 stopButton.setVisibility(View.VISIBLE);
 
+                // TODO: Alex I added the startService() method, which actually starts the EEG recording. If you think it makes sense to start the timer in that method you can move it there
                 timer.setFormat("[Total Time: %s]");
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
+
+                // Start reading data from EEG
+                startService();
 
 
                 break;
@@ -215,7 +219,9 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        Toast.makeText(getActivity(), "stopped recording", Toast.LENGTH_SHORT).show();
+
+                        // Stop reading data from EEG
+                        stopService();
                     }
                 });
                 dialogBuilder.setNegativeButton("No, take me back.", new DialogInterface.OnClickListener() {
@@ -329,8 +335,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     }
 
 
-    public void setAttText(String str)
-    {
+    public void setAttText(String str) {
         this.attentionText.setText(str);
     }
 
@@ -342,6 +347,45 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     private void stopTimer() {
         elapsedTime = SystemClock.elapsedRealtime() - timer.getBase();
         timer.stop();
+    }
+
+    /**
+     * Start EEG service
+     */
+    private void startService() {
+
+//		/* Place Picker Experiment */
+//        int PLACE_PICKER_REQUEST = 1;
+//        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//        Context context = activity.getApplicationContext();
+//        try {
+//            // Start the intent by requesting a result,
+//            // identified by a request code.
+//            startActivityForResult(builder.build(context), PLACE_PICKER_REQUEST);
+//            // PlacePicker.getPlace(builder, context);
+//
+//        } catch (GooglePlayServicesRepairableException e1) {
+//            // TODO Auto-generated catch block
+//            e1.printStackTrace();
+//        } catch (GooglePlayServicesNotAvailableException e1) {
+//            // TODO Auto-generated catch block
+//            e1.printStackTrace();
+//        }
+
+        Toast.makeText(getActivity(), "recording started", Toast.LENGTH_SHORT).show();
+        activity.startService(new Intent(activity.getBaseContext(),
+                MindwaveService.class));
+
+    }
+
+    /**
+     * Stop EEG service
+     */
+    private void stopService() {
+
+        Toast.makeText(getActivity(), "stopped recording", Toast.LENGTH_SHORT).show();
+        activity.stopService(new Intent(activity.getBaseContext(),
+                MindwaveService.class));
     }
 }
 

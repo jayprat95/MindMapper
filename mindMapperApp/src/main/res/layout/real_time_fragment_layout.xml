@@ -101,7 +101,7 @@
             android:id="@+id/locationTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_dotted_map"
+            android:drawableStart="@drawable/ic_dotted_map"
             android:gravity="center_horizontal|center_vertical"
             android:maxLength="26"
             android:text="Location"
