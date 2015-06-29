@@ -24,15 +24,15 @@
             </shape>
         </clip>
     </item>
-    <item android:id="@android:id/progress">
+    <item android:id="@+id/progressShape">
         <clip>
-            <shape android:shape="rectangle">
+            <shape android:shape="rectangle" >
                 <corners android:radius="5dp" />
 
                 <gradient
                     android:angle="270"
-                    android:endColor="#00996a"
-                    android:startColor="#00d190" />
+                    android:endColor="#00ff00"
+                    android:startColor="#00ff00" />
             </shape>
         </clip>
     </item>

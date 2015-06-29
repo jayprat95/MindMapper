@@ -141,7 +141,6 @@
                 android:indeterminate="false"
                 android:max="4"
                 android:progress="0"
-                android:progressBackgroundTint="@color/wallet_holo_blue_light"
                 android:progressDrawable="@drawable/progressbar"
                 android:secondaryProgress="0"
                 android:layout_alignParentTop="true"
