@@ -27,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.FrameLayout;
 
+import javax.xml.datatype.Duration;
+
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Fragments.BaselineFragment;
 import edu.engagement.application.Fragments.DatabaseFragment;
@@ -42,7 +44,7 @@ import edu.engagement.application.SlidingTab.*;
 /**
  * MainActivity June 16
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements View.OnClickListener{
 
 
     public static final String BASELINE_AVG_KEY = "avg";
@@ -592,6 +594,16 @@ public class MainActivity extends FragmentActivity {
 
     public boolean fabClicked() {
         return this.fabClicked;
+    }
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(this, v.getClass().getName().toString(), Toast.LENGTH_SHORT);
     }
 
     public enum state {
