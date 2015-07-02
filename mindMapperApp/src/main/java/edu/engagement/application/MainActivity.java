@@ -289,7 +289,12 @@ public class MainActivity extends FragmentActivity {
                 // Move to real time fragment
 //                pager.setCurrentItem(1, true);
                 //switchToFragment("REAL_TIME_FRAGMENT");
-                changeState(state.ANNOTATION_STATE);
+
+                if (realTimeInstantiated == false) {
+                    switchToFragment("REAL_TIME_FRAGMENT");
+                    realTimeInstantiated = true;
+                }
+//                changeState(state.ANNOTATION_STATE);
 
                 /** If Jayanth wants to work on the real time eeg data uncommon this line to start the service */
 //                startService();
@@ -338,11 +343,6 @@ public class MainActivity extends FragmentActivity {
             tabs.setVisibility(View.INVISIBLE);
             frameLayout.setVisibility(View.VISIBLE);
             fab.setVisibility(View.INVISIBLE);
-
-            if (realTimeInstantiated == false) {
-                switchToFragment("REAL_TIME_FRAGMENT");
-                realTimeInstantiated = true;
-            }
 
 
         } else {
@@ -592,6 +592,15 @@ public class MainActivity extends FragmentActivity {
 
     public boolean fabClicked() {
         return this.fabClicked;
+    }
+
+    /**
+     * Change the sliding tab to focus on the desired tab
+     *
+     * @param pageNum
+     */
+    public void pagerChange(int pageNum) {
+        pager.setCurrentItem(pageNum);
     }
 
     public enum state {

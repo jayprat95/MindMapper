@@ -228,6 +228,10 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
                         // Stop reading data from EEG
                         stopService();
+
+                        // Move back to the graph view
+                        activity.changeState(MainActivity.state.SLIDING_TABS_STATE);
+                        activity.pagerChange(1);
                     }
                 });
                 dialogBuilder.setNegativeButton("No, take me back.", new DialogInterface.OnClickListener() {
@@ -280,6 +284,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 Toast.makeText(activity.getApplicationContext(), toastMsg,
                         Toast.LENGTH_LONG).show();
             }
+            activity.changeState(MainActivity.state.ANNOTATION_STATE);
         }
     }
 
