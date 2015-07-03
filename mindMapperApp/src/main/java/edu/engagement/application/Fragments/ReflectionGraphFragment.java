@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.Highlight;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -49,16 +51,6 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
             mChart = (LineChart) view.findViewById(R.id.chart);
             mChart.setOnChartValueSelectedListener(this);
 
-            // if enabled, the chart will always start at zero on the y-axis
-            mChart.setStartAtZero(true);
-
-            // disable the drawing of values into the chart
-            mChart.setDrawYValues(false);
-
-            mChart.setDrawBorder(false);
-
-            mChart.setDrawLegend(false);
-
             // no description text
             mChart.setDescription("AVG Attention vs gpsKey");
             //mChart.setUnit(" $");
@@ -74,10 +66,12 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
             mChart.setScaleEnabled(true);
 
             // if disabled, scaling can be done on x- and y-axis separately
-            mChart.setPinchZoom(false);
+            mChart.setPinchZoom(true);
 
             mChart.setDrawGridBackground(false);
-            mChart.setDrawVerticalGrid(false);
+
+            mChart.getXAxis().setDrawGridLines(false);
+            mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
 //	        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 //	        mChart.setValueTypeface(tf);
@@ -111,8 +105,8 @@ public class ReflectionGraphFragment extends Fragment implements OnChartValueSel
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex) {
-        Toast.makeText(this.activity, e.toString(), Toast.LENGTH_SHORT).show();
+    public void onValueSelected(Entry entry, int i, Highlight highlight) {
+        Toast.makeText(this.activity, entry.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
