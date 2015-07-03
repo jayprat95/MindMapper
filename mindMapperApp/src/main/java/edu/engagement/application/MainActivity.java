@@ -286,15 +286,7 @@ public class MainActivity extends FragmentActivity {
                     fab.setText("Annotation");
                     Toast.makeText(thisActivity, "Connecting to Mind wave device", Toast.LENGTH_LONG).show();
                 }
-                // Move to real time fragment
-//                pager.setCurrentItem(1, true);
-                //switchToFragment("REAL_TIME_FRAGMENT");
-
-                if (realTimeInstantiated == false) {
-                    switchToFragment("REAL_TIME_FRAGMENT");
-                    realTimeInstantiated = true;
-                }
-//                changeState(state.ANNOTATION_STATE);
+                changeState(state.ANNOTATION_STATE);
 
                 /** If Jayanth wants to work on the real time eeg data uncommon this line to start the service */
 //                startService();
@@ -307,20 +299,20 @@ public class MainActivity extends FragmentActivity {
 
         initActionBar();
 
-        /** Start of loading debug dataset from src/main/assets and populate GPS data**/
-        // TODO: remove these after finishing the project
-        DataPointSource dataSource = new DataPointSource(this);
-        dataSource.open();
-        if (dataSource.doWeNeedMoreDebugData()) {
-            try {
-                dataSource.loadDebugAttentionDataSets(getResources().getAssets().open("EEG_table_attention_data.csv"));
-                dataSource.loadDebugGPSDataSets(getResources().getAssets().open("EEG_table_gps_data.csv"));
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.w(DataPointSource.class.getName(), "!!!IO exception in mainActivity about the csv file");
-            }
-        }
-        /** End of loading debug dataset from src/main/assets and pupulate GPS data**/
+//        /** Start of loading debug dataset from src/main/assets and populate GPS data**/
+//        // TODO: remove these after finishing the project
+//        DataPointSource dataSource = new DataPointSource(this);
+//        dataSource.open();
+//        if (dataSource.doWeNeedMoreDebugData()) {
+//            try {
+//                dataSource.loadDebugAttentionDataSets(getResources().getAssets().open("EEG_table_attention_data.csv"));
+//                dataSource.loadDebugGPSDataSets(getResources().getAssets().open("EEG_table_gps_data.csv"));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                Log.w(DataPointSource.class.getName(), "!!!IO exception in mainActivity about the csv file");
+//            }
+//        }
+//        /** End of loading debug dataset from src/main/assets and pupulate GPS data**/
 
 
         //	drawer = new SlidingDrawer(this);
@@ -338,14 +330,19 @@ public class MainActivity extends FragmentActivity {
     public void changeState(state someState) {
 
         if (someState == state.ANNOTATION_STATE) {
-            toolbar.setVisibility(View.INVISIBLE);
-            pager.setVisibility(View.INVISIBLE);
-            tabs.setVisibility(View.INVISIBLE);
-            frameLayout.setVisibility(View.VISIBLE);
-            fab.setVisibility(View.INVISIBLE);
 
+            if (realTimeInstantiated) { // If PlacePicker is called, shows the realtime fragment immediately
+                toolbar.setVisibility(View.INVISIBLE);
+                pager.setVisibility(View.INVISIBLE);
+                tabs.setVisibility(View.INVISIBLE);
+                frameLayout.setVisibility(View.VISIBLE);
+                fab.setVisibility(View.INVISIBLE);
+            } else {    // PlacePicker will be called for the first time, will change fragment in PlacePicker's callback function, not at here
+                switchToFragment("REAL_TIME_FRAGMENT");
+                realTimeInstantiated = true;
+            }
 
-        } else {
+        } else {    // Changed from realtime to sliding tab
             toolbar.setVisibility(View.VISIBLE);
             pager.setVisibility(View.VISIBLE);
             tabs.setVisibility(View.VISIBLE);

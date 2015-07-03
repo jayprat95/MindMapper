@@ -451,8 +451,8 @@ public class DataPointSource {
 
     public List<double[]> getDayGraphDataset() {
         Calendar c = Calendar.getInstance();
-//        int day = c.get(Calendar.DAY_OF_MONTH);
-        int day = 21; /* attention data are all marked at 21th */
+        int day = c.get(Calendar.DAY_OF_MONTH);
+//        int day = 21; /* attention data are all marked at 21th TODO: this is the day for debugging data, remove after finishing the application*/
 
         List<double[]> list = new ArrayList<double[]>();
         String query;
