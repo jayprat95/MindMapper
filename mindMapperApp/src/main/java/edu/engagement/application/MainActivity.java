@@ -299,20 +299,21 @@ public class MainActivity extends FragmentActivity {
 
         initActionBar();
 
-//        /** Start of loading debug dataset from src/main/assets and populate GPS data**/
-//        // TODO: remove these after finishing the project
-//        DataPointSource dataSource = new DataPointSource(this);
-//        dataSource.open();
-//        if (dataSource.doWeNeedMoreDebugData()) {
-//            try {
-//                dataSource.loadDebugAttentionDataSets(getResources().getAssets().open("EEG_table_attention_data.csv"));
-//                dataSource.loadDebugGPSDataSets(getResources().getAssets().open("EEG_table_gps_data.csv"));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                Log.w(DataPointSource.class.getName(), "!!!IO exception in mainActivity about the csv file");
-//            }
-//        }
-//        /** End of loading debug dataset from src/main/assets and pupulate GPS data**/
+        /** Start of loading debug dataset from src/main/assets and populate GPS data**/
+        // TODO: remove these after finishing the project
+        DataPointSource dataSource = new DataPointSource(this);
+        dataSource.open();
+        if (dataSource.doWeNeedMoreDebugData()) {
+            try {
+                dataSource.loadDebugAttentionDataSets(getResources().getAssets().open("EEG_table_attention_data.csv"));
+                dataSource.loadDebugGPSDataSets(getResources().getAssets().open("EEG_table_gps_data.csv"));
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.w(DataPointSource.class.getName(), "!!!IO exception in mainActivity about the csv file");
+            }
+        }
+        dataSource.close();
+        /** End of loading debug dataset from src/main/assets and pupulate GPS data**/
 
 
         //	drawer = new SlidingDrawer(this);

@@ -233,6 +233,7 @@ public class DataPointSource {
     /**
      * Check if we need to call loadDebugGPSDataSets and loadDebugAttentionDataSets by checking if there is already data in the database
      * TODO: remove this after project is finish
+     *
      * @return
      */
     public boolean doWeNeedMoreDebugData() {
@@ -246,10 +247,13 @@ public class DataPointSource {
         Cursor cursor = database.rawQuery(query, null);
 
         cursor.moveToLast();
-        if (!cursor.isBeforeFirst()) /* we have data returned */ {
+        boolean dataNotExist = cursor.isBeforeFirst();
+        cursor.close();
+        if (dataNotExist) /* no data returned, we need debug data*/ {
+            return true;
+        } else {  // we have data, don't need more debug data
             return false;
         }
-        return true;
     }
 
     public void deleteDataPoint(DataPoint point) {
