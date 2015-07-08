@@ -1,10 +1,10 @@
 package edu.engagement.application.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +12,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -25,28 +24,31 @@ import edu.engagement.application.R;
 
 public class MapFrag extends Fragment {
 	GoogleMap map; // The map from within the map fragment.
-	SupportMapFragment mapFrag; // The map fragment from the xml file.
+	MapView mapView;
 
 	DataFilter filter;
 	Intent intent;
+
+	@Override
+	public void onAttach(Activity activity) {
+        super.onAttach(activity);
+		intent = activity.getIntent();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		View view = inflater.inflate(R.layout.map, container, false);
-		intent = this.getActivity().getIntent();
 		
-		
-		// Data source
+		mapView = (MapView)view.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
 
-		// Grab the map fragment.
-		mapFrag = (SupportMapFragment) getChildFragmentManager()
-				.findFragmentById(R.id.mapView);
 		// Grab the map from the map fragment.
-		map = mapFrag.getMap();
+		// TODO: Change to async?
+		map = mapView.getMap();
 
-		MapsInitializer.initialize(this.getActivity());
+//		MapsInitializer.initialize(this.getActivity());
 		map.setMyLocationEnabled(true);
 
 		// For future reference with getting coords, pull up google maps, find
@@ -78,19 +80,21 @@ public class MapFrag extends Fragment {
 	}
 
 	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
+	public void onResume() {
+		mapView.onResume();
+		super.onResume();
+	}
 
-		// Remove the map fragment so we don't reinflate it when the view is
-		// recreated.
-		try {
-			FragmentTransaction ft = getActivity().getSupportFragmentManager()
-					.beginTransaction();
-			ft.remove((Fragment) mapFrag);
-			ft.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mapView.onDestroy();
+	}
+
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+		mapView.onLowMemory();
 	}
 
 	private void addPoint(double latitude, double longitude, double radius,
@@ -113,8 +117,8 @@ public class MapFrag extends Fragment {
 			double[] data = results.get(i);
 
 			System.out.println("\nMap Dataset results: " + i);
-			for (int j = 0; j < data.length; j++) {
-				System.out.print(data[j] + ", ");
+			for (double d : data) {
+				System.out.print(d + ", ");
 			}
 		}
 
