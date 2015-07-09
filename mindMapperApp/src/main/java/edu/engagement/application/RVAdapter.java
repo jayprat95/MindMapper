@@ -34,7 +34,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 			average = (TextView) itemView.findViewById(R.id.card_average);
 			location = (TextView) itemView.findViewById(R.id.card_location);
 			variance = (TextView) itemView.findViewById(R.id.card_variance);
-			locationPhoto = (ImageView) itemView.findViewById(R.id.person_photo);
+			locationPhoto = (ImageView) itemView.findViewById(R.id.card_photo);
 		}
 	}
 
