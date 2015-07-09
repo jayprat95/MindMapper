@@ -11,6 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_GPS = "table_gps";
     public static final String TABLE_EEG = "table_eeg";
     public static final String TABLE_ATTENTION = "table_attention";
+    public static final String TABLE_ANNOTATION = "table_annotation";
     public static final String TABLE_RAW = "table_raw";
     public static final String COLUMN_TIMESTAMP = "Timestamp";
     public static final String COLUMN_ALPHA = "Alpha";
@@ -18,6 +19,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_THETA = "Theta";
     public static final String COLUMN_HEARTRATE = "Heartrate";
     public static final String COLUMN_ATTENTION = "Attention";
+    public static final String COLUMN_USER_ANNOTATIOIN = "UserAnnotation";
+    public static final String COLUMN_SUBJECTIVE_ATTENTION = "Subjective_Attention";
     public static final String COLUMN_CH1 = "Ch1";
     public static final String COLUMN_CH2 = "Ch2";
     public static final String COLUMN_CH3 = "Ch3";
@@ -67,6 +70,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_MONTH + " INTEGER, "
             + COLUMN_DAY + " INTEGER"
             + " );";
+    private static final String DATABASE_CREATE_ANNOTATION = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_ANNOTATION + "(" + COLUMN_TIMESTAMP + " INTEGER, "
+            + COLUMN_SUBJECTIVE_ATTENTION + " REAL, "
+            + COLUMN_USER_ANNOTATIOIN + " VARCHAR, "
+            + " );";
     private static final String DATABASE_CREATE_RAW = "CREATE TABLE IF NOT EXISTS "
             + TABLE_RAW + "(" + COLUMN_TIMESTAMP + " INTEGER, "
             + COLUMN_GPS_KEY + " INTEGER, "
@@ -104,6 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(DATABASE_CREATE_GPS);
         database.execSQL(DATABASE_CREATE_HR);
         database.execSQL(DATABASE_CREATE_ATTENTION);
+        database.execSQL(DATABASE_CREATE_ANNOTATION);
         database.execSQL(DATABASE_CREATE_RAW);
 
         System.out.println("Created DBs if necessary");
@@ -123,6 +132,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GPS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EEG);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ATTENTION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANNOTATION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RAW);
         onCreate(db);
     }
