@@ -8,42 +8,45 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp" >
+        android:paddingBottom="16dp">
 
         <ImageView
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:id="@+id/person_photo"
-            />
+            android:layout_height="200dp"
+            android:id="@+id/card_photo"
+            android:src="@drawable/mcbryde"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/card_photo"
+            android:background="#3498db">
+
+            <TextView
+                android:id="@+id/card_location"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:gravity="left"
+                android:text="McBryde Hall" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/card_location"
+            android:id="@+id/card_average_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/person_photo"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="26dp"
-             />
+            android:layout_below="@+id/card_location"
+            android:text="Subjective Attention: 74"/>
 
         <TextView
-            android:id="@+id/card_average"
+            android:id="@+id/card_average_obj"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="26dp"
-            android:layout_below="@+id/person_photo"
-            android:layout_toRightOf="@+id/card_location"
-            android:layout_toEndOf="@+id/card_location" />
-
-        <TextView
-            android:id="@+id/card_variance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/person_photo"
-            android:layout_toRightOf="@+id/card_average"
-            android:layout_toEndOf="@+id/card_average"
-            android:layout_centerHorizontal="true" />
-
+            android:layout_below="@+id/card_average_sub"
+            android:text="Objective Attention: Medium-High"/>
 
     </RelativeLayout>
 
