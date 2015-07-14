@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "edu.engagement.application"
-        minSdkVersion 11
+        minSdkVersion 15
         targetSdkVersion 19
         multiDexEnabled true
     }
@@ -22,6 +22,7 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.google.android.gms:play-services:+'
+    compile 'com.akexorcist:RoundCornerProgressBar:1.2.0'
     compile files('libs/HxMBT.jar')
     compile files('libs/ThinkGear.jar')
     compile files('libs/achartengine-1.1.0.jar')

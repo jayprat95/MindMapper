@@ -357,12 +357,9 @@ public class MainActivity extends FragmentActivity {
     private void initActionBar() {
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-
+        actionBar.hide();
         // Creates a contextual action bar that allows the user to connect
-        mActionMode = startActionMode(mActionModeCallback);
+        //mActionMode = startActionMode(mActionModeCallback);
     }
 
     @Override

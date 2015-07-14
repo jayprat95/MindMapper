@@ -12,19 +12,19 @@
                 android:background="#DE5E1F"
     >
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/color_scale"
-        android:background="@drawable/map_color_scale"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/color_scale"-->
+        <!--android:background="@drawable/map_color_scale"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_alignParentBottom="true" />-->
 
     <com.google.android.gms.maps.MapView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:id="@+id/mapView"
-        android:layout_above="@id/color_scale"/>
+        android:id="@+id/mapView" />
+        <!--android:layout_above="@id/color_scale"/>-->
 
     <Button android:id="@+id/eegButton"
         android:layout_width="wrap_content"
