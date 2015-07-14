@@ -31,10 +31,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
 			// cv.setCardBackgroundColor(Color.BLACK);
 
-			average = (TextView) itemView.findViewById(R.id.card_average);
+			average = (TextView) itemView.findViewById(R.id.card_average_obj);
 			location = (TextView) itemView.findViewById(R.id.card_location);
-			variance = (TextView) itemView.findViewById(R.id.card_variance);
-			locationPhoto = (ImageView) itemView.findViewById(R.id.person_photo);
+			locationPhoto = (ImageView) itemView.findViewById(R.id.card_photo);
 		}
 	}
 
@@ -60,8 +59,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 	@Override
 	public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
 		personViewHolder.average.setText("Average: " + cardDataList.get(i).getAverage());
-		personViewHolder.location.setText("Location: " + "McBryde Hall");
-		personViewHolder.variance.setText("Variance: " + cardDataList.get(i).getVariance());
+		personViewHolder.location.setText("McBryde Hall");
 		personViewHolder.locationPhoto.setImageResource(R.drawable.mcbryde);
 	}
 
