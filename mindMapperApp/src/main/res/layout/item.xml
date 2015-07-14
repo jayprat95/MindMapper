@@ -85,11 +85,12 @@
                 android:layout_height="wrap_content"
                 android:text="Objective Attention: 74" />
 
-            <!--<RatingBar-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:numStars="5"/>-->
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:progressDrawable="@drawable/subjective_rating_selector"
+                android:numStars="5"/>
 
             <TextView
                 android:id="@+id/card_average_obj"
@@ -98,15 +99,16 @@
                 android:layout_below="@+id/card_average_sub"
                 android:text="Objective Attention: Medium-High" />
 
-            <!--<com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar-->
-                <!--android:id="@+id/progress_2"-->
-                <!--android:layout_height="30dp"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--app:rcProgress="55"-->
-                <!--app:rcMax="100"-->
-                <!--app:rcTextProgress="Hi"-->
-                <!--app:rcTextProgressSize="15dp"-->
-                <!--app:rcTextProgressColor="#ffffff"/>-->
+            <com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar
+                android:id="@+id/progress_2"
+                android:layout_height="30dp"
+                android:layout_width="fill_parent"
+                app:rcProgress="55"
+                app:rcMax="100"
+                app:rcTextProgress="Hi"
+                app:rcTextProgressSize="15dp"
+                app:rcBackgroundColor="#BDBDBD"
+                app:rcTextProgressColor="#8BC34A"/>
 
         </LinearLayout>
 
