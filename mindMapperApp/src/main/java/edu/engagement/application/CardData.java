@@ -1,74 +1,59 @@
 package edu.engagement.application;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /*
- *  Data representation for each individual card for each cardView
+ *  Data representation for each individual card for each cardView.
  */
 public class CardData {
 
-    private double average;
-
-    /* We want to express the variance in terms of percentage */
-    private double variance;
-
     private String location;
 
-    /*
-     * A special message. Example would be
-     * "This is your most attentive location!"
-     */
-    private String label;
+    private Date start;
+    private Date stop;
 
-    /*
-     * Constructor
-     */
-    public CardData() {
-        this.average = 0;
-        this.variance = 0;
-        this.location = "";
-        this.label = "";
+    private TrophyType trophyType;
+
+    private AttentionLevel  selfReportLevel;
+    private double          eegData;
+
+    public CardData(String location, long start, long stop, TrophyType trophyType, AttentionLevel selfReportLevel, double eegData) {
+        this.location = location;
+        this.start = new Date(start);
+        this.stop = new Date(stop);
+        this.trophyType = trophyType;
+        this.selfReportLevel = selfReportLevel;
+        this.eegData = eegData;
     }
 
-    /*
-     * Constructor
-     */
-    public CardData(double av, double var, String loc, String lab) {
-        this.average = av;
-        this.variance = var;
-        this.location = loc;
-        this.label = lab;
+    public Date getStartDate() {
+        return start;
     }
 
-    // Getters
-    public double getAverage() {
-        return this.average;
+    public Date getStopDate() {
+        return stop;
     }
 
-    public double getVariance() {
-        return this.variance;
+    public String getTimeRangeFormatted(String format, String separator) {
+        SimpleDateFormat fmt = new SimpleDateFormat(format);
+
+        return fmt.format(start) + separator + fmt.format(stop);
+    }
+
+    public AttentionLevel getSelfReportedAttention() {
+        return selfReportLevel;
+    }
+
+    public double getEegAttention() {
+        return eegData;
     }
 
     public String getLocation() {
         return this.location;
     }
 
-    public String getLabel() {
-        return this.label;
-    }
-
-    // Setters
-    public void setAverage(double av) {
-        this.average = av;
-    }
-
-    public void setVariance(double var) {
-        this.variance = var;
-    }
-
-    public void setLocation(String loc) {
-        this.location = loc;
-    }
-
-    public void setLabel(String lab) {
-        this.label = lab;
+    public String getTrophyMessage() {
+        return trophyType.getMessage();
     }
 }
