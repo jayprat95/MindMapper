@@ -58,8 +58,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
 	@Override
 	public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
-		personViewHolder.average.setText("Average: " + cardDataList.get(i).getAverage());
-		personViewHolder.location.setText("McBryde Hall");
+		personViewHolder.average.setText("Average: " + cardDataList.get(i).getEegAttention());
+		personViewHolder.location.setText(cardDataList.get(i).getLocation());
 		personViewHolder.locationPhoto.setImageResource(R.drawable.mcbryde);
 	}
 

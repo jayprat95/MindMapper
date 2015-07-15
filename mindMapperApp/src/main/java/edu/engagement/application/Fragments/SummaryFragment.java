@@ -13,11 +13,13 @@ import android.view.ViewGroup;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.CardData;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
 import edu.engagement.application.RVAdapter;
+import edu.engagement.application.TrophyType;
 
 public class SummaryFragment extends Fragment {
 
@@ -100,12 +102,12 @@ public class SummaryFragment extends Fragment {
 
         /** --------------- Test points for card View end------------------- **/
 
-        CardData card = new CardData();
-        CardData card2 = new CardData(5, 10, "1034", "32423");
-        double mean = getMean(results, 1);
-        double variance = getVariance(results, 1, mean);
-        card.setAverage(mean);
-        card.setVariance(variance);
+        CardData card = new CardData("McBryde Hall", 0L, 60000L, TrophyType.NONE, AttentionLevel.MEDIUM, 63);
+        CardData card2 = new CardData("Torgerson", 120000L, 200000L, TrophyType.TOP_VALUE_DAILY, AttentionLevel.HIGH, 83);
+//        double mean = getMean(results, 1);
+//        double variance = getVariance(results, 1, mean);
+//        card.setAverage(mean);
+//        card.setVariance(variance);
 
 
 
