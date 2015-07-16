@@ -10,7 +10,10 @@ import java.util.Queue;
 //import zephyr.android.HxMBT.ZephyrProtocol;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -27,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.FrameLayout;
 
+import org.apache.log4j.chainsaw.Main;
+
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Fragments.BaselineFragment;
 import edu.engagement.application.Fragments.DatabaseFragment;
@@ -42,8 +47,8 @@ import edu.engagement.application.SlidingTab.*;
 /**
  * MainActivity June 16
  */
-public class MainActivity extends FragmentActivity {
-
+public class MainActivity extends FragmentActivity{
+    private BroadcastReceiver receiver;
 
     public static final String BASELINE_AVG_KEY = "avg";
     private static final int PORT = 7911;
@@ -79,6 +84,7 @@ public class MainActivity extends FragmentActivity {
     private TextView fab;
     private boolean fabClicked;
     private boolean serviceStarted;
+    private TextView attentionView;
     /**
      * Container for the annotations view
      */
@@ -300,19 +306,19 @@ public class MainActivity extends FragmentActivity {
         initActionBar();
 
         /** Start of loading debug dataset from src/main/assets and populate GPS data**/
-        // TODO: remove these after finishing the project
-        DataPointSource dataSource = new DataPointSource(this);
-        dataSource.open();
-        if (dataSource.doWeNeedMoreDebugData()) {
-            try {
-                dataSource.loadDebugAttentionDataSets(getResources().getAssets().open("EEG_table_attention_data.csv"));
-                dataSource.loadDebugGPSDataSets(getResources().getAssets().open("EEG_table_gps_data.csv"));
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.w(DataPointSource.class.getName(), "!!!IO exception in mainActivity about the csv file");
-            }
-        }
-        dataSource.close();
+//        // TODO: remove these after finishing the project
+//        DataPointSource dataSource = new DataPointSource(this);
+//        dataSource.open();
+//        if (dataSource.doWeNeedMoreDebugData()) {
+//            try {
+//                dataSource.loadDebugAttentionDataSets(getResources().getAssets().open("EEG_table_attention_data.csv"));
+//                dataSource.loadDebugGPSDataSets(getResources().getAssets().open("EEG_table_gps_data.csv"));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                Log.w(DataPointSource.class.getName(), "!!!IO exception in mainActivity about the csv file");
+//            }
+//        }
+//        dataSource.close();
         /** End of loading debug dataset from src/main/assets and pupulate GPS data**/
 
 
@@ -571,8 +577,30 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter(
+                "android.intent.action.MAIN");
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //extract our message from intent
+                String msg_for_me = intent.getStringExtra("some_msg");
+
+                attentionView.setText(msg_for_me);
+//
+//                //log our message value
+//                Toast.makeText(getApplicationContext(), msg_for_me, Toast.LENGTH_SHORT).show();
+//                        Log.i("InchooTutorial", msg_for_me);
+            }
+        };
+        this.registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
+        this.unregisterReceiver(this.receiver);
     }
 
     public void redrawGraphs() {
@@ -596,6 +624,10 @@ public class MainActivity extends FragmentActivity {
      */
     public void pagerChange(int pageNum) {
         pager.setCurrentItem(pageNum);
+    }
+
+    public void instantiateView(TextView tv) {
+        attentionView = tv;
     }
 
     public enum state {
