@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.engagement.application.AttentionLevel;
-import edu.engagement.application.CardData;
+import edu.engagement.application.EventSummary;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
@@ -26,7 +26,7 @@ public class SummaryFragment extends Fragment {
     private MainActivity activity;
 
     private RecyclerView rv;
-    private List<CardData> cardDataList;
+    private List<EventSummary> eventSummaryList;
 
 
     @Override
@@ -42,7 +42,7 @@ public class SummaryFragment extends Fragment {
         View view = inflater.inflate(R.layout.card_recycle_view_activity, container, false);
         final FragmentActivity fragActivity = getActivity();
 
-        cardDataList = new LinkedList<CardData>();
+        eventSummaryList = new LinkedList<EventSummary>();
         /* ---------------------- load data begin ---------------------- */
         try {
             DataPointSource dataSource = new DataPointSource(this.getActivity()
@@ -75,7 +75,7 @@ public class SummaryFragment extends Fragment {
     }
 
     private void initializeAdapter() {
-        RVAdapter adapter = new RVAdapter(cardDataList);
+        RVAdapter adapter = new RVAdapter(eventSummaryList);
         rv.setAdapter(adapter);
 
     }
@@ -102,8 +102,8 @@ public class SummaryFragment extends Fragment {
 
         /** --------------- Test points for card View end------------------- **/
 
-        CardData card = new CardData("McBryde Hall", 0L, 60000L, TrophyType.NONE, AttentionLevel.MEDIUM, 63);
-        CardData card2 = new CardData("Torgerson", 120000L, 200000L, TrophyType.TOP_VALUE_DAILY, AttentionLevel.HIGH, 83);
+        EventSummary card = new EventSummary("McBryde Hall", 0L, 60000L, TrophyType.NONE, AttentionLevel.MEDIUM, 63);
+        EventSummary card2 = new EventSummary("Torgerson", 120000L, 200000L, TrophyType.TOP_VALUE_DAILY, AttentionLevel.HIGH, 83);
 //        double mean = getMean(results, 1);
 //        double variance = getVariance(results, 1, mean);
 //        card.setAverage(mean);
@@ -114,8 +114,8 @@ public class SummaryFragment extends Fragment {
 
 
 
-        cardDataList.add(card);
-        cardDataList.add(card2);
+        eventSummaryList.add(card);
+        eventSummaryList.add(card2);
     }
 
     /**
