@@ -6,7 +6,7 @@ import java.util.Date;
 /*
  *  Data representation for each individual card for each cardView.
  */
-public class CardData {
+public class EventSummary {
 
     private String location;
 
@@ -18,7 +18,7 @@ public class CardData {
     private AttentionLevel  selfReportLevel;
     private double          eegData;
 
-    public CardData(String location, long start, long stop, TrophyType trophyType, AttentionLevel selfReportLevel, double eegData) {
+    public EventSummary(String location, long start, long stop, TrophyType trophyType, AttentionLevel selfReportLevel, double eegData) {
         this.location = location;
         this.start = new Date(start);
         this.stop = new Date(stop);

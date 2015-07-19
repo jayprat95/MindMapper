@@ -99,16 +99,16 @@
                 android:layout_below="@+id/card_average_sub"
                 android:text="Objective Attention: Medium-High" />
 
-            <com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar
-                android:id="@+id/progress_2"
-                android:layout_height="30dp"
-                android:layout_width="fill_parent"
-                app:rcProgress="55"
-                app:rcMax="100"
-                app:rcTextProgress="Hi"
-                app:rcTextProgressSize="15dp"
-                app:rcBackgroundColor="#BDBDBD"
-                app:rcTextProgressColor="#8BC34A"/>
+            <!--<com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar-->
+                <!--android:id="@+id/progress_2"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--app:rcProgress="55"-->
+                <!--app:rcMax="100"-->
+                <!--app:rcTextProgress="Hi"-->
+                <!--app:rcTextProgressSize="15dp"-->
+                <!--app:rcBackgroundColor="#BDBDBD"-->
+                <!--app:rcTextProgressColor="#8BC34A"/>-->
 
         </LinearLayout>
 
