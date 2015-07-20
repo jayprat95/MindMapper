@@ -75,6 +75,14 @@ public class SummaryFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
+
+            // idk, man, this just works
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             /* ---------------------- load data begin ---------------------- */
             try {
                 DataPointSource dataSource = new DataPointSource(context);
