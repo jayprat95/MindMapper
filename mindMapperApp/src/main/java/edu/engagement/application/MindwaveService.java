@@ -35,6 +35,7 @@ public class MindwaveService extends Service {
     public static final String GPS_KEY = "gpskey";
     final boolean rawEnabled = true;
     private final Handler handler = new Handler(new HandlerClass());
+    private Intent handlerIntent = new Intent("android.intent.action.MAIN");
     // Acquire a reference to the system Location Manager
     LocationManager locationManager;
     BluetoothAdapter adapter = null;
@@ -291,6 +292,9 @@ public class MindwaveService extends Service {
             Log.d("Bond state", "BOND_STATED = " + device.getBondState());
         }
     }
+    private void toastFromHandler(String str) {
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    }
 
     /**
      * Internal callback handler class
@@ -371,6 +375,10 @@ public class MindwaveService extends Service {
 
                     int att = msg.arg1;
                     if (att != 0) {
+//                        handlerIntent = new Intent("android.intent.action.MAIN").putExtra("some_msg", msg.arg1);
+//                        MindwaveService.this.sendBroadcast(handlerIntent);
+                        handlerIntent.putExtra("some_msg", Integer.toString(msg.arg1));
+                        MindwaveService.this.sendBroadcast(handlerIntent);
                         //dataSource.clearDatabase();
                         dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att, day, month);
 //						dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att);

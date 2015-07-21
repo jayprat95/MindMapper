@@ -109,6 +109,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
         // Set up initial screen layout and button listeners
         attentionText = (TextView) view.findViewById(R.id.attentionCircle);
+        activity.instantiateView(attentionText);
         location = (TextView) view.findViewById(R.id.locationTextView);
         location.setText(activity.getLocation());
         location.setSingleLine(true);
