@@ -46,12 +46,12 @@
 	</FrameLayout>
 
 
-    <include
-        android:id="@+id/sliding_tab_tool_bar"
-        layout="@layout/sliding_tab_tool_bar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        />
+    <!--<include-->
+        <!--android:id="@+id/sliding_tab_tool_bar"-->
+        <!--layout="@layout/sliding_tab_tool_bar"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="match_parent"-->
+        <!--/>-->
 
     <edu.engagement.application.SlidingTab.SlidingTabLayout
         android:id="@+id/tabs"

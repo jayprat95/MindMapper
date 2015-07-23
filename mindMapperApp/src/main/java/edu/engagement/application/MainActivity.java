@@ -251,7 +251,7 @@ public class MainActivity extends FragmentActivity{
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
 
-        toolbar = (Toolbar) findViewById(R.id.sliding_tab_tool_bar);
+//        toolbar = (Toolbar) findViewById(R.id.sliding_tab_tool_bar);
         //setSupportActionBar(toolbar);
 
 
@@ -289,7 +289,7 @@ public class MainActivity extends FragmentActivity{
             public void onClick(View v) {
                 if (fabClicked == false) {
                     fabClicked = true;
-                    fab.setText("Annotation");
+//                    fab.setText("Annotation");
                     Toast.makeText(thisActivity, "Connecting to Mind wave device", Toast.LENGTH_LONG).show();
                 }
                 changeState(state.ANNOTATION_STATE);
@@ -339,7 +339,7 @@ public class MainActivity extends FragmentActivity{
         if (someState == state.ANNOTATION_STATE) {
 
             if (realTimeInstantiated) { // If PlacePicker is called, shows the realtime fragment immediately
-                toolbar.setVisibility(View.INVISIBLE);
+//                toolbar.setVisibility(View.INVISIBLE);
                 pager.setVisibility(View.INVISIBLE);
                 tabs.setVisibility(View.INVISIBLE);
                 frameLayout.setVisibility(View.VISIBLE);
@@ -350,7 +350,7 @@ public class MainActivity extends FragmentActivity{
             }
 
         } else {    // Changed from realtime to sliding tab
-            toolbar.setVisibility(View.VISIBLE);
+//            toolbar.setVisibility(View.VISIBLE);
             pager.setVisibility(View.VISIBLE);
             tabs.setVisibility(View.VISIBLE);
             fab.setVisibility(View.VISIBLE);

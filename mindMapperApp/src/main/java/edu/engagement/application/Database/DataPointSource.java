@@ -62,8 +62,8 @@ public class DataPointSource {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_TIMESTAMP, timeStamp);
         values.put(DatabaseHelper.COLUMN_GPS_KEY, gpsKey);
-        values.put(DatabaseHelper.COLUMN_ALPHA, alpha);
-        values.put(DatabaseHelper.COLUMN_BETA, beta);
+        values.put(DatabaseHelper.COLUMN_ALPHA_AVERAGE, alpha);
+        values.put(DatabaseHelper.COLUMN_BETA_AVERAGE, beta);
         values.put(DatabaseHelper.COLUMN_THETA, theta);
 
         database.insert(DatabaseHelper.TABLE_EEG, null, values);

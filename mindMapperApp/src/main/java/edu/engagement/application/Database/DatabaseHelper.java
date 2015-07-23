@@ -14,13 +14,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_ANNOTATION = "table_annotation";
     public static final String TABLE_RAW = "table_raw";
     public static final String COLUMN_TIMESTAMP = "Timestamp";
-    public static final String COLUMN_ALPHA = "Alpha";
-    public static final String COLUMN_BETA = "Beta";
+    public static final String COLUMN_USER_ANNOTATION = "UserAnnotation";
+    public static final String COLUMN_SUBJECTIVE_ATTENTION = "SubjectiveAttention";
+    public static final String COLUMN_ALPHA_AVERAGE = "Alpha_Average";
+    public static final String COLUMN_ALPHA1 = "Alpha_1";
+    public static final String COLUMN_ALPHA2 = "Alpha_2";
+    public static final String COLUMN_BETA_AVERAGE = "Beta_Average";
+    public static final String COLUMN_BETA1 = "Beta_1";
+    public static final String COLUMN_BETA2 = "Beta_2";
     public static final String COLUMN_THETA = "Theta";
     public static final String COLUMN_HEARTRATE = "Heartrate";
     public static final String COLUMN_ATTENTION = "Attention";
-    public static final String COLUMN_USER_ANNOTATIOIN = "UserAnnotation";
-    public static final String COLUMN_SUBJECTIVE_ATTENTION = "Subjective_Attention";
     public static final String COLUMN_CH1 = "Ch1";
     public static final String COLUMN_CH2 = "Ch2";
     public static final String COLUMN_CH3 = "Ch3";
@@ -33,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LONGITUDE = "Longitude";
     public static final String COLUMN_ACCURACY = "Accuracy";
     public static final String COLUMN_GPS_KEY = "gps_key";
+    public static final String COLUMN_LOCATION_NAME = "LocationName";
 
 
     public static final String COLUMN_MONTH = "month";
@@ -46,8 +51,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE_EEG = "CREATE TABLE IF NOT EXISTS "
             + TABLE_EEG + "(" + COLUMN_TIMESTAMP + " INTEGER, "
             + COLUMN_GPS_KEY + " INTEGER, "
-            + COLUMN_ALPHA + " REAL, "
-            + COLUMN_BETA + " REAL, "
+            + COLUMN_ALPHA_AVERAGE + " REAL, "
+            + COLUMN_ALPHA1 + " REAL, "
+            + COLUMN_ALPHA2 + " REAL, "
+            + COLUMN_BETA_AVERAGE + " REAL, "
+            + COLUMN_BETA1 + " REAL, "
+            + COLUMN_BETA2 + " REAL, "
             + COLUMN_THETA + " REAL"
             + " );";
 
@@ -58,10 +67,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " );";
 
 //  private static final String DATABASE_CREATE_ATTENTION = "CREATE TABLE IF NOT EXISTS "
-//		  + TABLE_ATTENTION + "(" + COLUMN_TIMESTAMP + " INTEGER, "
-//		  + COLUMN_GPS_KEY + " INTEGER, "
-//		  + COLUMN_ATTENTION + " REAL"
-//	      + " );";
+//        + TABLE_ATTENTION + "(" + COLUMN_TIMESTAMP + " INTEGER, "
+//        + COLUMN_GPS_KEY + " INTEGER, "
+//        + COLUMN_ATTENTION + " REAL"
+//        + " );";
 
     private static final String DATABASE_CREATE_ATTENTION = "CREATE TABLE IF NOT EXISTS "
             + TABLE_ATTENTION + "(" + COLUMN_TIMESTAMP + " INTEGER, "
@@ -70,11 +79,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_MONTH + " INTEGER, "
             + COLUMN_DAY + " INTEGER"
             + " );";
+
     private static final String DATABASE_CREATE_ANNOTATION = "CREATE TABLE IF NOT EXISTS "
             + TABLE_ANNOTATION + "(" + COLUMN_TIMESTAMP + " INTEGER, "
-            + COLUMN_SUBJECTIVE_ATTENTION + " REAL, "
-            + COLUMN_USER_ANNOTATIOIN + " VARCHAR"
+            + COLUMN_USER_ANNOTATION + " VARCHAR, "
+            + COLUMN_SUBJECTIVE_ATTENTION + " INTEGER " // 1 - 5 scale
             + " );";
+
     private static final String DATABASE_CREATE_RAW = "CREATE TABLE IF NOT EXISTS "
             + TABLE_RAW + "(" + COLUMN_TIMESTAMP + " INTEGER, "
             + COLUMN_GPS_KEY + " INTEGER, "
@@ -95,6 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_LATITUDE + " REAL, "
             + COLUMN_LONGITUDE + " REAL, "
             + COLUMN_ACCURACY + " REAL"
+            + COLUMN_LOCATION_NAME + " VARCHAR"
             + " );";
 
     public DatabaseHelper(Context context) {
@@ -127,7 +139,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        Log.i("!!!!!"+ DatabaseHelper.class.getName(),
 //                "Upgrading database from version " + oldVersion + " to "
 //                        + newVersion + ", which will destroy all old data");
-        Log.i("!"+ "-----", "Let see if this works!!!!!!!!!!!!!");
+        Log.i("!" + "-----", "Let see if this works!!!!!!!!!!!!!");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_HR);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GPS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EEG);
