@@ -56,12 +56,12 @@ public class SlidingDrawer{
                 R.string.drawer_close  /* "close drawer" description */
         ) {
  
-            /** Called when a drawer has settled in a completely closed state. */
+            /** Called when a drawer has settled in a completely closed ApplicationState. */
             public void onDrawerClosed(View view) {
             	listener.getActionBar().setTitle(listener.getTitle());
             }
  
-            /** Called when a drawer has settled in a completely open state. */
+            /** Called when a drawer has settled in a completely open ApplicationState. */
             public void onDrawerOpened(View drawerView) {
             	listener.getActionBar().setTitle(listener.getTitle());
             }

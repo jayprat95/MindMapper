@@ -176,7 +176,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
         switch (view.getId()) {
             case R.id.real_time_fragment_close:
-                activity.changeState(MainActivity.state.SLIDING_TABS_STATE);
+                activity.changeState(MainActivity.ApplicationState.REFLECTION);
                 break;
             case R.id.start:
                 // TODO start recording and timer
@@ -190,10 +190,6 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 timer.setFormat("[Total Time: %s]");
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
-
-                // Start reading data from EEG
-                startService();
-
 
                 break;
             case R.id.pause:
@@ -231,7 +227,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                         stopService();
 
                         // Move back to the graph view
-                        activity.changeState(MainActivity.state.SLIDING_TABS_STATE);
+                        activity.changeState(MainActivity.ApplicationState.REFLECTION);
                         activity.pagerChange(1);
                     }
                 });
@@ -285,7 +281,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 Toast.makeText(activity.getApplicationContext(), toastMsg,
                         Toast.LENGTH_LONG).show();
             }
-            activity.changeState(MainActivity.state.ANNOTATION_STATE);
+            activity.changeState(MainActivity.ApplicationState.RECORDING);
         }
     }
 

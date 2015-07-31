@@ -1,6 +1,5 @@
 package edu.engagement.application;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -20,7 +19,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,9 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.FrameLayout;
 
-import org.apache.log4j.chainsaw.Main;
-
-import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Fragments.BaselineFragment;
 import edu.engagement.application.Fragments.DatabaseFragment;
 import edu.engagement.application.Fragments.GraphListFragment;
@@ -292,10 +287,10 @@ public class MainActivity extends FragmentActivity{
 //                    fab.setText("Annotation");
                     Toast.makeText(thisActivity, "Connecting to Mind wave device", Toast.LENGTH_LONG).show();
                 }
-                changeState(state.ANNOTATION_STATE);
+                changeState(ApplicationState.RECORDING);
 
                 /** If Jayanth wants to work on the real time eeg data uncommon this line to start the service */
-//                startService();
+                startService();
             }
         });
         /** End of Fab Button Shit */
@@ -329,14 +324,14 @@ public class MainActivity extends FragmentActivity{
     }
 
     /**
-     * Changes the apps's gobal state, and all
-     * relevant GUI will change to reflect on the state*
+     * Changes the apps's gobal ApplicationState, and all
+     * relevant GUI will change to reflect on the ApplicationState*
      *
-     * @param someState a new state
+     * @param someState a new ApplicationState
      */
-    public void changeState(state someState) {
+    public void changeState(ApplicationState someState) {
 
-        if (someState == state.ANNOTATION_STATE) {
+        if (someState == ApplicationState.RECORDING) {
 
             if (realTimeInstantiated) { // If PlacePicker is called, shows the realtime fragment immediately
 //                toolbar.setVisibility(View.INVISIBLE);
@@ -386,7 +381,7 @@ public class MainActivity extends FragmentActivity{
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
+        // Sync the toggle ApplicationState after onRestoreInstanceState has occurred.
         //drawer.getDrawerToggle().syncState();
     }
 
@@ -630,8 +625,7 @@ public class MainActivity extends FragmentActivity{
         attentionView = tv;
     }
 
-    public enum state {
-        ANNOTATION_STATE, SLIDING_TABS_STATE;
-
+    public enum ApplicationState {
+        PRE_RECORDING, RECORDING, REFLECTION;
     }
 }

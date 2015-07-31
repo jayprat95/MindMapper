@@ -165,16 +165,16 @@ public class RangeGraphFragment extends AbstractGraphFragment {
     // Suspend UI updates, threads, or CPU intensive processes
     // that don't need to be updated when the Activity isn't
     // the active foreground activity.
-    // Persist all edits or state changes
+    // Persist all edits or ApplicationState changes
     // as after this call the process is likely to be killed.
     super.onPause();
   }
 
-  // Called to save UI state changes at the
+  // Called to save UI ApplicationState changes at the
   // end of the active lifecycle.
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
-    // Save UI state changes to the savedInstanceState.
+    // Save UI ApplicationState changes to the savedInstanceState.
     // This bundle will be passed to onCreate, onCreateView, and
     // onCreateView if the parent Activity is killed and restarted.
     super.onSaveInstanceState(savedInstanceState);

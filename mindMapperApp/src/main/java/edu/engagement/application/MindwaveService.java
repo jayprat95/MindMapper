@@ -289,7 +289,7 @@ public class MindwaveService extends Service {
         public void onReceive(Context context, Intent intent) {
             Bundle b = intent.getExtras();
             BluetoothDevice device = adapter.getRemoteDevice(b.get("android.bluetooth.device.extra.DEVICE").toString());
-            Log.d("Bond state", "BOND_STATED = " + device.getBondState());
+            Log.d("Bond ApplicationState", "BOND_STATED = " + device.getBondState());
         }
     }
     private void toastFromHandler(String str) {
@@ -307,60 +307,52 @@ public class MindwaveService extends Service {
                 case TGDevice.MSG_STATE_CHANGE:
                     switch (msg.arg1) {
                         case TGDevice.STATE_IDLE:
+                            Log.i(App.NAME, "Device State: Idle");
                             break;
 
                         case TGDevice.STATE_CONNECTING:
-                            Toast.makeText(getApplicationContext(), "MindWave Connecting...", Toast.LENGTH_SHORT).show();
+                            Log.i(App.NAME, "Device State: Connecting");
                             break;
 
                         case TGDevice.STATE_CONNECTED:
-//						//########SEND MESSAGE TO CHANGE TO THE CONNECTED PLUG
-//
-                            Toast.makeText(getApplicationContext(), "MindWave Connected", Toast.LENGTH_SHORT).show();
-//						EEGConnected = true;
-//						//this quits the app
-////						if (/*HRConnected &&*/ EEGConnected)
-////						{
-////							mActionMode.finish();
-////						}
+                            Log.i(App.NAME, "Device State: Connected");
+                            Log.i(App.NAME, "Starting device...");
                             tgDevice.start();
                             break;
 
+                        // This state happens when the EEG device cannot be found.
+                        // Sources of error:
+                        //      - EEG turned off
+                        //      - Bluetooth turned off
+                        case TGDevice.STATE_NOT_FOUND:
+                            Log.i(App.NAME, "Device State: Not found");
+                            break;
+
                         case TGDevice.STATE_NOT_PAIRED:
-                            Toast.makeText(getApplicationContext(), "MindWave Not Paired", Toast.LENGTH_SHORT).show();
+                            Log.i(App.NAME, "Device State: Not Paired");
                             break;
 
                         case TGDevice.STATE_DISCONNECTED:
-//						EEGConnected = false;
-//						mActionMode = startActionMode(mActionModeCallback);
+                            Log.i(App.NAME, "Device State: Disconnected");
                             break;
                     }
 
                     break;
 
                 case TGDevice.MSG_POOR_SIGNAL:
-
+                    Log.i(App.NAME, "Device State: Connected- Poor Signal: " + msg.arg1);
                     break;
                 case TGDevice.MSG_RAW_DATA:
-                    //#######SAVE ALL RATA DATA
-
-
-                    //System.out.println("Raw Data: " + msg.arg1);
                     break;
                 //testing this out. does it get heart rate?
                 case TGDevice.MSG_HEART_RATE:
-                    System.out.println("Heart rate: " + msg.arg1);
                     break;
                 //testing this out too.
                 case TGDevice.MSG_MEDITATION:
-                    int med = msg.arg1;
-//					if(med != 0){
-//						dataSource.createDataPointMeditation(System.currentTimeMillis(), gpsKey, med);  // TODO: enable this when we need actual data
-                    System.out.println("MindwaveService: Gathereed Meditation Data: " + med);
-//					}
-
                     break;
                 case TGDevice.MSG_ATTENTION:
+
+                    Log.i(App.NAME, "Device State: Connected- Attention: " + msg.arg1);
 
                     Calendar c = Calendar.getInstance();
                     int day = c.get(Calendar.DAY_OF_MONTH);
@@ -375,15 +367,9 @@ public class MindwaveService extends Service {
 
                     int att = msg.arg1;
                     if (att != 0) {
-//                        handlerIntent = new Intent("android.intent.action.MAIN").putExtra("some_msg", msg.arg1);
-//                        MindwaveService.this.sendBroadcast(handlerIntent);
                         handlerIntent.putExtra("some_msg", Integer.toString(msg.arg1));
                         MindwaveService.this.sendBroadcast(handlerIntent);
-                        //dataSource.clearDatabase();
                         dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att, day, month);
-//						dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att);
-                        Log.w(MindwaveService.class.getName(), "MindwaveService: Gathereed Attention Data: " + att);
-//						System.out.println("MindwaveService: Gathereed Attention Data: " + att);
 
 
                     }
@@ -427,8 +413,6 @@ public class MindwaveService extends Service {
 //					double ch8 = eegRaw.ch8;
 //
 //					dataSource.createDataPointRaw(System.currentTimeMillis(), gpsKey, ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8);
-
-                    System.out.println("Gathereed Raw Data");
                     break;
 
                 default:
