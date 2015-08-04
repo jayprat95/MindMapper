@@ -1,13 +1,5 @@
 package edu.engagement.application;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.LinkedList;
-import java.util.Queue;
-
-
-//import zephyr.android.HxMBT.BTClient;
-//import zephyr.android.HxMBT.ZephyrProtocol;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -20,19 +12,19 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.FrameLayout;
 
-import org.apache.log4j.chainsaw.Main;
+import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.Queue;
 
-import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Fragments.BaselineFragment;
 import edu.engagement.application.Fragments.DatabaseFragment;
 import edu.engagement.application.Fragments.GraphListFragment;
@@ -42,7 +34,11 @@ import edu.engagement.application.Fragments.RealTimeDataFragment;
 import edu.engagement.application.Fragments.ReflectionGraphFragment;
 import edu.engagement.application.Fragments.SummaryFragment;
 import edu.engagement.application.Fragments.XYGraphFragment;
-import edu.engagement.application.SlidingTab.*;
+import edu.engagement.application.SlidingTab.SlidingTabLayout;
+import edu.engagement.application.SlidingTab.ViewPagerAdapter;
+
+//import zephyr.android.HxMBT.BTClient;
+//import zephyr.android.HxMBT.ZephyrProtocol;
 
 /**
  * MainActivity June 16
@@ -633,5 +629,7 @@ public class MainActivity extends FragmentActivity{
     public enum state {
         ANNOTATION_STATE, SLIDING_TABS_STATE;
 
+
     }
+
 }

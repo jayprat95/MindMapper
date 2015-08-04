@@ -10,40 +10,39 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/real_time_fragment_close"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="right|center_vertical"
-            android:background="@android:drawable/btn_dialog" />
+        <!--<Button-->
+            <!--android:id="@+id/real_time_fragment_close"-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_gravity="right|center_vertical"-->
+            <!--android:background="@android:drawable/btn_dialog" />-->
 
         <TextView
             android:id="@+id/attentionCircle"
-            android:layout_width="175dp"
-            android:layout_height="175dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="50dp"
             android:background="@drawable/fab_circle"
-            android:gravity="center_horizontal"
-            android:paddingTop="30dp"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
             android:text="0"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="62sp" />
 
         <Chronometer
             android:id="@+id/elapsedTime"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/attentionCircle"
-            android:layout_alignLeft="@id/attentionCircle"
-            android:layout_alignRight="@id/attentionCircle"
-            android:layout_marginBottom="50dp"
             android:format="[Total Time: 0:00:00]"
             android:gravity="center"
-            android:textSize="13sp" />
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/attentionCircle"
+            android:layout_alignLeft="@+id/attentionCircle"
+            android:layout_alignStart="@+id/attentionCircle"/>
 
         <!-- Linear layout for start/stop/pause/resume buttons -->
         <LinearLayout
@@ -54,7 +53,7 @@
             android:layout_alignRight="@id/attentionCircle"
             android:layout_below="@+id/locationTextView"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
             <Button
@@ -64,7 +63,8 @@
                 android:layout_weight="1"
                 android:background="#4CC94C"
                 android:text="Start"
-                android:visibility="visible" />
+                android:visibility="visible"
+                />
 
             <Button
                 android:id="@+id/pause"
@@ -87,13 +87,13 @@
                 android:visibility="gone" />
 
             <Button
-                android:id="@+id/stop"
+                android:id="@+id/makeNoteButton"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_marginLeft="3dp"
                 android:layout_weight="1"
                 android:background="#ff4444"
-                android:text="Stop"
+                android:text="Make Note"
                 android:visibility="gone" />
         </LinearLayout>
 
@@ -104,107 +104,56 @@
             android:drawableStart="@drawable/ic_dotted_map"
             android:gravity="center_horizontal|center_vertical"
             android:maxLength="26"
-            android:text="Location"
+            android:text="    Location         "
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="19sp"
-            android:layout_alignRight="@+id/seek_bar_layout"
-            android:layout_alignEnd="@+id/seek_bar_layout"
-            android:layout_below="@+id/elapsedTime"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+        <!--<Button-->
+            <!--android:layout_width="175dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:text="Make Notes"-->
+            <!--android:id="@+id/makeNoteButton"-->
+            <!--android:layout_below="@+id/locationTextView"-->
+            <!--android:layout_marginTop="80dp"-->
+            <!--android:background="@color/wallet_holo_blue_light"-->
+            <!--android:layout_centerHorizontal="true"/>-->
 
         <TextView
-            android:id="@+id/annotationInputView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="How attentive are you right now?"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:layout_height="25dp"
+            android:id="@+id/statusTextView"
+            android:text="EEG Status"
             android:gravity="center"
-            android:layout_below="@+id/recordingStateButtons"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="35dp"
+            android:layout_marginTop="13dp"
+            />
 
-        <RelativeLayout
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/statusView"
+
+            android:background="@drawable/green_btn"
+            android:layout_alignBottom="@+id/statusTextView"
+            android:layout_marginRight="7dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/annotationInputView"
-            android:layout_weight="1"
-            android:id="@+id/seek_bar_layout"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
+            android:text="Test"
+            android:id="@+id/testButton"
+            android:layout_below="@+id/statusTextView"
+            android:layout_alignRight="@+id/statusTextView"
+            android:layout_alignEnd="@+id/statusTextView"/>
 
-            <SeekBar
-                android:id="@+id/annotation_bar"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="false"
-                android:max="4"
-                android:progress="0"
-                android:progressDrawable="@drawable/progressbar"
-                android:secondaryProgress="0"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:id="@+id/textViewLow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/annotation_bar"
-                android:layout_below="@+id/annotation_bar"
-                android:text="Low" />
-
-            <TextView
-                android:id="@+id/textViewMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/annotation_bar"
-                android:layout_centerHorizontal="true"
-                android:text="Medium" />
-
-            <TextView
-                android:id="@+id/textViewHigh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@id/annotation_bar"
-                android:layout_below="@+id/annotation_bar"
-                android:text="High" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_below="@+id/seek_bar_layout"
-            android:layout_alignLeft="@+id/annotationInputView"
-            android:layout_alignStart="@+id/annotationInputView"
-            android:layout_alignRight="@+id/annotationInputView"
-            android:layout_alignEnd="@+id/annotationInputView"
-            android:layout_alignParentBottom="true">
-
-            <Button
-                android:id="@+id/submit"
-                android:layout_width="225dp"
-                android:layout_height="50dp"
-                android:background="@color/wallet_holo_blue_light"
-                android:text="Save Annotation"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/annotationInput"
-                android:layout_centerHorizontal="true" />
-
-            <EditText
-                android:id="@+id/annotationInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Describe your experience"
-                android:textSize="15sp"
-                android:layout_alignParentTop="true"
-                android:layout_alignLeft="@+id/submit"
-                android:layout_alignStart="@+id/submit"
-                android:layout_alignRight="@+id/submit"
-                android:layout_alignEnd="@+id/submit" />
-        </RelativeLayout>
 
     </RelativeLayout>
 
