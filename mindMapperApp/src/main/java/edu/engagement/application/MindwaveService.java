@@ -23,10 +23,12 @@ import com.neurosky.thinkgear.TGDevice;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
+import java.util.List;
 
 import edu.engagement.application.Database.DataPointSource;
+import edu.engagement.application.Eeg.EegListener;
 
 //import com.google.android.gms.location.LocationListener;
 
@@ -36,6 +38,10 @@ public class MindwaveService extends Service {
     final boolean rawEnabled = true;
     private final Handler handler = new Handler(new HandlerClass());
     private Intent handlerIntent = new Intent("android.intent.action.MAIN");
+
+    // Listeners for Eeg events
+    private List<EegListener> listeners = new ArrayList<>();
+
     // Acquire a reference to the system Location Manager
     LocationManager locationManager;
     BluetoothAdapter adapter = null;
@@ -248,6 +254,14 @@ public class MindwaveService extends Service {
         System.out.println("Close service DB connection");
     }
 
+    /**
+     * Adds a listener that will receive eeg state changes and data.
+     * @param listener the listener to add
+     */
+    public void addEegListener(EegListener listener) {
+        listeners.add(listener);
+    }
+
     private class BTBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -292,9 +306,6 @@ public class MindwaveService extends Service {
             Log.d("Bond ApplicationState", "BOND_STATED = " + device.getBondState());
         }
     }
-    private void toastFromHandler(String str) {
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-    }
 
     /**
      * Internal callback handler class
@@ -306,17 +317,13 @@ public class MindwaveService extends Service {
             switch (msg.what) {
                 case TGDevice.MSG_STATE_CHANGE:
                     switch (msg.arg1) {
-                        case TGDevice.STATE_IDLE:
-                            Log.i(App.NAME, "Device State: Idle");
-                            break;
-
                         case TGDevice.STATE_CONNECTING:
-                            Log.i(App.NAME, "Device State: Connecting");
+                            Log.d(App.NAME, "Device State: Connecting");
                             break;
 
                         case TGDevice.STATE_CONNECTED:
-                            Log.i(App.NAME, "Device State: Connected");
-                            Log.i(App.NAME, "Starting device...");
+                            Log.d(App.NAME, "Device State: Connected");
+                            Log.d(App.NAME, "Starting device...");
                             tgDevice.start();
                             break;
 
@@ -325,15 +332,15 @@ public class MindwaveService extends Service {
                         //      - EEG turned off
                         //      - Bluetooth turned off
                         case TGDevice.STATE_NOT_FOUND:
-                            Log.i(App.NAME, "Device State: Not found");
+                            Log.d(App.NAME, "Device State: Not found");
                             break;
 
                         case TGDevice.STATE_NOT_PAIRED:
-                            Log.i(App.NAME, "Device State: Not Paired");
+                            Log.d(App.NAME, "Device State: Not Paired");
                             break;
 
                         case TGDevice.STATE_DISCONNECTED:
-                            Log.i(App.NAME, "Device State: Disconnected");
+                            Log.d(App.NAME, "Device State: Disconnected");
                             break;
                     }
 
@@ -343,12 +350,6 @@ public class MindwaveService extends Service {
                     Log.i(App.NAME, "Device State: Connected- Poor Signal: " + msg.arg1);
                     break;
                 case TGDevice.MSG_RAW_DATA:
-                    break;
-                //testing this out. does it get heart rate?
-                case TGDevice.MSG_HEART_RATE:
-                    break;
-                //testing this out too.
-                case TGDevice.MSG_MEDITATION:
                     break;
                 case TGDevice.MSG_ATTENTION:
 
