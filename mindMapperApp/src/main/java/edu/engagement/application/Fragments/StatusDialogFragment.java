@@ -50,7 +50,7 @@ public class StatusDialogFragment extends DialogFragment{
         counterView.setText("    [ " + counter + " ]  minutes");
         //counter down
         final Timer T = new Timer();
-
+        //
         T.scheduleAtFixedRate(new TimerTask() {
             int temp = counter - 1;
             @Override
