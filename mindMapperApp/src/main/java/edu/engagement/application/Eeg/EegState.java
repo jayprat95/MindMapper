@@ -5,5 +5,7 @@ package edu.engagement.application.Eeg;
  */
 public enum EegState {
     CONNECTED,
-    DISCONNECTED
+    DISCONNECTED,
+    GOOD_SIGNAL,
+    POOR_SIGNAL
 }

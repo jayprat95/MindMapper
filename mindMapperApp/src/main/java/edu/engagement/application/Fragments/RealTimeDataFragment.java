@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,6 +36,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.Queue;
 
+import edu.engagement.application.App;
 import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.MindwaveService;
@@ -43,6 +45,8 @@ import edu.engagement.application.R;
 public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
     private MainActivity activity;
+
+    private RealTimeListener realTimeListener;
 
     private TextView attentionText;
     private ImageView drawingImageView;
@@ -61,7 +65,6 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     private AttentionLevel attentionLevel;
 
     // CLOSE button
-    private Button closeButton;
     private Button startButton;
     private Button stopButton;
     private Button pauseButton;
@@ -76,6 +79,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity = (MainActivity) activity;
+        this.realTimeListener = (RealTimeListener) activity;
     }
 
     @Override
@@ -109,7 +113,6 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
         // Set up initial screen layout and button listeners
         attentionText = (TextView) view.findViewById(R.id.attentionCircle);
-        activity.instantiateView(attentionText);
         location = (TextView) view.findViewById(R.id.locationTextView);
         location.setText(activity.getLocation());
         location.setSingleLine(true);
@@ -129,11 +132,6 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         pauseButton.setOnClickListener(this);
         resumeButton.setOnClickListener(this);
         submitButton.setOnClickListener(this);
-
-
-        // Close Button
-        closeButton = (Button) view.findViewById(R.id.real_time_fragment_close);
-        closeButton.setOnClickListener(this);
 
         attentionLevel = AttentionLevel.LOW;
         annotationBar = (SeekBar) view.findViewById(R.id.annotation_bar);
@@ -175,9 +173,6 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     public void onClick(View view) {
 
         switch (view.getId()) {
-            case R.id.real_time_fragment_close:
-                activity.changeState(MainActivity.ApplicationState.REFLECTION);
-                break;
             case R.id.start:
                 // TODO start recording and timer
 
@@ -191,6 +186,8 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
 
+                realTimeListener.onRecordingStarted();
+
                 break;
             case R.id.pause:
                 Toast.makeText(getActivity(), "recording paused", Toast.LENGTH_SHORT).show();
@@ -200,6 +197,8 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 resumeButton.setVisibility(View.VISIBLE);
 
                 stopTimer();
+
+                realTimeListener.onRecordingStopped();
                 break;
             case R.id.resume:
                 Toast.makeText(getActivity(), "recording resumed", Toast.LENGTH_SHORT).show();
@@ -209,10 +208,10 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 pauseButton.setVisibility(View.VISIBLE);
 
                 startTimer();
+
+                realTimeListener.onRecordingStarted();
                 break;
             case R.id.stop:
-                // TODO display confirmation message before stopping recording
-
                 stopTimer();
 
                 // display confirm dialog
@@ -226,6 +225,8 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                         // Stop reading data from EEG
                         stopService();
 
+                        realTimeListener.onRecordingStopped();
+
                         // Move back to the graph view
                         activity.changeState(MainActivity.ApplicationState.REFLECTION);
                         activity.pagerChange(1);
@@ -236,6 +237,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                         startTimer();
+                        realTimeListener.onRecordingStarted();
                         Toast.makeText(getActivity(), "resumed recording", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -276,75 +278,21 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
                 // Save the bundle into the activity
                 activity.getIntent().putExtras(bundle);
+            } else {
+                Log.d(App.NAME, "PlacePicker cancelled!");
 
-                String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(activity.getApplicationContext(), toastMsg,
-                        Toast.LENGTH_LONG).show();
+                // Stop EEG service
+                stopService();
+
+                // Move back to the graph view
+                activity.changeState(MainActivity.ApplicationState.REFLECTION);
+                activity.pagerChange(1);
             }
-            activity.changeState(MainActivity.ApplicationState.RECORDING);
         }
     }
 
-    public void setAttention(Queue<Integer> attentionLevels) {
-        System.out.println("attention text view initialized");
-
-//        Integer[] levels = attentionLevels.toArray();
-
-        if (attentionText != null) {
-            if (!attentionLevels.isEmpty()) {
-//        		attentionText.setText(attentionLevels.peek().toString());
-                attentionText.setText(attentionLevels.toString());
-                attentionText.setVisibility(View.VISIBLE);
-
-                Bitmap bitmap = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-
-                // Circle
-
-//      		    Paint paint = new Paint();
-//      		    paint.setColor(Color.GREEN);
-//      		    paint.setStyle(Paint.Style.STROKE);
-//      		    paint.setStrokeWidth(5);
-                float x = 100;
-                float y = 100;
-                //float radius = 20;
-
-                while (!attentionLevels.isEmpty()) {
-                    Paint paint = new Paint();
-                    paint.setColor(Color.parseColor("#0A96D1"));//Color.GREEN);
-                    paint.setStyle(Paint.Style.STROKE);
-                    paint.setAntiAlias(true);
-                    paint.setStrokeWidth((float) (Math.random() * 6));
-                    //added a +5 to test without the headset on aka 0
-                    canvas.drawCircle(x, y, attentionLevels.poll().intValue() + 5, paint);
-//      		    	canvas.drawCircle(x, y, attentionLevels.peek().intValue()+5, paint);
-                }
-
-                drawingImageView.setImageBitmap(bitmap);
-            }
-//			attentionText.setText(attention);
-//			attentionText.setVisibility(View.VISIBLE);
-
-//		    Bitmap bitmap = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
-//		    Canvas canvas = new Canvas(bitmap);
-//		    drawingImageView.setImageBitmap(bitmap);
-//
-//		    // Circle
-//
-//		    Paint paint = new Paint();
-//		    paint.setColor(Color.GREEN);
-//		    paint.setStyle(Paint.Style.STROKE);
-//		    paint.setStrokeWidth(5);
-//		    float x = 100;
-//		    float y = 100;
-//		    //float radius = 20;
-//		    canvas.drawCircle(x, y, Integer.parseInt(attention), paint);
-        }
-    }
-
-
-    public void setAttText(String str) {
-        this.attentionText.setText(str);
+    public void setAttention(int attention) {
+        attentionText.setText(String.valueOf(attention));
     }
 
     private void setProgressBarColor(SeekBar seekBar, int newColor) {
@@ -364,42 +312,15 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     }
 
     /**
-     * Start EEG service
-     */
-    private void startService() {
-
-//		/* Place Picker Experiment */
-//        int PLACE_PICKER_REQUEST = 1;
-//        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-//        Context context = activity.getApplicationContext();
-//        try {
-//            // Start the intent by requesting a result,
-//            // identified by a request code.
-//            startActivityForResult(builder.build(context), PLACE_PICKER_REQUEST);
-//            // PlacePicker.getPlace(builder, context);
-//
-//        } catch (GooglePlayServicesRepairableException e1) {
-//            // TODO Auto-generated catch block
-//            e1.printStackTrace();
-//        } catch (GooglePlayServicesNotAvailableException e1) {
-//            // TODO Auto-generated catch block
-//            e1.printStackTrace();
-//        }
-
-        Toast.makeText(getActivity(), "recording started", Toast.LENGTH_SHORT).show();
-        activity.startService(new Intent(activity.getBaseContext(),
-                MindwaveService.class));
-
-    }
-
-    /**
      * Stop EEG service
      */
     private void stopService() {
+        activity.stopService();
+    }
 
-        Toast.makeText(getActivity(), "stopped recording", Toast.LENGTH_SHORT).show();
-        activity.stopService(new Intent(activity.getBaseContext(),
-                MindwaveService.class));
+    public interface RealTimeListener {
+        void onRecordingStarted();
+        void onRecordingStopped();
     }
 }
 

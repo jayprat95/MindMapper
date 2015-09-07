@@ -10,16 +10,6 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/real_time_fragment_close"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="right|center_vertical"
-            android:background="@android:drawable/btn_dialog" />
-
         <TextView
             android:id="@+id/attentionCircle"
             android:layout_width="175dp"

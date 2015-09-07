@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -29,15 +30,13 @@ import java.util.List;
 
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Eeg.EegListener;
+import edu.engagement.application.Eeg.EegState;
 
-//import com.google.android.gms.location.LocationListener;
 
 public class MindwaveService extends Service {
 
     public static final String GPS_KEY = "gpskey";
-    final boolean rawEnabled = true;
     private final Handler handler = new Handler(new HandlerClass());
-    private Intent handlerIntent = new Intent("android.intent.action.MAIN");
 
     // Listeners for Eeg events
     private List<EegListener> listeners = new ArrayList<>();
@@ -48,18 +47,27 @@ public class MindwaveService extends Service {
     TGDevice tgDevice = null;
     DataPointSource dataSource = null;
     int gpsKey = 0;
-    /**
-     * indicates how to behave if the service is killed
-     */
-    int mStartMode = START_NOT_STICKY;
-    /**
+
+    /*
      * interface for clients that bind
      */
-    IBinder mBinder;
-    /**
-     * indicates whether onRebind should be used
+    private final IBinder binder = new MindwaveBinder();
+
+    /*
+     * whether or not the service is connected to the EEG device
      */
-    boolean mAllowRebind;
+    private boolean connected = false;
+
+    /*
+     * whether or not the EEG is in a poor signal state
+     */
+    private boolean goodSignal = true;
+
+    /*
+     * whether or not data is being saved
+     */
+    private boolean recording = false;
+
     // Define a listener that responds to location updates
     LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
@@ -91,7 +99,7 @@ public class MindwaveService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+        Log.d(App.NAME, "MindwaveService started");
 
         /**** DATABASE STUFF ****/
         dataSource = new DataPointSource(this.getApplicationContext());
@@ -110,7 +118,7 @@ public class MindwaveService extends Service {
 
         System.out.println("Requested Location Updates from Location Manager");
 
-        return mStartMode;
+        return START_NOT_STICKY;
     }
 
 //	    //Generate temporary GPS test data
@@ -157,7 +165,7 @@ public class MindwaveService extends Service {
             }
             if (tgDevice.getState() != TGDevice.STATE_CONNECTING
                     && tgDevice.getState() != TGDevice.STATE_CONNECTED)
-                tgDevice.connect(rawEnabled);
+                tgDevice.connect(false);
         }
 //			}
     }
@@ -218,17 +226,7 @@ public class MindwaveService extends Service {
      */
     @Override
     public IBinder onBind(Intent intent) {
-        Toast.makeText(this, "Service Bind", Toast.LENGTH_LONG).show();
-        return mBinder;
-    }
-
-    /**
-     * Called when all clients have unbound with unbindService()
-     */
-    @Override
-    public boolean onUnbind(Intent intent) {
-        Toast.makeText(this, "Service Unbind", Toast.LENGTH_LONG).show();
-        return mAllowRebind;
+        return binder;
     }
 
     /**
@@ -244,14 +242,27 @@ public class MindwaveService extends Service {
      */
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
+        Log.d(App.NAME, "MindwaveService destroyed!");
 
         // Remove the listener previously added
         locationManager.removeUpdates(locationListener);
-        System.out.println("Stop listening for location updates");
+        Log.d(App.NAME, "Stop listening for location updates");
 
         dataSource.close();
-        System.out.println("Close service DB connection");
+    }
+
+    /**
+     * Allows received data from EEG Device to be saved to the database.
+     */
+    public void startRecording() {
+        recording = true;
+    }
+
+    /**
+     * Stops received data form EEG Device from being saved to the database.
+     */
+    public void stopRecording() {
+        recording = false;
     }
 
     /**
@@ -260,6 +271,42 @@ public class MindwaveService extends Service {
      */
     public void addEegListener(EegListener listener) {
         listeners.add(listener);
+    }
+
+    /**
+     * Send a state change notification to all eeg listeners
+     * @param state the state change
+     */
+    private void sendStateChangeToListeners(EegState state) {
+        for (EegListener listener : listeners) {
+            listener.onEegStateChange(state);
+        }
+    }
+
+    /**
+     * Send an attention received notification to all eeg listeners
+     * @param attention the attention value
+     */
+    private void sendAttentionToListeners(int attention) {
+        for (EegListener listener : listeners) {
+            listener.onEegAttentionReceived(attention);
+        }
+    }
+
+    /**
+     * Determine if the service is connected to the EEG device.
+     * @return true if connected, otherwise false
+     */
+    public boolean isConnected() {
+        return connected;
+    }
+
+    /**
+     * Determine if the service is receiving good data from the EEG device.
+     * @return true if good signal, otherwise false
+     */
+    public boolean isGoodSignal() {
+        return goodSignal;
     }
 
     private class BTBroadcastReceiver extends BroadcastReceiver {
@@ -307,10 +354,26 @@ public class MindwaveService extends Service {
         }
     }
 
+    public class MindwaveBinder extends Binder {
+        public MindwaveService getService() {
+            return MindwaveService.this;
+        }
+    }
+
     /**
      * Internal callback handler class
      */
     class HandlerClass implements Handler.Callback {
+
+        private static final int SIGNAL_QUALITY_THRESHOLD = 50;
+
+        /*
+         * The number of good or bad signals in a row to cause a state change.
+         */
+        private static final int SIGNAL_CONSEC_MAX = 5;
+
+        private int goodSignalConsec = 0;
+        private int poorSignalConsec = 0;
 
         @Override
         public boolean handleMessage(Message msg) {
@@ -324,6 +387,10 @@ public class MindwaveService extends Service {
                         case TGDevice.STATE_CONNECTED:
                             Log.d(App.NAME, "Device State: Connected");
                             Log.d(App.NAME, "Starting device...");
+
+                            connected = true;
+
+                            sendStateChangeToListeners(EegState.CONNECTED);
                             tgDevice.start();
                             break;
 
@@ -341,19 +408,50 @@ public class MindwaveService extends Service {
 
                         case TGDevice.STATE_DISCONNECTED:
                             Log.d(App.NAME, "Device State: Disconnected");
+
+                            connected = false;
+
+                            sendStateChangeToListeners(EegState.DISCONNECTED);
                             break;
                     }
 
                     break;
 
                 case TGDevice.MSG_POOR_SIGNAL:
-                    Log.i(App.NAME, "Device State: Connected- Poor Signal: " + msg.arg1);
+
+                    // Lower integer means higher quality
+                    int signalQuality = msg.arg1;
+
+                    if (signalQuality > SIGNAL_QUALITY_THRESHOLD) {
+
+                        poorSignalConsec++;
+
+                        Log.d(App.NAME, "Poor Signal: " + signalQuality + ". Poor signals in a row: " + poorSignalConsec);
+
+                        if (poorSignalConsec >= SIGNAL_CONSEC_MAX) {
+                            goodSignal = false;
+                            sendStateChangeToListeners(EegState.POOR_SIGNAL);
+
+                            Log.d(App.NAME, "Too many consecutive poor signals. Stopping data collection.");
+
+                            // Reset poor signal counter
+                            poorSignalConsec = 0;
+
+                            // Stop collecting data
+                            tgDevice.stop();
+                        }
+                    } else {
+                        // Reset poor signal in a row counter
+                        poorSignalConsec = 0;
+                    }
                     break;
                 case TGDevice.MSG_RAW_DATA:
                     break;
                 case TGDevice.MSG_ATTENTION:
 
-                    Log.i(App.NAME, "Device State: Connected- Attention: " + msg.arg1);
+                    // If we're not recording, don't save data
+                    if (!recording)
+                        return true;
 
                     Calendar c = Calendar.getInstance();
                     int day = c.get(Calendar.DAY_OF_MONTH);
@@ -361,30 +459,11 @@ public class MindwaveService extends Service {
                     // The Calendar function returns the index of the month. (ex: Jan = 0, Feb = 1)
                     int month = (c.get(Calendar.MONTH) + 1);
 
-//					@SuppressWarnings("deprecation")
-//					//int day = date.getDay();
-//					@SuppressWarnings("deprecation")
-//					//int month = date.getMonth();
-
                     int att = msg.arg1;
                     if (att != 0) {
-                        handlerIntent.putExtra("some_msg", Integer.toString(msg.arg1));
-                        MindwaveService.this.sendBroadcast(handlerIntent);
+                        sendAttentionToListeners(att);
                         dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att, day, month);
-
-
                     }
-
-//					switchToFragment(REAL_TIME_TAG);
-//					setAttentionText(att);
-//					tempCounter++;
-////					System.out.println("temprary counter: " + tempCounter);
-//
-//					if (baselineMode && att != 0) { // Calculate running average
-//						baselineTotal += att;
-//						baselineNum++;
-//					}
-
                     break;
 
                 // Standard Brain Waves
@@ -422,29 +501,4 @@ public class MindwaveService extends Service {
             return true;
         }
     }
-
-//    /** This is for VTURCS 2015. We were not able to finish, and needed some dummy points. */
-//    public void generateDummyDataPoints()
-//    {
-//
-//        // Clear out our data base first
-//         //dataSource.clearDatabase();
-//
-//
-//        Calendar c =  Calendar.getInstance();
-//        int day = c.get(Calendar.DAY_OF_MONTH);
-//
-//        // The Calendar function returns the index of the month. (ex: Jan = 0, Feb = 1)
-//        int month = (c.get(Calendar.MONTH) + 1);
-//
-//        Random r = new Random();
-//
-//        for(int i = 0; i < 200; i ++)
-//        {
-//            int temp = r.nextInt(99) + 1;
-//             /* Dummy Points */
-//            dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, temp , day, month);
-//        }
-//
-//    }
 }

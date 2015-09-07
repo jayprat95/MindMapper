@@ -13,16 +13,13 @@ public class EventSummary {
     private Date start;
     private Date stop;
 
-    private TrophyType trophyType;
-
     private AttentionLevel  selfReportLevel;
     private double          eegData;
 
-    public EventSummary(String location, long start, long stop, TrophyType trophyType, AttentionLevel selfReportLevel, double eegData) {
+    public EventSummary(String location, long start, long stop, AttentionLevel selfReportLevel, double eegData) {
         this.location = location;
         this.start = new Date(start);
         this.stop = new Date(stop);
-        this.trophyType = trophyType;
         this.selfReportLevel = selfReportLevel;
         this.eegData = eegData;
     }
@@ -51,9 +48,5 @@ public class EventSummary {
 
     public String getLocation() {
         return this.location;
-    }
-
-    public String getTrophyMessage() {
-        return trophyType.getMessage();
     }
 }
