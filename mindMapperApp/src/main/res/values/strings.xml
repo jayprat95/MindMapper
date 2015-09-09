@@ -32,5 +32,9 @@
 		<item>4 days</item>
 		<item>5 days</item>
 	</string-array>
+    <string name="title_activity_onboard">OnboardActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
     
 </resources>

@@ -1,13 +1,5 @@
 package edu.engagement.application;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.LinkedList;
-import java.util.Queue;
-
-
-//import zephyr.android.HxMBT.BTClient;
-//import zephyr.android.HxMBT.ZephyrProtocol;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -18,21 +10,27 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.FrameLayout;
 
-import org.apache.log4j.chainsaw.Main;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
-import edu.engagement.application.Database.DataPointSource;
+import edu.engagement.OnboardActivity;
 import edu.engagement.application.Fragments.BaselineFragment;
 import edu.engagement.application.Fragments.DatabaseFragment;
 import edu.engagement.application.Fragments.GraphListFragment;
@@ -42,13 +40,24 @@ import edu.engagement.application.Fragments.RealTimeDataFragment;
 import edu.engagement.application.Fragments.ReflectionGraphFragment;
 import edu.engagement.application.Fragments.SummaryFragment;
 import edu.engagement.application.Fragments.XYGraphFragment;
-import edu.engagement.application.SlidingTab.*;
+import edu.engagement.application.SlidingTab.SlidingTabLayout;
+import edu.engagement.application.SlidingTab.ViewPagerAdapter;
+
+//import zephyr.android.HxMBT.BTClient;
+//import zephyr.android.HxMBT.ZephyrProtocol;
 
 /**
  * MainActivity June 16
  */
 public class MainActivity extends FragmentActivity{
     private BroadcastReceiver receiver;
+
+    //Onboarding Screen
+    private ViewPager onboardPager;
+    private List<View> onboardList;
+    private View onboardPager1;
+    private View onboardPager2;
+    private View onboardPagerStart;
 
     public static final String BASELINE_AVG_KEY = "avg";
     private static final int PORT = 7911;
@@ -242,10 +251,13 @@ public class MainActivity extends FragmentActivity{
 
         setContentView(R.layout.activity_main);
 
+
+        Intent intent = new Intent(this, OnboardActivity.class);
+        startActivity(intent);
+
         frameLayout = (FrameLayout) findViewById(R.id.content_frame);
 
         realTimeInstantiated = false;
-
 
         /** Sliding Tabs Shit */
 
@@ -322,10 +334,50 @@ public class MainActivity extends FragmentActivity{
         /** End of loading debug dataset from src/main/assets and pupulate GPS data**/
 
 
-        //	drawer = new SlidingDrawer(this);
+        //drawer = new SlidingDrawer(this);
 
         //switchToFragment(MAP_TAG);
         //switchToFragment(DATABASE_TAG);
+
+
+        //Onboarding viewpager init
+        onboardPager = (ViewPager) findViewById(R.id.onboardPager);
+
+        onboardList = new ArrayList<View>();
+
+        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+        onboardPager1 = inflater.inflate(R.layout.onboard_pager_1, null);
+        onboardPager2 = inflater.inflate(R.layout.onboard_pager_2, null);
+        onboardPagerStart = inflater.inflate(R.layout.onboard_pager_start, null);
+
+        onboardList.add(onboardPager1);
+        onboardList.add(onboardPager2);
+        onboardList.add(onboardPagerStart);
+
+        onboardPager.setAdapter(new PagerAdapter() {
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                View view = onboardList.get(position);
+                container.addView(view);
+                return view;
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                container.removeView(onboardList.get(position));
+            }
+
+            @Override
+            public int getCount() {
+                return onboardList.size();
+            }
+
+            @Override
+            public boolean isViewFromObject(View view, Object object) {
+                return view == object;
+            }
+        });
+
     }
 
     /**
