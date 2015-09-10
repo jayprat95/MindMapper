@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#F5F5DC">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="How attentive are you right now?"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="60dp"
+
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <SeekBar
+        android:id="@+id/annotation_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:max="4"
+        android:progress="0"
+        android:progressDrawable="@drawable/progressbar"
+        android:secondaryProgress="0"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/textViewLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/annotation_bar"
+        android:layout_below="@+id/annotation_bar"
+        android:layout_marginLeft="15dp"
+        android:text="Low" />
+
+    <TextView
+        android:id="@+id/textViewMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/annotation_bar"
+        android:layout_centerHorizontal="true"
+        android:text="Medium" />
+
+    <TextView
+        android:id="@+id/textViewHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/annotation_bar"
+        android:layout_below="@+id/annotation_bar"
+        android:layout_marginRight="15dp"
+        android:text="High" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/annotation"
+        android:layout_below="@+id/textViewMedium"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:hint="Describe your experience here [Text Input]"/>
+
+    <Button
+        android:id="@+id/saveNotes"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@color/wallet_holo_blue_light"
+        android:text="Save Notes"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/annotation"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/doneButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@android:drawable/btn_dialog"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
+
+
+
+</RelativeLayout>

@@ -170,9 +170,7 @@ public class MainActivity extends FragmentActivity{
         if (!serviceStarted) {
             serviceStarted = true;
 
-
             startService(new Intent(getBaseContext(), MindwaveService.class));
-
         }
 
     }
@@ -259,13 +257,6 @@ public class MainActivity extends FragmentActivity{
 
         realTimeInstantiated = false;
 
-        /** Sliding Tabs Shit */
-
-        // Creating The Toolbar and setting it as the Toolbar for the activity
-
-//        toolbar = (Toolbar) findViewById(R.id.sliding_tab_tool_bar);
-        //setSupportActionBar(toolbar);
-
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
@@ -317,66 +308,6 @@ public class MainActivity extends FragmentActivity{
 
         initActionBar();
 
-        /** Start of loading debug dataset from src/main/assets and populate GPS data**/
-//        // TODO: remove these after finishing the project
-//        DataPointSource dataSource = new DataPointSource(this);
-//        dataSource.open();
-//        if (dataSource.doWeNeedMoreDebugData()) {
-//            try {
-//                dataSource.loadDebugAttentionDataSets(getResources().getAssets().open("EEG_table_attention_data.csv"));
-//                dataSource.loadDebugGPSDataSets(getResources().getAssets().open("EEG_table_gps_data.csv"));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                Log.w(DataPointSource.class.getName(), "!!!IO exception in mainActivity about the csv file");
-//            }
-//        }
-//        dataSource.close();
-        /** End of loading debug dataset from src/main/assets and pupulate GPS data**/
-
-
-        //drawer = new SlidingDrawer(this);
-
-        //switchToFragment(MAP_TAG);
-        //switchToFragment(DATABASE_TAG);
-
-
-        //Onboarding viewpager init
-        onboardPager = (ViewPager) findViewById(R.id.onboardPager);
-
-        onboardList = new ArrayList<View>();
-
-        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-        onboardPager1 = inflater.inflate(R.layout.onboard_pager_1, null);
-        onboardPager2 = inflater.inflate(R.layout.onboard_pager_2, null);
-        onboardPagerStart = inflater.inflate(R.layout.onboard_pager_start, null);
-
-        onboardList.add(onboardPager1);
-        onboardList.add(onboardPager2);
-        onboardList.add(onboardPagerStart);
-
-        onboardPager.setAdapter(new PagerAdapter() {
-            @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                View view = onboardList.get(position);
-                container.addView(view);
-                return view;
-            }
-
-            @Override
-            public void destroyItem(ViewGroup container, int position, Object object) {
-                container.removeView(onboardList.get(position));
-            }
-
-            @Override
-            public int getCount() {
-                return onboardList.size();
-            }
-
-            @Override
-            public boolean isViewFromObject(View view, Object object) {
-                return view == object;
-            }
-        });
 
     }
 
@@ -485,141 +416,8 @@ public class MainActivity extends FragmentActivity{
                         REAL_TIME_TAG).commit();
             }
         }
-//
-//			} else if (FRAGMENT_TAG.equals(REAL_TIME_TAG)) {
-//                if (realFragment == null)
-//                    realFragment = new RealTimeDataFragment();
-//                fragmentTransaction.replace(R.id.content_frame, realFragment,
-//						REAL_TIME_TAG).commit();
-//				realTime = true;
-//			} else if (FRAGMENT_TAG.equals(GRAPH_LIST_TAG)) {
-//				graphFragment = new GraphListFragment();
-//				fragmentTransaction.replace(R.id.content_frame, graphFragment,
-//						GRAPH_LIST_TAG).commit();
-//
-//				xyGraphFragment = new XYGraphFragment();
-//				fragmentTransaction = fragmentManager.beginTransaction();
-//				fragmentTransaction.replace(R.id.fragment1, xyGraphFragment,
-//						XY_GRAPH_TAG).commit();
-//
-//				rangeGraphFragment = new RangeGraphFragment();
-//				fragmentTransaction = fragmentManager.beginTransaction();
-//				fragmentTransaction.replace(R.id.fragment2, rangeGraphFragment,
-//						RANGE_GRAPH_TAG).commit();
-//
-//			} else if (FRAGMENT_TAG.equals(BASELINE_TAG)) {
-//				if (baselineFragment == null)
-//					baselineFragment = new BaselineFragment();
-//				fragmentTransaction.replace(R.id.content_frame,
-//						baselineFragment, BASELINE_TAG).commit();
-//			} else if (FRAGMENT_TAG.equals(DATABASE_TAG)) {
-//				if (databaseFragment == null)
-//					databaseFragment = new DatabaseFragment();
-//				fragmentTransaction.replace(R.id.content_frame,
-//						databaseFragment, DATABASE_TAG).commit();
-//			} else if (FRAGMENT_TAG.equals(REFLECTION_GRAPH_TAG)) {
-//				if (reflectionGraphFragment == null)
-//					reflectionGraphFragment = new ReflectionGraphFragment();
-//				fragmentTransaction.replace(R.id.content_frame,
-//						reflectionGraphFragment, REFLECTION_GRAPH_TAG).commit();
-//			} else if (FRAGMENT_TAG.equals(SUMMARY_TAG)) {
-//				if (summaryFragment == null)
-//					summaryFragment = new SummaryFragment();
-//				fragmentTransaction.replace(R.id.content_frame,
-//						summaryFragment, SUMMARY_TAG).commit();
-//			}
-//		}
     }
 
-
-    //Generate temporary test data
-//	public void generateRandomData()
-//	{
-//		double lat;
-//		double lon;
-//		int accuracy;
-//		
-//		gpsKey = (int)(Math.random() * 1000);
-//		
-//		lat = 37.2250322 + (Math.random() * 0.006);
-//		lon = -80.428961 + (Math.random() * 0.01429);
-//		accuracy = 1; //Temporary (isn't this whole function temporary? :) )
-//		dataSource.createDataPointGps(System.currentTimeMillis(), gpsKey, lat, lon, accuracy);
-//		System.out.println("Added GPS Data Point key: " + gpsKey);
-//		
-//		
-//		//#######WHY CLEAR HERE?
-//		
-////		dataSource.clearDatabase();
-////		Thread thread = new Thread()
-////		{
-////		    @Override
-////		    public void run() {
-//////		        try {
-//////		        	double lat;
-//////		    		double lon;
-//////		    		int accuracy;
-//////		    		double engagement;
-//////		    		
-//////		    		//#######Collect realtime datapoint
-//////		    		
-//////		    		for(int x = 0; x < 12; x++)
-//////		    		{
-//////		    			
-//////		    			/* Generate points between:
-//////						 * 37.231579, -80.428961
-//////						 *          AND
-//////						 * 37.225035, -80.414671
-//////						 */
-//////		    			
-//////		    			
-//////		    			//Blacksburg
-//////						//lat = 37.225035 + (Math.random() * 0.006544);
-//////						lat = 37.2250322 + (Math.random() * 0.006);
-//////						lon = -80.428961 + (Math.random() * 0.01429);
-//////						accuracy = 1; //Temporary (isn't this whole function temporary? :) )
-//////						dataSource.createDataPointGps(System.currentTimeMillis(), gpsKey, lat, lon, accuracy);
-//////						
-//////						/*
-//////						 * Generate random engagement data between:
-//////						 * 0 AND 200
-//////						 * With a random count at that GPS point between:
-//////						 * 1 AND 201
-//////						 */
-//////						int randomUpperLimit = (int) (Math.random() * 200 + 1);
-//////						for(int y = 0; y < randomUpperLimit; y++)
-//////						{
-//////							engagement = Math.random() * 200;
-//////							
-//////							dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, engagement);
-//////						}
-////						gpsKey++;
-//////					}
-//////		        } catch (Exception e) {
-//////		            e.printStackTrace();
-//////		        }
-//////
-////			    MainActivity.this.runOnUiThread(new Runnable(){
-////			        public void run(){
-////						System.out.println("Loading points to map");
-////			            mapFragment.loadPoints(dataSource);
-////			        }
-////			    });
-////		    }
-////		};
-//////
-////		thread.start();
-//			
-//	}
-//	public List<double[]> getData(){
-//		List<double[]> results = dataSource.getFilteredDataset();
-//		
-//		for(int i = 0; i < results.size(); i++){
-//			System.out.println("results:" + results.get(i));
-//		}
-//		
-//		return results;
-//	}
     @Override
     public void onStart() {
         super.onStart();
@@ -685,5 +483,7 @@ public class MainActivity extends FragmentActivity{
     public enum state {
         ANNOTATION_STATE, SLIDING_TABS_STATE;
 
+
     }
+
 }

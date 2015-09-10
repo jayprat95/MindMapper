@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/tipView_1"
+        android:text="Your data is still safe the tool is paused for:"
+        android:layout_below="@+id/titleView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Connection Lost !"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        android:id="@+id/titleView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="    [ _ ]  minutes"
+        android:id="@+id/counterView"
+        android:layout_below="@+id/tipView_1"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:paddingTop="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Tips:\n- check EEG is powered on and phone bluetooth is on.\n- try positioning EEG and limit head movement."
+        android:id="@+id/tipView_2"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="15dp"
+        android:layout_below="@+id/counterView"
+        android:background="@color/blue_500"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Sorry, reconnection failed, please try again."
+        android:id="@+id/tipView_3"
+        android:textSize="25sp"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_below="@+id/counterView"
+        android:background="@color/green_500"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/tipView_2"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Reconnect"
+        android:id="@+id/reconnectButton"
+        android:background="#F0CE00"
+        android:layout_below="@+id/tipView_2"
+        android:layout_alignLeft="@+id/tipView_2"
+        android:layout_alignStart="@+id/tipView_2"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Resume"
+        android:id="@+id/resumeButton"
+        android:background="#4CC94C"
+        android:layout_below="@+id/tipView_2"
+        android:layout_alignLeft="@+id/tipView_2"
+        android:layout_alignStart="@+id/tipView_2"
+        android:visibility="gone"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        />
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="End Session"
+        android:id="@+id/endButton"
+        android:background="#ff4444"
+        android:layout_alignTop="@+id/reconnectButton"
+        android:layout_alignRight="@+id/tipView_2"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        />
+
+    </LinearLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_below="@+id/counterView"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>
