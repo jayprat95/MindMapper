@@ -2,21 +2,20 @@ package edu.engagement.application;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
-import android.view.ActionMode;
-import android.view.LayoutInflater;
+
+import android.util.Log;
+
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,33 +23,21 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.LinkedList;
+
 import java.util.List;
-import java.util.Queue;
 
 import edu.engagement.OnboardActivity;
-import edu.engagement.application.Fragments.BaselineFragment;
-import edu.engagement.application.Fragments.DatabaseFragment;
-import edu.engagement.application.Fragments.GraphListFragment;
+import edu.engagement.application.Eeg.EegListener;
+import edu.engagement.application.Eeg.EegState;
 import edu.engagement.application.Fragments.MapFrag;
-import edu.engagement.application.Fragments.RangeGraphFragment;
 import edu.engagement.application.Fragments.RealTimeDataFragment;
-import edu.engagement.application.Fragments.ReflectionGraphFragment;
-import edu.engagement.application.Fragments.SummaryFragment;
-import edu.engagement.application.Fragments.XYGraphFragment;
 import edu.engagement.application.SlidingTab.SlidingTabLayout;
 import edu.engagement.application.SlidingTab.ViewPagerAdapter;
-
-//import zephyr.android.HxMBT.BTClient;
-//import zephyr.android.HxMBT.ZephyrProtocol;
 
 /**
  * MainActivity June 16
  */
-public class MainActivity extends FragmentActivity{
-    private BroadcastReceiver receiver;
+public class MainActivity extends FragmentActivity implements EegListener, RealTimeDataFragment.RealTimeListener {
 
     //Onboarding Screen
     private ViewPager onboardPager;
@@ -60,25 +47,17 @@ public class MainActivity extends FragmentActivity{
     private View onboardPagerStart;
 
     public static final String BASELINE_AVG_KEY = "avg";
-    private static final int PORT = 7911;
     public final String MAP_TAG = "MAP_FRAGMENT";
     public final String REAL_TIME_TAG = "REAL_TIME_FRAGMENT";
-    public final String GRAPH_LIST_TAG = "GRAPH_LIST_FRAGMENT";
-    public final String XY_GRAPH_TAG = "XY_GRAPH_FRAGMENT";
-    public final String RANGE_GRAPH_TAG = "RANGE_GRAPH_FRAGMENT";
-    public final String DATABASE_TAG = "DATABASE_FRAGMENT";
     public final String REFLECTION_GRAPH_TAG = "REFLECTION_GRAPH_FRAGMENT";
     public final String SUMMARY_TAG = "SUMMARY_FRAGMENT";
     /* Having issues with android
      * Packaging all functions here for now so I can change easy if a mistake is found
      */
     public final String BASELINE_TAG = "BASELINE_FRAGMENT";
-    final boolean rawEnabled = true;
-    ActionMode mActionMode = null;
     /**
      * Sliding Tabs variables
      */
-    private Toolbar toolbar;
     private ViewPager pager;
     private ViewPagerAdapter adapter;
     private SlidingTabLayout tabs;
@@ -92,8 +71,7 @@ public class MainActivity extends FragmentActivity{
      */
     private TextView fab;
     private boolean fabClicked;
-    private boolean serviceStarted;
-    private TextView attentionView;
+
     /**
      * Container for the annotations view
      */
@@ -102,77 +80,24 @@ public class MainActivity extends FragmentActivity{
     private CharSequence mTitle;
     private MapFrag mapFragment;
     private RealTimeDataFragment realFragment;
-    private GraphListFragment graphFragment;
-    private XYGraphFragment xyGraphFragment;
-    private RangeGraphFragment rangeGraphFragment;
-    private DatabaseFragment databaseFragment;
-    private ReflectionGraphFragment reflectionGraphFragment;
-    private SummaryFragment summaryFragment;
-    private BaselineFragment baselineFragment;
-    private double baselineTotal;
-    private double baselineNum;
-    private boolean baselineMode = false;
-    //testing why queue is only 1 item
-    private int tempCounter = 0;
+
     private boolean realTimeInstantiated;
-    //if the realtime fragment is running. need to change this. sloppy way to know current fragment
-    private boolean realTime = false;
-    private Queue<Integer> recentAttentionLevels = new LinkedList<Integer>();
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.reflection, menu);
-            return true;
-        }
-
-        // Called each time the action mode is shown. Always called after
-        // onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-
-//
-            int itemId = item.getItemId();
-            if (itemId == R.id.action_connect) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            //mActionMode = null;
-            MainActivity.this.onBackPressed();
-        }
-    };
-
-    public static double round(double unrounded, int precision, int roundingMode) {
-        BigDecimal bd = new BigDecimal(unrounded);
-        BigDecimal rounded = bd.setScale(precision, roundingMode);
-        return rounded.doubleValue();
-    }
+    private MindwaveService mindwaveService;
 
     // Method to start the service
     public void startService() {
+        Log.d(App.NAME, "Starting MindwaveService!!");
 
-        if (!serviceStarted) {
-            serviceStarted = true;
-
+        if (mindwaveService == null) {
             startService(new Intent(getBaseContext(), MindwaveService.class));
+            bindService(new Intent(getBaseContext(), MindwaveService.class), mindwaveConnection, 0);
         }
+    }
 
+    // Method to stop the service
+    public void stopService() {
+        stopService(new Intent(getBaseContext(), MindwaveService.class));
     }
 
     /**
@@ -182,65 +107,6 @@ public class MainActivity extends FragmentActivity{
      */
     public String getLocation() {
         return this.location;
-    }
-
-    // Method to stop the service
-    public void stopService(View view) {
-        stopService(new Intent(getBaseContext(), MindwaveService.class));
-    }
-
-    public void startBaselineMode() {
-        baselineTotal = 0;
-        baselineNum = 0;
-        baselineMode = true;
-    }
-
-    public void exitBaselineMode() {
-        baselineMode = false;
-        storeBaseline((float) (baselineTotal / baselineNum));
-        baselineFragment.setScore(Double.toString(baselineTotal / baselineNum));
-    }
-
-    // Store baseline in persistent storage
-    public void storeBaseline(float avg) {
-        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-        editor.putFloat(BASELINE_AVG_KEY, (float) 10.0);
-        editor.commit();
-        System.out.println("Storing baseline value: " + baselineTotal / baselineNum);
-    }
-
-    // Read baseline from persistent storage
-    public float readBaseline() {
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        float avg = prefs.getFloat(BASELINE_AVG_KEY, -1);
-        System.out.println("Received baseline value: " + avg);
-        return avg;
-    }
-
-    // Method is used to reset the baseline
-    // Used when user wants to re-establish their baseline
-    public void resetBaseline() {
-        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-        editor.putFloat(BASELINE_AVG_KEY, (float) -1);
-        editor.commit();
-    }
-
-    /* END */
-
-    public void setAttentionText(int attention) {
-        recentAttentionLevels.add(new Integer(attention));
-        recentAttentionLevels.add(new Integer(tempCounter));
-        System.out.println("RecentAttentionLevels: " + recentAttentionLevels.toString());
-        System.out.println("RecentAttentionLevels size: " + recentAttentionLevels.size());
-        if (recentAttentionLevels.size() > 5) {
-            recentAttentionLevels.remove();
-        }
-        if (realTime && realFragment != null) {
-            Queue<Integer> copyAttention = recentAttentionLevels;
-//			realFragment.setAttention(recentAttentionLevels);
-            realFragment.setAttention(copyAttention);
-
-        }
     }
 
     @Override
@@ -285,7 +151,6 @@ public class MainActivity extends FragmentActivity{
         /** Fab Button Shit */
         fab = (TextView) findViewById(R.id.fabButton);
         fabClicked = false;
-        serviceStarted = false;
         final Activity thisActivity = this; // Use this for the toast
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,10 +160,10 @@ public class MainActivity extends FragmentActivity{
 //                    fab.setText("Annotation");
                     Toast.makeText(thisActivity, "Connecting to Mind wave device", Toast.LENGTH_LONG).show();
                 }
-                changeState(state.ANNOTATION_STATE);
+                changeState(ApplicationState.RECORDING);
 
                 /** If Jayanth wants to work on the real time eeg data uncommon this line to start the service */
-//                startService();
+                startService();
             }
         });
         /** End of Fab Button Shit */
@@ -307,40 +172,31 @@ public class MainActivity extends FragmentActivity{
         System.out.println("Opened data source (DB)");
 
         initActionBar();
-
-
     }
 
     /**
-     * Changes the apps's gobal state, and all
-     * relevant GUI will change to reflect on the state*
+     * Changes the apps's gobal ApplicationState, and all
+     * relevant GUI will change to reflect on the ApplicationState*
      *
-     * @param someState a new state
+     * @param someState a new ApplicationState
      */
-    public void changeState(state someState) {
+    public void changeState(ApplicationState someState) {
 
-        if (someState == state.ANNOTATION_STATE) {
+        if (someState == ApplicationState.RECORDING) {
 
-            if (realTimeInstantiated) { // If PlacePicker is called, shows the realtime fragment immediately
-//                toolbar.setVisibility(View.INVISIBLE);
                 pager.setVisibility(View.INVISIBLE);
                 tabs.setVisibility(View.INVISIBLE);
                 frameLayout.setVisibility(View.VISIBLE);
                 fab.setVisibility(View.INVISIBLE);
-            } else {    // PlacePicker will be called for the first time, will change fragment in PlacePicker's callback function, not at here
+
                 switchToFragment("REAL_TIME_FRAGMENT");
-                realTimeInstantiated = true;
-            }
 
         } else {    // Changed from realtime to sliding tab
-//            toolbar.setVisibility(View.VISIBLE);
             pager.setVisibility(View.VISIBLE);
             tabs.setVisibility(View.VISIBLE);
             fab.setVisibility(View.VISIBLE);
             frameLayout.setVisibility(View.INVISIBLE);
-
         }
-
     }
 
     private void initActionBar() {
@@ -369,7 +225,7 @@ public class MainActivity extends FragmentActivity{
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
+        // Sync the toggle ApplicationState after onRestoreInstanceState has occurred.
         //drawer.getDrawerToggle().syncState();
     }
 
@@ -408,7 +264,6 @@ public class MainActivity extends FragmentActivity{
                 .beginTransaction();
 
         if (getFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
-            realTime = false;
             if (FRAGMENT_TAG.equals(REAL_TIME_TAG)) {
                 if (realFragment == null)
                     realFragment = new RealTimeDataFragment();
@@ -421,50 +276,16 @@ public class MainActivity extends FragmentActivity{
     @Override
     public void onStart() {
         super.onStart();
-        //generateRandomData();
-        //start timer to check location every minute
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        IntentFilter intentFilter = new IntentFilter(
-                "android.intent.action.MAIN");
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //extract our message from intent
-                String msg_for_me = intent.getStringExtra("some_msg");
-
-                attentionView.setText(msg_for_me);
-//
-//                //log our message value
-//                Toast.makeText(getApplicationContext(), msg_for_me, Toast.LENGTH_SHORT).show();
-//                        Log.i("InchooTutorial", msg_for_me);
-            }
-        };
-        this.registerReceiver(receiver, intentFilter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        this.unregisterReceiver(this.receiver);
-    }
-
-    public void redrawGraphs() {
-
-        if (xyGraphFragment != null) {
-            xyGraphFragment.redraw();
-        }
-        if (rangeGraphFragment != null) {
-            rangeGraphFragment.redraw();
-        }
-    }
-
-    public boolean fabClicked() {
-        return this.fabClicked;
     }
 
     /**
@@ -476,14 +297,54 @@ public class MainActivity extends FragmentActivity{
         pager.setCurrentItem(pageNum);
     }
 
-    public void instantiateView(TextView tv) {
-        attentionView = tv;
+    /** Defines callbacks for service binding, passed to bindService() */
+    private ServiceConnection mindwaveConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            MindwaveService.MindwaveBinder binder = (MindwaveService.MindwaveBinder) service;
+            mindwaveService = binder.getService();
+
+            mindwaveService.addEegListener(MainActivity.this);
+
+            Log.d(App.NAME, "MainActivity connected to MindwaveService");
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mindwaveService = null;
+            Log.d(App.NAME, "MainActivity disconnected from MindwaveService");
+        }
+    };
+
+    @Override
+    public void onEegStateChange(EegState state) {
+        Log.d(App.NAME, "MainActivity received eeg state change: " + state.name());
     }
 
-    public enum state {
-        ANNOTATION_STATE, SLIDING_TABS_STATE;
-
-
+    @Override
+    public void onEegAttentionReceived(int attention) {
+        Log.d(App.NAME, "MainActivity received attention data: " + attention);
+        realFragment.setAttention(attention);
     }
 
+    @Override
+    public void onRecordingStarted() {
+        if (mindwaveService != null) {
+            mindwaveService.startRecording();
+        }
+    }
+
+    @Override
+    public void onRecordingStopped() {
+        if (mindwaveService != null) {
+            mindwaveService.stopRecording();
+        }
+    }
+
+    public enum ApplicationState {
+        PRE_RECORDING, RECORDING, REFLECTION
+    }
 }

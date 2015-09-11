@@ -21,7 +21,6 @@ import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
 import edu.engagement.application.RVAdapter;
-import edu.engagement.application.TrophyType;
 
 public class SummaryFragment extends Fragment {
 
@@ -97,22 +96,6 @@ public class SummaryFragment extends Fragment {
                         .println("Cardview - sqlite db locked - concurrency issue ");
                 System.out.println(e.toString());
             }
-
-//            EventSummary card = new EventSummary("McBryde Hall", 0L, 60000L, TrophyType.NONE, AttentionLevel.MEDIUM, 63);
-//            EventSummary card2 = new EventSummary("Torgerson Hall", 120000L, 200000L, TrophyType.TOP_VALUE_DAILY, AttentionLevel.HIGH, 83);
-//            EventSummary card3 = new EventSummary("McBryde Hall", 0L, 60000L, TrophyType.NONE, AttentionLevel.MEDIUM, 63);
-//            EventSummary card4 = new EventSummary("Torgerson Hall", 120000L, 200000L, TrophyType.TOP_VALUE_DAILY, AttentionLevel.HIGH, 83);
-//            EventSummary card5 = new EventSummary("McBryde Hall", 0L, 60000L, TrophyType.NONE, AttentionLevel.MEDIUM, 63);
-//            EventSummary card6 = new EventSummary("Torgerson Hall", 120000L, 200000L, TrophyType.TOP_VALUE_DAILY, AttentionLevel.HIGH, 83);
-//
-//
-//
-//            eventSummaryList.add(card);
-//            eventSummaryList.add(card2);
-//            eventSummaryList.add(card3);
-//            eventSummaryList.add(card4);
-//            eventSummaryList.add(card5);
-//            eventSummaryList.add(card6);
             return null;
         }
 
@@ -126,8 +109,8 @@ public class SummaryFragment extends Fragment {
             List<double[]> results = dbSource.getMapDataset();
             List<EventSummary> events = new ArrayList<>(results.size());
 
-            EventSummary card = new EventSummary("McBryde Hall", 0L, 60000L, TrophyType.NONE, AttentionLevel.MEDIUM, 63);
-            EventSummary card2 = new EventSummary("Torgerson Hall", 120000L, 200000L, TrophyType.TOP_VALUE_DAILY, AttentionLevel.HIGH, 83);
+            EventSummary card = new EventSummary("McBryde Hall", 0L, 60000L, AttentionLevel.MEDIUM, 63);
+            EventSummary card2 = new EventSummary("Torgerson Hall", 120000L, 200000L, AttentionLevel.HIGH, 83);
 
             eventSummaryList.add(card);
             eventSummaryList.add(card2);
