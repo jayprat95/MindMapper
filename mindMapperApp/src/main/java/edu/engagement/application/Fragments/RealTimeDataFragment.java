@@ -9,9 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ClipDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
@@ -23,7 +20,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -34,12 +30,8 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import java.util.Queue;
-
 import edu.engagement.application.App;
-import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.MainActivity;
-import edu.engagement.application.MindwaveService;
 import edu.engagement.application.R;
 
 public class RealTimeDataFragment extends Fragment implements OnClickListener {
@@ -56,24 +48,21 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
     // Attention circle
     private TextView location;
-    // Annotation shit
+
+    // Annotation
     private SeekBar annotationBar = null;
-    private TextView annotationValue;
-    private EditText annotationInput;
+    private Button mMakeNotes;
 
-    // Current self-perceived attention level
-    private AttentionLevel attentionLevel;
-
-    // CLOSE button
     private Button startButton;
-    private Button stopButton;
     private Button pauseButton;
     private Button resumeButton;
-    private Button submitButton;
 
     // The elapsed timer
     private Chronometer timer;
     private long elapsedTime = 0L;
+
+    // Text Button remove later when eeg status detecable TODO
+    private Button testButton;
 
     @Override
     public void onAttach(Activity activity) {
@@ -119,41 +108,26 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         location.setEllipsize(TextUtils.TruncateAt.END);
         System.out.println("attention text view initialized");
         fabButton = (TextView) activity.findViewById(R.id.fabButton);
-        annotationInput = (EditText) view.findViewById(R.id.annotationInput);
+
         startButton = (Button) view.findViewById(R.id.start);
-        stopButton = (Button) view.findViewById(R.id.stop);
+
         pauseButton = (Button) view.findViewById(R.id.pause);
         resumeButton = (Button) view.findViewById(R.id.resume);
-        submitButton = (Button) view.findViewById(R.id.submit);
+        //make note: annotation button
+        mMakeNotes = (Button) view.findViewById(R.id.makeNoteButton);
+        //submitButton = (Button) view.findViewById(R.id.submit);
         timer = (Chronometer) view.findViewById(R.id.elapsedTime);
 
+        //TODO text Button remover later
+        testButton = (Button) view.findViewById(R.id.testButton);
+        testButton.setOnClickListener(this);
+
         startButton.setOnClickListener(this);
-        stopButton.setOnClickListener(this);
+
         pauseButton.setOnClickListener(this);
         resumeButton.setOnClickListener(this);
-        submitButton.setOnClickListener(this);
 
-        attentionLevel = AttentionLevel.LOW;
-        annotationBar = (SeekBar) view.findViewById(R.id.annotation_bar);
-        annotationBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                attentionLevel = AttentionLevel.fromInt(progress);
-                setProgressBarColor(seekBar, attentionLevel.getColor());
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
+        mMakeNotes.setOnClickListener(this);
 
         return view;
     }
@@ -166,20 +140,29 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-//        fabButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onClick(View view) {
 
         switch (view.getId()) {
+            case R.id.makeNoteButton:
+
+                //display dialog to make note for annotation
+//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//                Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+//                if(prev != null){
+//                    transaction.remove(prev);
+//                }
+                RecordingDialogFragment dialog = new RecordingDialogFragment();
+                dialog.show(activity.getSupportFragmentManager(), "dialog");
+                break;
             case R.id.start:
                 // TODO start recording and timer
-
                 // Change button states to pause and stop
                 startButton.setVisibility(View.GONE);
                 pauseButton.setVisibility(View.VISIBLE);
-                stopButton.setVisibility(View.VISIBLE);
+                mMakeNotes.setVisibility(View.VISIBLE);
 
                 // TODO: Alex I added the startService() method, which actually starts the EEG recording. If you think it makes sense to start the timer in that method you can move it there
                 timer.setFormat("[Total Time: %s]");
@@ -187,7 +170,6 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 timer.start();
 
                 realTimeListener.onRecordingStarted();
-
                 break;
             case R.id.pause:
                 Toast.makeText(getActivity(), "recording paused", Toast.LENGTH_SHORT).show();
@@ -199,29 +181,16 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 stopTimer();
 
                 realTimeListener.onRecordingStopped();
-                break;
-            case R.id.resume:
-                Toast.makeText(getActivity(), "recording resumed", Toast.LENGTH_SHORT).show();
-
-                // Hide resume button, show pause button
-                resumeButton.setVisibility(View.GONE);
-                pauseButton.setVisibility(View.VISIBLE);
-
-                startTimer();
-
-                realTimeListener.onRecordingStarted();
-                break;
-            case R.id.stop:
-                stopTimer();
 
                 // display confirm dialog
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-                dialogBuilder.setMessage("Do you want to finish your current recording session?");
-                dialogBuilder.setPositiveButton("Yes, I'm done.", new DialogInterface.OnClickListener() {
+                dialogBuilder.setTitle("You are currently paused. ");
+                dialogBuilder.setMessage("No date is currently being log.");
+                dialogBuilder.setPositiveButton("End Activity", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-
+                        Toast.makeText(getActivity(), "recording stopped", Toast.LENGTH_SHORT).show();
                         // Stop reading data from EEG
                         stopService();
 
@@ -232,27 +201,31 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                         activity.pagerChange(1);
                     }
                 });
-                dialogBuilder.setNegativeButton("No, take me back.", new DialogInterface.OnClickListener() {
+                dialogBuilder.setNegativeButton("Resume Activity", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                         startTimer();
                         realTimeListener.onRecordingStarted();
-                        Toast.makeText(getActivity(), "resumed recording", Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 dialogBuilder.create().show();
-
                 break;
-            case R.id.submit:
-                // TODO submit annotation
-                Toast.makeText(getActivity(), "Annotation saved", Toast.LENGTH_SHORT).show();
-                annotationInput.setText("");
-                annotationBar.setProgress(0);
+            case R.id.resume:
+                Toast.makeText(getActivity(), "recording resumed", Toast.LENGTH_SHORT).show();
+
+                // Hide resume button, show pause button
+                resumeButton.setVisibility(View.GONE);
+                pauseButton.setVisibility(View.VISIBLE);
+
+                startTimer();
+                break;
+            case R.id.testButton:
+                StatusDialogFragment statusDialog = new StatusDialogFragment();
+                statusDialog.show(activity.getSupportFragmentManager(), "statusDialog");
                 break;
         }
-
     }
 
     /*
@@ -295,11 +268,6 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         attentionText.setText(String.valueOf(attention));
     }
 
-    private void setProgressBarColor(SeekBar seekBar, int newColor) {
-        LayerDrawable ld = (LayerDrawable) seekBar.getProgressDrawable();
-        ClipDrawable d1 = (ClipDrawable) ld.findDrawableByLayerId(R.id.progressShape);
-        d1.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
-    }
 
     private void startTimer() {
         timer.setBase(SystemClock.elapsedRealtime() - elapsedTime);
@@ -321,6 +289,10 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     public interface RealTimeListener {
         void onRecordingStarted();
         void onRecordingStopped();
+    }
+
+    public void doNegativeCLick(){
+
     }
 }
 

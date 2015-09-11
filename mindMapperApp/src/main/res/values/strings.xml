@@ -23,7 +23,6 @@
 	
 	<string name="baseline_instruction_finish">Baseline Testing Complete</string>
 	<string name="baseline_finish">Home</string>
-	    
 	
 	<string-array name="time_filter_presets">
 		<item>1 day</item>
@@ -33,7 +32,9 @@
 		<item>5 days</item>
 	</string-array>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_onboard">OnboardActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
     
 </resources>

@@ -10,25 +10,40 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+
 import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.FrameLayout;
+
+
+import java.util.List;
 
 import edu.engagement.application.Eeg.EegListener;
 import edu.engagement.application.Eeg.EegState;
 import edu.engagement.application.Fragments.MapFrag;
 import edu.engagement.application.Fragments.RealTimeDataFragment;
-import edu.engagement.application.SlidingTab.*;
+import edu.engagement.application.SlidingTab.SlidingTabLayout;
+import edu.engagement.application.SlidingTab.ViewPagerAdapter;
 
 /**
  * MainActivity June 16
  */
 public class MainActivity extends FragmentActivity implements EegListener, RealTimeDataFragment.RealTimeListener {
+
+    //Onboarding Screen
+    private ViewPager onboardPager;
+    private List<View> onboardList;
+    private View onboardPager1;
+    private View onboardPager2;
+    private View onboardPagerStart;
 
     public static final String BASELINE_AVG_KEY = "avg";
     public final String MAP_TAG = "MAP_FRAGMENT";
@@ -99,17 +114,13 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
 
         setContentView(R.layout.activity_main);
 
+
+        Intent intent = new Intent(this, OnboardActivity.class);
+        startActivity(intent);
+
         frameLayout = (FrameLayout) findViewById(R.id.content_frame);
 
         realTimeInstantiated = false;
-
-
-        /** Sliding Tabs Shit */
-
-        // Creating The Toolbar and setting it as the Toolbar for the activity
-
-//        toolbar = (Toolbar) findViewById(R.id.sliding_tab_tool_bar);
-        //setSupportActionBar(toolbar);
 
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
