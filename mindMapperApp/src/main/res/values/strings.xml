@@ -23,7 +23,7 @@
 	
 	<string name="baseline_instruction_finish">Baseline Testing Complete</string>
 	<string name="baseline_finish">Home</string>
-	
+
 	<string-array name="time_filter_presets">
 		<item>1 day</item>
 		<item>2 days</item>
