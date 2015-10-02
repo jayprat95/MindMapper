@@ -16,13 +16,13 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
-
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -52,7 +52,7 @@
         <!-- key for Kyle: AIzaSyB0cbeXKCu7CUOt5fFIVotbRvQj9d7s2nA -->
         <!-- key for Alex: AIzaSyAkXTWSZKERtKLrrvVjeLmdp8Qn9vzI3m0"/> -->
         <activity
-            android:name="edu.engagement.OnboardActivity"
+            android:name=".OnboardActivity"
             android:label="@string/title_activity_onboard"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>

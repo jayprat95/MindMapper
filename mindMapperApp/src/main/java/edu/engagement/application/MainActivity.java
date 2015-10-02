@@ -3,14 +3,14 @@ package edu.engagement.application;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
@@ -18,26 +18,30 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
 import java.util.List;
 
-import edu.engagement.OnboardActivity;
 import edu.engagement.application.Eeg.EegListener;
 import edu.engagement.application.Eeg.EegState;
 import edu.engagement.application.Fragments.MapFrag;
 import edu.engagement.application.Fragments.RealTimeDataFragment;
+import edu.engagement.application.Fragments.StatusDialogFragment;
 import edu.engagement.application.SlidingTab.SlidingTabLayout;
 import edu.engagement.application.SlidingTab.ViewPagerAdapter;
 
 /**
  * MainActivity June 16
  */
-public class MainActivity extends FragmentActivity implements EegListener, RealTimeDataFragment.RealTimeListener {
+public class MainActivity extends FragmentActivity implements EegListener, RealTimeDataFragment.RealTimeListener, StatusDialogFragment.ConnectionLostDialogListener, DialogInterface.OnDismissListener {
 
     //Onboarding Screen
     private ViewPager onboardPager;
@@ -148,26 +152,18 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
 
         /** End of Sliding Tabs Shit */
 
-        /** Fab Button Shit */
+        /* Fab Button Shit */
         fab = (TextView) findViewById(R.id.fabButton);
         fabClicked = false;
         final Activity thisActivity = this; // Use this for the toast
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (fabClicked == false) {
-                    fabClicked = true;
-//                    fab.setText("Annotation");
-                    Toast.makeText(thisActivity, "Connecting to Mind wave device", Toast.LENGTH_LONG).show();
-                }
-                changeState(ApplicationState.RECORDING);
-
-                /** If Jayanth wants to work on the real time eeg data uncommon this line to start the service */
-                startService();
+                Log.d(App.NAME, "Showing Place Picker");
+                showPlacePicker();
             }
         });
-        /** End of Fab Button Shit */
-
+        /* End of Fab Button Shit */
 
         System.out.println("Opened data source (DB)");
 
@@ -183,7 +179,6 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
     public void changeState(ApplicationState someState) {
 
         if (someState == ApplicationState.RECORDING) {
-
                 pager.setVisibility(View.INVISIBLE);
                 tabs.setVisibility(View.INVISIBLE);
                 frameLayout.setVisibility(View.VISIBLE);
@@ -211,6 +206,25 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
     public void setTitle(CharSequence title) {
         mTitle = title;
         getActionBar().setTitle(mTitle);
+    }
+
+    /*
+     * Callback method that is called after user selects a location.
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                location = PlacePicker.getPlace(data, this).getName().toString();
+
+                changeState(ApplicationState.RECORDING);
+
+            } else {
+                Log.d(App.NAME, "PlacePicker cancelled!");
+            }
+        }
     }
 
     @Override
@@ -273,6 +287,28 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
         }
     }
 
+    /**
+     * Show place picker, and return the location name as a string
+     * @return the name of the location selected
+     */
+    public void showPlacePicker() {
+        /* Place Picker Experiment */
+        int PLACE_PICKER_REQUEST = 1;
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            // Start the intent by requesting a result,
+            // identified by a request code.
+            startActivityForResult(builder.build(this),
+                    PLACE_PICKER_REQUEST);
+            // PlacePicker.getPlace(builder, context);
+
+        } catch (GooglePlayServicesRepairableException e1) {
+            e1.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e1) {
+            e1.printStackTrace();
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -322,6 +358,14 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
     @Override
     public void onEegStateChange(EegState state) {
         Log.d(App.NAME, "MainActivity received eeg state change: " + state.name());
+
+        if (state == EegState.DISCONNECTED) {
+            realFragment.onEegDisconnect();
+        } else if (state == EegState.CONNECTED) {
+            realFragment.onEegConnect();
+        } else if (state == EegState.NOT_FOUND) {
+            realFragment.onEegNotFound();
+        }
     }
 
     @Override
@@ -342,6 +386,38 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
         if (mindwaveService != null) {
             mindwaveService.stopRecording();
         }
+    }
+
+    @Override
+    public void onClickReconnect() {
+        Log.d(App.NAME, "Trying to reconnect...");
+        startService();
+    }
+
+    @Override
+    public void onClickResume() {
+        Log.d(App.NAME, "Resuming session...");
+    }
+
+    @Override
+    public void onClickEndSession() {
+        Log.d(App.NAME, "Ending session...");
+
+        stopService();
+
+        // Move back to the graph view
+        changeState(MainActivity.ApplicationState.REFLECTION);
+        pagerChange(1);
+    }
+
+    @Override
+    public void onTimeout() {
+        Log.d(App.NAME, "Dialog timed out...");
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialogInterface) {
+        realFragment.startRecording();
     }
 
     public enum ApplicationState {

@@ -1,4 +1,4 @@
-package edu.engagement;
+package edu.engagement.application;
 
 import android.app.Activity;
 import android.os.Bundle;

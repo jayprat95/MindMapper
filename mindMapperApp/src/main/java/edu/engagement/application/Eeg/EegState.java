@@ -7,5 +7,6 @@ public enum EegState {
     CONNECTED,
     DISCONNECTED,
     GOOD_SIGNAL,
-    POOR_SIGNAL
+    POOR_SIGNAL,
+    NOT_FOUND
 }

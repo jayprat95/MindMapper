@@ -61,7 +61,7 @@ public class MindwaveService extends Service {
     /*
      * whether or not the EEG is in a poor signal state
      */
-    private boolean goodSignal = true;
+    private boolean goodSignal = false;
 
     /*
      * whether or not data is being saved
@@ -395,11 +395,14 @@ public class MindwaveService extends Service {
                             break;
 
                         // This state happens when the EEG device cannot be found.
+                        // Only happens when starting up EEG connection
                         // Sources of error:
                         //      - EEG turned off
                         //      - Bluetooth turned off
                         case TGDevice.STATE_NOT_FOUND:
                             Log.d(App.NAME, "Device State: Not found");
+                            sendStateChangeToListeners(EegState.NOT_FOUND);
+                            MindwaveService.this.stopSelf();
                             break;
 
                         case TGDevice.STATE_NOT_PAIRED:
@@ -412,38 +415,55 @@ public class MindwaveService extends Service {
                             connected = false;
 
                             sendStateChangeToListeners(EegState.DISCONNECTED);
+
+                            // We're going to restart the service if we try to reconnect
+                            MindwaveService.this.stopSelf();
                             break;
                     }
 
                     break;
 
                 case TGDevice.MSG_POOR_SIGNAL:
-
-                    // Lower integer means higher quality
-                    int signalQuality = msg.arg1;
-
-                    if (signalQuality > SIGNAL_QUALITY_THRESHOLD) {
-
-                        poorSignalConsec++;
-
-                        Log.d(App.NAME, "Poor Signal: " + signalQuality + ". Poor signals in a row: " + poorSignalConsec);
-
-                        if (poorSignalConsec >= SIGNAL_CONSEC_MAX) {
-                            goodSignal = false;
-                            sendStateChangeToListeners(EegState.POOR_SIGNAL);
-
-                            Log.d(App.NAME, "Too many consecutive poor signals. Stopping data collection.");
-
-                            // Reset poor signal counter
-                            poorSignalConsec = 0;
-
-                            // Stop collecting data
-                            tgDevice.stop();
-                        }
-                    } else {
-                        // Reset poor signal in a row counter
-                        poorSignalConsec = 0;
-                    }
+// TODO: Implement poor signal handling
+//                    if (!recording)
+//                        return true;
+//
+//                    // Lower integer means higher quality
+//                    int signalQuality = msg.arg1;
+//
+//                    if (signalQuality > SIGNAL_QUALITY_THRESHOLD) {
+//
+//                        poorSignalConsec++;
+//
+//                        Log.d(App.NAME, "Poor Signal: " + signalQuality + ". Poor signals in a row: " + poorSignalConsec);
+//
+//                        if (poorSignalConsec >= SIGNAL_CONSEC_MAX) {
+//                            goodSignal = false;
+//                            sendStateChangeToListeners(EegState.POOR_SIGNAL);
+//
+//                            Log.d(App.NAME, "Too many consecutive poor signals. Stopping data collection.");
+//
+//                            // Reset poor signal counter
+//                            poorSignalConsec = 0;
+//
+//                            // Stop collecting data
+//                            tgDevice.stop();
+//                        }
+//                        goodSignalConsec = 0;
+//                    } else {
+//
+//                        goodSignalConsec++;
+//
+//                        if (goodSignalConsec >= SIGNAL_CONSEC_MAX) {
+//                            goodSignal = true;
+//                            sendStateChangeToListeners(EegState.GOOD_SIGNAL);
+//
+//                            Log.d(App.NAME, "")
+//                        }
+//
+//                        // Reset poor signal in a row counter
+//                        poorSignalConsec = 0;
+//                    }
                     break;
                 case TGDevice.MSG_RAW_DATA:
                     break;
