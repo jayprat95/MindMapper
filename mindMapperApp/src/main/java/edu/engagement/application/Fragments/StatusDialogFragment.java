@@ -1,7 +1,10 @@
 package edu.engagement.application.Fragments;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +15,14 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import edu.engagement.application.App;
 import edu.engagement.application.R;
-
-import static com.google.android.gms.internal.zzhl.runOnUiThread;
 
 
 /**
  * Created by IvenRee on 7/30/15.
  */
-public class StatusDialogFragment extends DialogFragment{
+public class StatusDialogFragment extends DialogFragment {
 
     private TextView titleView;
     private TextView tipView1;
@@ -32,7 +34,26 @@ public class StatusDialogFragment extends DialogFragment{
     private Button resumeButton;
     private ProgressBar mBar;
 
+    private Timer t;
+
+    private ConnectionLostDialogListener connectionListener;
+    private DialogInterface.OnDismissListener dismissListener;
+
     private static final int counter = 5;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        this.connectionListener = (ConnectionLostDialogListener)activity;
+        this.dismissListener = (DialogInterface.OnDismissListener)activity;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        dismissListener.onDismiss(dialog);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,49 +69,26 @@ public class StatusDialogFragment extends DialogFragment{
         resumeButton = (Button) v.findViewById(R.id.resumeButton);
         mBar = (ProgressBar) v.findViewById(R.id.progressBar);
         counterView.setText("    [ " + counter + " ]  minutes");
-        //counter down
-        final Timer T = new Timer();
-        //
-        T.scheduleAtFixedRate(new TimerTask() {
-            int temp = counter - 1;
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(temp > 0){
-                            counterView.setText("    [ " + temp + " ]  minutes");
-                            temp--;
-                        }
-                    }
-                });
-            }
-        }, 60000, 60000);
 
+        // Don't allow the dialog to be cancelled
+        setCancelable(false);
+        setStyle(STYLE_NO_TITLE, 0);
+
+        startTimer();
 
         reconnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                T.cancel();
+                t.cancel();
                 titleView.setText("Reconnecting ... ");
                 tipView1.setVisibility(View.INVISIBLE);
                 tipView2.setVisibility(View.INVISIBLE);
                 counterView.setVisibility(View.INVISIBLE);
                 mBar.setVisibility(View.VISIBLE);
 
-                //Boolean isConnect = false;
-                //Call eeg reconnect TODO
-//
-//                //resume or end
-//                titleView.setText("Successful !");
-//                reconnectButton.setVisibility(View.GONE);
-//                resumeButton.setVisibility(View.VISIBLE);
-//
-//                //retry or end
-//                titleView.setText("Failed !");
-//                tipView3.setVisibility(View.VISIBLE);
-//                resumeButton.setVisibility(View.GONE);
-//                reconnectButton.setVisibility(View.VISIBLE);
+                reconnectButton.setVisibility(View.GONE);
+
+                connectionListener.onClickReconnect();
 
             }
         });
@@ -99,7 +97,7 @@ public class StatusDialogFragment extends DialogFragment{
             @Override
             public void onClick(View v) {
                 //TODO tell Recording Scrren to resume
-                //
+                connectionListener.onClickResume();
                 dismiss();
             }
         });
@@ -109,11 +107,66 @@ public class StatusDialogFragment extends DialogFragment{
             public void onClick(View v) {
                 //TODO tell Recording Scrren to stop
                 //
+                t.cancel();
+
+                connectionListener.onClickEndSession();
                 dismiss();
             }
         });
 
 
         return v;
+    }
+
+    public void onReconnectSuccess() {
+        titleView.setText("Reconnection Successful!");
+        mBar.setVisibility(View.GONE);
+        resumeButton.setVisibility(View.VISIBLE);
+    }
+
+    public void onReconnectFail() {
+        titleView.setText("Reconnection Failed!");
+        tipView1.setVisibility(View.VISIBLE);
+        tipView2.setVisibility(View.VISIBLE);
+        counterView.setVisibility(View.VISIBLE);
+        mBar.setVisibility(View.GONE);
+
+        counterView.setText("    [ " + counter + " ]  minutes");
+
+        startTimer();
+
+        reconnectButton.setVisibility(View.VISIBLE);
+    }
+
+    private void startTimer() {
+        //counter down
+        t = new Timer();
+        //
+        t.scheduleAtFixedRate(new TimerTask() {
+            int temp = counter - 1;
+            @Override
+            public void run() {
+                Log.d(App.NAME, "TIMER RUNNING " + temp);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(temp > 0){
+                            counterView.setText("    [ " + temp + " ]  minutes");
+                            temp--;
+                        } else {
+                            t.cancel();
+                            connectionListener.onTimeout();
+                        }
+                    }
+                });
+            }
+        }, 60000, 60000);
+    }
+
+    public interface ConnectionLostDialogListener {
+        void onClickReconnect();
+        void onClickResume();
+        void onClickEndSession();
+        void onTimeout();
     }
 }

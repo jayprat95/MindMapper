@@ -68,16 +68,6 @@
                  />
 
             <Button
-                android:id="@+id/resume"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_marginRight="3dp"
-                android:layout_weight="1"
-                android:background="#4CC94C"
-                android:text="Resume"
-                android:visibility="gone" />
-
-            <Button
                 android:id="@+id/makeNoteButton"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
@@ -118,7 +108,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/statusView"
-            android:background="@drawable/eeg_connected"
+            android:src="@drawable/connecting_animation"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/recordingStateButtons"
             android:layout_toEndOf="@+id/recordingStateButtons"/>
