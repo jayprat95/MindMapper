@@ -66,8 +66,8 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
     private ViewPagerAdapter adapter;
     private SlidingTabLayout tabs;
     //private SlidingDrawer drawer;
-    private CharSequence Titles[] = {"Map", "Graph", "Summary"};
-    private int Numboftabs = 3;
+    private CharSequence Titles[] = {"Map", "Summary"};
+    private int Numboftabs = 2;
     // location from place picker
     private String location = "";
     /**

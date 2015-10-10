@@ -1,124 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cv"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp">
+    android:layout_marginBottom="10dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp">
+        android:padding="10dp"
+        android:weightSum="1">
 
-        <ImageView
-            android:id="@+id/card_photo"
-            android:layout_width="fill_parent"
-            android:layout_height="200dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/mcbryde" />
-
-        <LinearLayout
-            android:id="@+id/loc_and_time"
+        <TextView
+            android:id="@+id/card_location"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/card_photo"
-            android:background="#cc000000"
-            android:orientation="horizontal">
+            android:layout_marginBottom="5dp"
+            android:textSize="35dp"
+            android:text="McBryde Hall"/>
 
-            <TextView
-                android:id="@+id/card_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dp"
-                android:textColor="#ffffff"
-                android:text="McBryde Hall" />
-
-            <TextView
-                android:id="@+id/card_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dp"
-                android:textColor="#ffffff"
-                android:text="10:06 - 10:59" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/card_stats"
+        <TextView
+            android:id="@+id/card_time"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="15dp"
+            android:text="8:00 - 9:00 AM" />
+
+        <LinearLayout
             android:orientation="vertical"
-            android:layout_below="@id/loc_and_time">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp">
 
-            <RelativeLayout
+            <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                android:id="@+id/card_eeg_average"
+                android:layout_width="fill_parent"
+                android:layout_height="20dp"
+                android:layout_marginBottom="3dp"
+                app:rcMax="100"
+                app:rcProgress="65"
+                app:rcProgressColor="#ffa500"
+                app:rcBackgroundColor="#cccccc"
+                app:rcRadius="7dp" />
+
+            <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
-                <ImageView
-                    android:id="@+id/trophy_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/card_badge"
-                    android:layout_alignBottom="@+id/card_badge"
-                    android:src="@drawable/trophy" />
-
-                <TextView
-                    android:id="@+id/card_badge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/trophy_image"
-                    android:gravity="center"
-                    android:drawablePadding="10dp"
-                    android:textSize="16dp"
-                    android:text="Your most attentive location!" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/card_average_sub"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Objective Attention: 74" />
-
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:progressDrawable="@drawable/subjective_rating_selector"
-                android:numStars="5"/>
-
-            <TextView
-                android:id="@+id/card_average_obj"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/card_average_sub"
-                android:text="Objective Attention: Medium-High" />
-
-            <!--<com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar-->
-                <!--android:id="@+id/progress_2"-->
-                <!--android:layout_height="30dp"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--app:rcProgress="55"-->
-                <!--app:rcMax="100"-->
-                <!--app:rcTextProgress="Hi"-->
-                <!--app:rcTextProgressSize="15dp"-->
-                <!--app:rcBackgroundColor="#BDBDBD"-->
-                <!--app:rcTextProgressColor="#8BC34A"/>-->
-
+                android:textSize="10dp"
+                android:text="EEG Attention Average"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/view_graph_button"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/card_stats"
-            android:text="View Graph"/>
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp" >
 
-    </RelativeLayout>
+            <RatingBar
+                android:id="@+id/card_self_average"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginBottom="3dp"
+                android:layout_gravity="center_horizontal"
+                android:progressDrawable="@drawable/subjective_rating_selector"
+                android:numStars="5"
+                android:isIndicator="true" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="10dp"
+                android:text="Self-Report Average"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

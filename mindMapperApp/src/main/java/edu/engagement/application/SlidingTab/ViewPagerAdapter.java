@@ -27,22 +27,17 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         this.Titles = mTitles;
         this.NumbOfTabs = mNumbOfTabsumb;
-
     }
 
     //This method return the fragment for the every position in the View Pager
     @Override
     public Fragment getItem(int position) {
 
-        if (position == 0) // if the position is 0 we are returning the First tab
+        if (position == 0)
         {
             if (mapFragment == null)
                 mapFragment = new MapFrag();
             return mapFragment;
-        } else if (position == 1) {
-            if (reflectionGraphFragment == null)
-                reflectionGraphFragment = new ReflectionGraphFragment();
-            return reflectionGraphFragment;
         } else {
             if (summaryFragment == null)
                 summaryFragment = new SummaryFragment();

@@ -3,6 +3,7 @@ package edu.engagement.application.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,12 +104,12 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 @Override
                 public View getInfoContents(Marker marker) {
                     View v = getActivity().getLayoutInflater().inflate(R.layout.marker_info_window, null);
-                    TextView locationLabel = (TextView) v.findViewById(R.id.locationLabel);
-                    TextView eegLabel = (TextView) v.findViewById(R.id.eegLabel);
-                    TextView reportLabel = (TextView) v.findViewById(R.id.reportLabel);
+//                    TextView locationLabel = (TextView) v.findViewById(R.id.locationLabel);
+//                    TextView eegLabel = (TextView) v.findViewById(R.id.eegLabel);
+//                    TextView reportLabel = (TextView) v.findViewById(R.id.reportLabel);
 
-                    locationLabel.setText(marker.getTitle());
-                    eegLabel.setText("AVE EEG: " + marker.getSnippet());
+//                    locationLabel.setText(marker.getTitle());
+//                    eegLabel.setText("AVE EEG: " + marker.getSnippet());
                     return v;
                 }
             });
@@ -257,21 +259,25 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             high: 0.8 - 1;
          */
 
+            IconGenerator iconFactory = new IconGenerator(getActivity());
+
             if(percent >=0 && percent < 0.2 ){
-                opt.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                iconFactory.setColor(Color.BLUE);
             }
             else if(percent >= 0.2 && percent < 0.4) {
-                opt.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+                iconFactory.setColor(Color.CYAN);
             }
             else if(percent >= 0.4 && percent < 0.6){
-                opt.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                iconFactory.setColor(Color.GREEN);
             }
             else if(percent >= 0.6 && percent < 0.8){
-                opt.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                iconFactory.setColor(Color.YELLOW);
             }
             else{
-                opt.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                iconFactory.setColor(Color.RED);
             }
+
+            opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon("5")));
 
             optionsList.add(opt);
         }

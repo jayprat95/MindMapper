@@ -24,13 +24,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SummaryHolder> {
 
 		public SummaryHolder(View itemView) {
 			super(itemView);
-			cv = (CardView) itemView.findViewById(R.id.cv);
+			cv = (CardView) itemView.findViewById(R.id.cardView);
 
 			// cv.setCardBackgroundColor(Color.BLACK);
 
-			average = (TextView) itemView.findViewById(R.id.card_average_obj);
+//			average = (TextView) itemView.findViewById(R.id.card_average_obj);
 			location = (TextView) itemView.findViewById(R.id.card_location);
-			locationPhoto = (ImageView) itemView.findViewById(R.id.card_photo);
+//			locationPhoto = (ImageView) itemView.findViewById(R.id.card_photo);
 		}
 
 		/**
@@ -38,9 +38,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SummaryHolder> {
 		 * @param eventSummary the event summary to be shown on the card
 		 */
 		public void bindSummary(EventSummary eventSummary) {
-			average.setText("Average EEG: " + eventSummary.getEegAttention());
+//			average.setText("Average EEG: " + eventSummary.getEegAttention());
 			location.setText(eventSummary.getLocation());
-			locationPhoto.setImageResource(R.drawable.mcbryde);
+//			locationPhoto.setImageResource(R.drawable.mcbryde);
 		}
 	}
 

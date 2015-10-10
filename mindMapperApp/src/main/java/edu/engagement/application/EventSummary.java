@@ -13,8 +13,8 @@ public class EventSummary {
     private Date start;
     private Date stop;
 
-    private AttentionLevel  selfReportLevel;
     private double          eegData;
+    private AttentionLevel  selfReportLevel;
 
     public EventSummary(String location, long start, long stop, AttentionLevel selfReportLevel, double eegData) {
         this.location = location;

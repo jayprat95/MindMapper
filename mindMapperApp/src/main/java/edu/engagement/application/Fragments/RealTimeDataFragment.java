@@ -156,6 +156,8 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
                         realTimeListener.onRecordingStopped();
 
+
+
                         // Move back to the graph view
                         activity.changeState(MainActivity.ApplicationState.REFLECTION);
                         activity.pagerChange(1);

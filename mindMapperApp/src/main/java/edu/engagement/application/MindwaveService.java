@@ -377,6 +377,8 @@ public class MindwaveService extends Service {
 
         @Override
         public boolean handleMessage(Message msg) {
+            Log.d("AAAAAAAAAAAAAA", Thread.currentThread().getName());
+
             switch (msg.what) {
                 case TGDevice.MSG_STATE_CHANGE:
                     switch (msg.arg1) {
@@ -482,6 +484,8 @@ public class MindwaveService extends Service {
                     int att = msg.arg1;
                     if (att != 0) {
                         sendAttentionToListeners(att);
+
+                        // TODO: Need to do this in a separate thread
                         dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att, day, month);
                     }
                     break;
