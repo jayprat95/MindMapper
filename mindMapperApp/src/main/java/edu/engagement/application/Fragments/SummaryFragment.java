@@ -109,11 +109,20 @@ public class SummaryFragment extends Fragment {
             //List<double[]> results = dbSource.getMapDataset();
             //List<EventSummary> events = new ArrayList<>(results.size());
 
-            EventSummary card = new EventSummary(1,"McBryde Hall", 0L, 60000L, AttentionLevel.MEDIUM, 63);
-            EventSummary card2 = new EventSummary(2,"Torgerson Hall", 120000L, 200000L, AttentionLevel.HIGH, 83);
+            EventSummary card = new EventSummary(1, "McBryde Hall", 1444482000000L, 1444486450000L, AttentionLevel.MEDIUM, 63);
+            EventSummary card2 = new EventSummary(2, "Torgerson Hall", 1444490524000L, 1444492984000L, AttentionLevel.MEDIUM_HIGH, 71);
+            EventSummary card3 = new EventSummary(3, "Newman Library", 1444496164000L, 1444498204000L, AttentionLevel.HIGH, 83);
+            EventSummary card4 = new EventSummary(4, "Chipotle", 1444502704000L, 1444504564000L, AttentionLevel.MEDIUM_LOW, 38);
+            EventSummary card5 = new EventSummary(5, "McBryde Hall", 1444509004000L, 1444510864000L, AttentionLevel.MEDIUM, 54);
+            EventSummary card6 = new EventSummary(6, "Terrace View Apartments", 1444516564000L, 1444519324000L, AttentionLevel.LOW, 15);
+
 
             eventSummaryList.add(card);
             eventSummaryList.add(card2);
+            eventSummaryList.add(card3);
+            eventSummaryList.add(card4);
+            eventSummaryList.add(card5);
+            eventSummaryList.add(card6);
         }
     }
 }

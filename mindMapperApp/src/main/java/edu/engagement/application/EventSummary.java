@@ -43,8 +43,8 @@ public class EventSummary {
         return fmt.format(start) + separator + fmt.format(stop);
     }
 
-    public AttentionLevel getSelfReportedAttention() {
-        return selfReportLevel;
+    public float getSelfReportedAttention() {
+        return selfReportLevel.ordinal();
     }
 
     public double getEegAttention() {

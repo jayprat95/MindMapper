@@ -6,10 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+
 import java.util.List;
+
+import edu.engagement.application.utils.AttentionColor;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SummaryHolder> {
 
@@ -17,21 +22,26 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SummaryHolder> {
 
 		private CardView cv;
 
-		private ImageView locationPhoto;
-		
-		private TextView average;
-		private TextView variance;
-		private TextView location;
+		private TextView location, time;
+        private RoundCornerProgressBar eegAverage;
+        private RatingBar selfReportAverage;
+
 
 		public SummaryHolder(View itemView) {
 			super(itemView);
 			cv = (CardView) itemView.findViewById(R.id.cardView);
 
-			// cv.setCardBackgroundColor(Color.BLACK);
+            cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-//			average = (TextView) itemView.findViewById(R.id.card_average_obj);
-			location = (TextView) itemView.findViewById(R.id.card_location);
-//			locationPhoto = (ImageView) itemView.findViewById(R.id.card_photo);
+                }
+            });
+
+            location = (TextView) itemView.findViewById(R.id.card_location);
+            time = (TextView) itemView.findViewById(R.id.card_time);
+			eegAverage = (RoundCornerProgressBar) itemView.findViewById(R.id.card_eeg_average);
+            selfReportAverage = (RatingBar) itemView.findViewById(R.id.card_self_average);
 		}
 
 		/**
@@ -39,9 +49,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SummaryHolder> {
 		 * @param eventSummary the event summary to be shown on the card
 		 */
 		public void bindSummary(EventSummary eventSummary) {
-//			average.setText("Average EEG: " + eventSummary.getEegAttention());
-			location.setText(eventSummary.getLocation());
-//			locationPhoto.setImageResource(R.drawable.mcbryde);
+            location.setText(eventSummary.getLocation());
+            time.setText(eventSummary.getTimeRangeFormatted("hh:mm a", " -> "));
+
+            double att = eventSummary.getEegAttention();
+			eegAverage.setProgress((float)att);
+            eegAverage.setProgressColor(AttentionColor.getAttentionColor(att));
+
+			selfReportAverage.setRating(eventSummary.getSelfReportedAttention() + 1);
 		}
 	}
 
