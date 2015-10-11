@@ -3,29 +3,25 @@ package edu.engagement.application;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.List;
@@ -119,10 +115,16 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
 
         setContentView(R.layout.activity_main);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        boolean boardingStart = prefs.getBoolean("first", true);
 
-        Intent intent = new Intent(this, OnboardActivity.class);
-        startActivity(intent);
-
+        if(boardingStart) {
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putBoolean("first", false);
+            edit.commit();
+            Intent intent = new Intent(this, OnboardActivity.class);
+            startActivity(intent);
+        }
         frameLayout = (FrameLayout) findViewById(R.id.content_frame);
 
         realTimeInstantiated = false;

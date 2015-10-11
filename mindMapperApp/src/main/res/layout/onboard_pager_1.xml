@@ -8,6 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/onboardImageView1"
-        android:scaleType="centerCrop"
-        android:src="@drawable/onboard_image_1"/>
+        android:scaleType="fitXY"
+        android:src="@drawable/onboard_1"/>
 </LinearLayout>

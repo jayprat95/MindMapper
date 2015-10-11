@@ -7,11 +7,11 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,8 +35,13 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 	private GoogleMap map; // The map from within the map fragment.
 	private MapView mapView;
     private Button eegButton;
+    private MapLoadTask task;
     private Button reportButton;
     private double eegEngagement;
+    private List<double[]> mapData = new ArrayList<double[]>();
+    //keep track of status of buttons
+    // 1 for eeg; 2 for report; 3 for pope
+    private static int status = 1;
 
 
 	DataFilter filter;
@@ -59,7 +64,36 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
         eegButton = (Button) view.findViewById(R.id.eegButton);
 
+        eegButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if( MapFrag.status != 1 && task.optionsList != null){
+                    //
+
+                    for(int i = 0; i < task.optionsList.size(); i++){
+                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[0], 100.0);
+                    }
+                    MapFrag.status = 1;
+                }
+            }
+        });
+
         reportButton = (Button) view.findViewById(R.id.reportButton);
+
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(  MapFrag.status != 2 && task.optionsList != null){
+                    //
+                    Log.d("This is from Map frag", "report clicked");
+                    for(int i = 0; i < task.optionsList.size(); i++){
+                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[1], 5.0);
+                    }
+                    MapFrag.status = 2;
+                }
+            }
+        });
 
         // Grab the map from the map fragment.
         // TODO: Change to async?
@@ -139,7 +173,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             });
 
             map.clear();
-            new MapLoadTask(getActivity().getApplicationContext()).execute();
+            task = new MapLoadTask(getActivity().getApplicationContext());
+            task.execute();
         }
     }
 
@@ -148,10 +183,12 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         private Context context;
 
         private List<MarkerOptions> optionsList;
+        private List<Double[]> optionsData;
 
         public MapLoadTask (Context context) {
             this.context = context;
             optionsList = new ArrayList<>();
+            optionsData = new ArrayList<>();
         }
 
         @Override
@@ -186,6 +223,15 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             }
         }
 
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            map.clear();
+            for (MarkerOptions mo : optionsList) {
+                map.addMarker(mo);
+            }
+        }
+
         public void loadData(DataPointSource dpSource) {
             System.out.println("Cleared map");
 
@@ -205,35 +251,43 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
             // TODO remove these later
             /** --------------- Test points for place picker------------------- **/
-            double[] testPoint = new double[4];
+            double[] testPoint = new double[5];
             testPoint[0] = 0;
-            testPoint[1] = 40;
+            testPoint[1] = 40; //average eeg attention
             testPoint[2] = 37.230632; // Latitude
             testPoint[3] = -80.423106; // Longitude
+            testPoint[4] = 5.0; //average self report
 
-            double[] testPoint1 = new double[4];
+            double[] testPoint1 = new double[5];
             testPoint1[0] = 0;
             testPoint1[1] = 60;
             testPoint1[2] = 37.233061; // Latitude
             testPoint1[3] = -80.423106; // Longitude
+            testPoint[4] = 1.0; //average self report
 
-            results.add(testPoint);
-            results.add(testPoint1);
+            mapData.add(testPoint);
+            mapData.add(testPoint1);
+
+
 
             /** --------------- Test points for place picker------------------- **/
 
-            for (double[] pointArray : results) {
+            for (double[] pointArray : mapData) {
 			/*
 			 * 0 - gps_key
 			 * 1 - Attention
 			 * 2 - Latitude
 			 * 3 - Longitude
+			 * 4 - self report
 			 */
                 if (pointArray[1] == 0) {
+                    //break if there is no eeg attention
                     break;
                 }
 
-                addMarker(pointArray[2], pointArray[3], pointArray[1], 100.0);
+                //0 for eeg; 1 for self report
+                optionsData.add(new Double[]{pointArray[1], pointArray[4]});
+                addMarker(pointArray[2], pointArray[3], pointArray[1],pointArray[4], 100.0);
             }
         }
 
@@ -242,15 +296,16 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
      * color: 0-bule; 1-cyan; 2-green; 3-Yellow; 4-orange
      */
         private void addMarker(double latitude, double longitude,
-                               double engagement, double baselineEngagement) {
+                               double eegEngagement, double selfReportEngagement, double baselineEngagement) {
 
             MarkerOptions opt = new MarkerOptions();
             opt.position(new LatLng(latitude, longitude));
             opt.title("McBryde Hall");
             //snippet carry data from database for infowindow
-            opt.snippet(String.valueOf(engagement));
+            opt.snippet(String.valueOf(eegEngagement) + "/" + String.valueOf(selfReportEngagement));
 
-            double percent = engagement / baselineEngagement;
+
+            double percent = eegEngagement / baselineEngagement;
         /*  5 stage:
             very low: 0 - 0.2;
             somewhat low: 0.2 - 0.4;
@@ -280,6 +335,39 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon("5")));
 
             optionsList.add(opt);
+        }
+
+        private void setOptionsColor(MarkerOptions opt, double engagement, double baselineEngagement){
+            double percent = engagement / baselineEngagement;
+        /*  5 stage:
+            very low: 0 - 0.2;
+            somewhat low: 0.2 - 0.4;
+            medium: 0.4 - 0.6;
+            somewhat high: 0.6 - 0.8;
+            high: 0.8 - 1;
+         */
+
+            IconGenerator iconFactory = new IconGenerator(getActivity());
+
+            if(percent >=0 && percent < 0.2 ){
+                iconFactory.setColor(Color.BLUE);
+            }
+            else if(percent >= 0.2 && percent < 0.4) {
+                iconFactory.setColor(Color.CYAN);
+            }
+            else if(percent >= 0.4 && percent < 0.6){
+                iconFactory.setColor(Color.GREEN);
+            }
+            else if(percent >= 0.6 && percent < 0.8){
+                iconFactory.setColor(Color.YELLOW);
+            }
+            else{
+                iconFactory.setColor(Color.RED);
+            }
+
+            opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon("5")));
+
+            publishProgress();
         }
     }
 }

@@ -106,11 +106,11 @@ public class SummaryFragment extends Fragment {
 
         private void loadPoints(DataPointSource dbSource) {
 
-            List<double[]> results = dbSource.getMapDataset();
-            List<EventSummary> events = new ArrayList<>(results.size());
+            //List<double[]> results = dbSource.getMapDataset();
+            //List<EventSummary> events = new ArrayList<>(results.size());
 
-            EventSummary card = new EventSummary("McBryde Hall", 0L, 60000L, AttentionLevel.MEDIUM, 63);
-            EventSummary card2 = new EventSummary("Torgerson Hall", 120000L, 200000L, AttentionLevel.HIGH, 83);
+            EventSummary card = new EventSummary(1,"McBryde Hall", 0L, 60000L, AttentionLevel.MEDIUM, 63);
+            EventSummary card2 = new EventSummary(2,"Torgerson Hall", 120000L, 200000L, AttentionLevel.HIGH, 83);
 
             eventSummaryList.add(card);
             eventSummaryList.add(card2);

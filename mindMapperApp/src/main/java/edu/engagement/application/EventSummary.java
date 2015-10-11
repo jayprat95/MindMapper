@@ -15,8 +15,10 @@ public class EventSummary {
 
     private double          eegData;
     private AttentionLevel  selfReportLevel;
+    private int sessionId;
 
-    public EventSummary(String location, long start, long stop, AttentionLevel selfReportLevel, double eegData) {
+    public EventSummary(int sessionId, String location, long start, long stop, AttentionLevel selfReportLevel, double eegData) {
+        this.sessionId = sessionId;
         this.location = location;
         this.start = new Date(start);
         this.stop = new Date(stop);
@@ -24,6 +26,9 @@ public class EventSummary {
         this.eegData = eegData;
     }
 
+    public int getSessionId(){
+        return sessionId;
+    }
     public Date getStartDate() {
         return start;
     }

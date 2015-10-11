@@ -4,9 +4,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.engagement.application.Fragments.MapFrag;
-import edu.engagement.application.Fragments.RealTimeDataFragment;
-import edu.engagement.application.Fragments.*;
+import edu.engagement.application.Fragments.ReflectionGraphFragment;
+import edu.engagement.application.Fragments.SummaryFragment;
 
 /**
  * Created by ducky on 4/18/15.
@@ -16,6 +19,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private MapFrag mapFragment;
     private ReflectionGraphFragment reflectionGraphFragment;
     private SummaryFragment summaryFragment;
+    private List<Fragment> mFragmentList;
 
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
@@ -27,23 +31,17 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         this.Titles = mTitles;
         this.NumbOfTabs = mNumbOfTabsumb;
+        this.mFragmentList = new ArrayList<>();
+        mapFragment = new MapFrag();
+        summaryFragment = new SummaryFragment();
+        mFragmentList.add(mapFragment);
+        mFragmentList.add(summaryFragment);
     }
 
     //This method return the fragment for the every position in the View Pager
     @Override
     public Fragment getItem(int position) {
-
-        if (position == 0)
-        {
-            if (mapFragment == null)
-                mapFragment = new MapFrag();
-            return mapFragment;
-        } else {
-            if (summaryFragment == null)
-                summaryFragment = new SummaryFragment();
-            return summaryFragment;
-        }
-
+        return mFragmentList.get(position);
 
     }
 
