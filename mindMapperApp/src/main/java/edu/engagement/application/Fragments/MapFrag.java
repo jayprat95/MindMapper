@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.engagement.application.Database.DataFilter;
@@ -32,6 +34,8 @@ import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.R;
 
 public class MapFrag extends Fragment implements OnMapReadyCallback {
+
+    public static HashMap<String, Location> locationTable;
 	private GoogleMap map; // The map from within the map fragment.
 	private MapView mapView;
     private Button eegButton;
@@ -59,6 +63,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.map, container, false);
 
+        locationTable = new HashMap<String, Location>();
         mapView = (MapView) view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 

@@ -90,6 +90,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SummaryHolder> {
 	public void onBindViewHolder(SummaryHolder summaryHolder, int position) {
 		summaryHolder.bindSummary(eventSummaryList.get(position));
         final EventSummary event = eventSummaryList.get(position);
+
         summaryHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

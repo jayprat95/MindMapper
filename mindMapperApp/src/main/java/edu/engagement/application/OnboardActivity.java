@@ -86,4 +86,8 @@ public class OnboardActivity extends Activity {
         });
     }
 
+    @Override
+    public void onBackPressed() { }
+
+
 }

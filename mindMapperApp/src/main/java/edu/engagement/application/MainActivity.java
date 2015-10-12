@@ -97,6 +97,11 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
 
     // Method to stop the service
     public void stopService() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        int sessionId = prefs.getInt("sessionId", RealTimeDataFragment.sessionId);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putInt("sessionId", sessionId++);
+        edit.commit();
         stopService(new Intent(getBaseContext(), MindwaveService.class));
     }
 

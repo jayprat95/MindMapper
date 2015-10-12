@@ -3,9 +3,11 @@ package edu.engagement.application.Fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,7 +19,6 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
@@ -26,6 +27,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
     private MainActivity activity;
 
+    public static int sessionId = 0;
     private RealTimeListener realTimeListener;
 
     private TextView attentionText;
@@ -70,6 +72,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         // Set up initial screen layout and button listeners
         attentionText = (TextView) view.findViewById(R.id.attentionCircle);
         location = (TextView) view.findViewById(R.id.locationTextView);
+
         location.setText(activity.getLocation());
         location.setSingleLine(true);
         location.setEllipsize(TextUtils.TruncateAt.END);
@@ -131,6 +134,9 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 dialog.show(activity.getSupportFragmentManager(), "dialog");
                 break;
             case R.id.start:
+                //create sharedPreferences with init value 1, increase everytime when user presses "End Session"
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
+                sessionId = prefs.getInt("sessionId", 1);
                 // Change button states to pause and stop
                 hideButtons(startButton);
                 showButtons(pauseButton, notesButton);
@@ -154,11 +160,10 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                         // Stop reading data from EEG
                         stopService();
 
+
                         realTimeListener.onRecordingStopped();
 
-
-
-                        // Move back to the graph view
+                        // Move back to the summary view
                         activity.changeState(MainActivity.ApplicationState.REFLECTION);
                         activity.pagerChange(1);
                     }

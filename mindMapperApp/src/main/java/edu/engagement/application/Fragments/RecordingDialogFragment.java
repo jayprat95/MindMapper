@@ -14,6 +14,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import edu.engagement.application.AttentionLevel;
+import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.R;
 
 /**
@@ -27,6 +28,7 @@ public class RecordingDialogFragment extends DialogFragment {
     private SeekBar mSeekBar;
 
     private AttentionLevel attentionLevel;
+    DataPointSource mDataPointSource = null;
 
     //static RecordingDialogFragment newInstance(){
     //    return new RecordingDialogFragment();
@@ -35,6 +37,9 @@ public class RecordingDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.recording_dialog, container, false);
+
+        mDataPointSource = new DataPointSource(this.getActivity().getApplicationContext());
+        mDataPointSource.open();
 
         mSaveNote = (Button) dialogView.findViewById(R.id.saveNotes);
         mDone = (Button) dialogView.findViewById(R.id.doneButton);
@@ -56,10 +61,13 @@ public class RecordingDialogFragment extends DialogFragment {
                 else{
                     //save annotation
                     //
+                    mDataPointSource.createDataPointAnnotation(RealTimeDataFragment.sessionId, System.currentTimeMillis(), mAnnotation.getText().toString(), mSeekBar.getProgress());
                     Toast.makeText(getActivity(), "Your experience saved!", Toast.LENGTH_SHORT).show();
                     mAnnotation.setText("");
                     mSeekBar.setProgress(0);
                 }
+
+                mDataPointSource.close();
             }
         });
 

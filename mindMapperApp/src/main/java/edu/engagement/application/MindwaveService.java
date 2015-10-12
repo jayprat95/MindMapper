@@ -21,6 +21,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.neurosky.thinkgear.TGDevice;
+import com.neurosky.thinkgear.TGEegPower;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,6 +32,7 @@ import java.util.List;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Eeg.EegListener;
 import edu.engagement.application.Eeg.EegState;
+import edu.engagement.application.Fragments.RealTimeDataFragment;
 
 
 public class MindwaveService extends Service {
@@ -185,9 +187,8 @@ public class MindwaveService extends Service {
         //setting the value to confirm sharedPreferences stored
         gpsKey = storeGpsKey(gpsKey + 1);
 
-        int accuracy = 1;
 
-        dataSource.createDataPointGps(System.currentTimeMillis(), gpsKey, location.getLatitude(), location.getLongitude(), accuracy);
+       //dataSource.createDataPointGps(gpsKey, System.currentTimeMillis(), location.getLatitude(), location.getLongitude());
 
         System.out.println("Set gpsKey to: " + gpsKey);
     }
@@ -485,19 +486,28 @@ public class MindwaveService extends Service {
                     if (att != 0) {
                         sendAttentionToListeners(att);
 
+
                         // TODO: Need to do this in a separate thread
-                        dataSource.createDataPointAttention(System.currentTimeMillis(), gpsKey, att, day, month);
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                        int sharedSessionId = prefs.getInt("sessionId", 0);
+                        if(RealTimeDataFragment.sessionId != 0 && RealTimeDataFragment.sessionId == sharedSessionId){
+                            dataSource.createDataPointAttention(RealTimeDataFragment.sessionId,  att,System.currentTimeMillis());
+                        }
                     }
                     break;
 
                 // Standard Brain Waves
                 case TGDevice.MSG_EEG_POWER:
-//					TGEegPower eegPow = (TGEegPower) msg.obj;
-//					double alpha = eegPow.highAlpha;
-//					double beta = eegPow.highBeta;
-//					double theta = eegPow.theta;
+					TGEegPower eegPow = (TGEegPower) msg.obj;
+                    double alpha_1 = eegPow.highAlpha;
+                    double alpha_2 = eegPow.lowAlpha;
+                    double alpha = (alpha_1 + alpha_2) / 2;
+                    double beta_1 = eegPow.highBeta;
+                    double beta_2 = eegPow.lowBeta;
+                    double beta = (beta_1 + beta_2) / 2;
+                    double theta = eegPow.theta;
 //
-//					dataSource.createDataPointEEG(System.currentTimeMillis(), gpsKey, alpha, beta, theta);
+                    dataSource.createDataPointEEG(System.currentTimeMillis(), gpsKey, alpha, alpha_1, alpha_2, beta, beta_1, beta_2,theta);
 
 //					TextView tv = (TextView) findViewById(R.id.EEGText);
 //					DecimalFormat df = new DecimalFormat("#.##");

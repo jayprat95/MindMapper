@@ -13,6 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_ATTENTION = "table_attention";
     public static final String TABLE_ANNOTATION = "table_annotation";
     public static final String TABLE_RAW = "table_raw";
+    public static final String COLUMN_SESSION_ID = "Session_Id";
     public static final String COLUMN_TIMESTAMP = "Timestamp";
     public static final String COLUMN_USER_ANNOTATION = "UserAnnotation";
     public static final String COLUMN_SUBJECTIVE_ATTENTION = "SubjectiveAttention";
@@ -23,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_BETA1 = "Beta_1";
     public static final String COLUMN_BETA2 = "Beta_2";
     public static final String COLUMN_THETA = "Theta";
+    public static final String COLUMN_POPE = "Pope";
     public static final String COLUMN_HEARTRATE = "Heartrate";
     public static final String COLUMN_ATTENTION = "Attention";
     public static final String COLUMN_CH1 = "Ch1";
@@ -45,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "commments.db";
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE_EEG = "CREATE TABLE IF NOT EXISTS "
@@ -58,6 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_BETA1 + " REAL, "
             + COLUMN_BETA2 + " REAL, "
             + COLUMN_THETA + " REAL"
+            + COLUMN_POPE + " REAL"
             + " );";
 
     private static final String DATABASE_CREATE_HR = "CREATE TABLE IF NOT EXISTS "
@@ -66,25 +69,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_HEARTRATE + " REAL"
             + " );";
 
-//  private static final String DATABASE_CREATE_ATTENTION = "CREATE TABLE IF NOT EXISTS "
-//        + TABLE_ATTENTION + "(" + COLUMN_TIMESTAMP + " INTEGER, "
-//        + COLUMN_GPS_KEY + " INTEGER, "
-//        + COLUMN_ATTENTION + " REAL"
-//        + " );";
-
     private static final String DATABASE_CREATE_ATTENTION = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_ATTENTION + "(" + COLUMN_TIMESTAMP + " INTEGER, "
-            + COLUMN_GPS_KEY + " INTEGER, "
+            + TABLE_ATTENTION + "("
+            + COLUMN_SESSION_ID + " INTEGER, "
             + COLUMN_ATTENTION + " REAL, "
-            + COLUMN_MONTH + " INTEGER, "
-            + COLUMN_DAY + " INTEGER"
+            + COLUMN_TIMESTAMP + " INTEGER"
             + " );";
 
     private static final String DATABASE_CREATE_ANNOTATION = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_ANNOTATION + "(" + COLUMN_TIMESTAMP + " INTEGER, "
+            + TABLE_ANNOTATION + "("
+            + COLUMN_SESSION_ID + " INTEGER, "
+            + COLUMN_TIMESTAMP + " INTEGER, "
             + COLUMN_USER_ANNOTATION + " VARCHAR, "
             + COLUMN_SUBJECTIVE_ATTENTION + " INTEGER " // 1 - 5 scale
             + " );";
+
+    private static final String DATABASE_CREATE_GPS = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_GPS + "("
+            + COLUMN_GPS_KEY + " INTEGER, "
+            + COLUMN_TIMESTAMP + " INTEGER, "
+            + COLUMN_LATITUDE + " REAL, "
+            + COLUMN_LONGITUDE + " REAL, "
+            + COLUMN_LOCATION_NAME + " VARCHAR"
+            + " );";
+
 
     private static final String DATABASE_CREATE_RAW = "CREATE TABLE IF NOT EXISTS "
             + TABLE_RAW + "(" + COLUMN_TIMESTAMP + " INTEGER, "
@@ -99,15 +107,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_CH8 + " REAL"
             + " );";
 
-    private static final String DATABASE_CREATE_GPS = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_GPS + "("
-            + COLUMN_GPS_KEY + " INTEGER, "
-            + COLUMN_TIMESTAMP + " INTEGER, "
-            + COLUMN_LATITUDE + " REAL, "
-            + COLUMN_LONGITUDE + " REAL, "
-            + COLUMN_ACCURACY + " REAL"
-            + COLUMN_LOCATION_NAME + " VARCHAR"
-            + " );";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -1,37 +1,25 @@
 package edu.engagement.application.Database;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import com.opencsv.CSVWriter;
-
-import edu.engagement.thrift.EegPower;
-import edu.engagement.thrift.HeartRate;
-import edu.engagement.thrift.EegAttention;
-import edu.engagement.thrift.EegRaw;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
-import android.location.Location;
 import android.util.Log;
-import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import edu.engagement.thrift.EegAttention;
+import edu.engagement.thrift.EegPower;
+import edu.engagement.thrift.EegRaw;
+import edu.engagement.thrift.HeartRate;
 
 public class DataPointSource {
 
@@ -58,41 +46,58 @@ public class DataPointSource {
         dbHelper.close();
     }
 
-    public DataPoint createDataPointEEG(long timeStamp, int gpsKey, double alpha, double beta, double theta) {
+    public DataPoint createDataPointEEG(long timeStamp, int gpsKey, double alpha, double alpha_1, double alpha_2, double beta, double beta_1, double beta_2, double theta) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_TIMESTAMP, timeStamp);
         values.put(DatabaseHelper.COLUMN_GPS_KEY, gpsKey);
         values.put(DatabaseHelper.COLUMN_ALPHA_AVERAGE, alpha);
+        values.put(DatabaseHelper.COLUMN_ALPHA1, alpha_1);
+        values.put(DatabaseHelper.COLUMN_ALPHA2, alpha_2);
         values.put(DatabaseHelper.COLUMN_BETA_AVERAGE, beta);
+        values.put(DatabaseHelper.COLUMN_BETA1, beta_1);
+        values.put(DatabaseHelper.COLUMN_BETA2, beta_2);
         values.put(DatabaseHelper.COLUMN_THETA, theta);
+        double pope = beta/(alpha + theta);
+        values.put(DatabaseHelper.COLUMN_POPE, pope);
 
         database.insert(DatabaseHelper.TABLE_EEG, null, values);
 
-        return new DataPoint(timeStamp, 0, alpha, beta, theta, 0, 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0, 0);
+        return new DataPoint(0, timeStamp, 0, alpha, alpha_1, alpha_2, beta, beta_1, beta_2, theta, pope, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0);
     }
 
-    public DataPoint createDataPointHR(long timeStamp, int gpsKey, double hr) {
+//    public DataPoint createDataPointHR(long timeStamp, int gpsKey, double hr) {
+//        ContentValues values = new ContentValues();
+//        values.put(DatabaseHelper.COLUMN_TIMESTAMP, timeStamp);
+//        values.put(DatabaseHelper.COLUMN_GPS_KEY, gpsKey);
+//        values.put(DatabaseHelper.COLUMN_HEARTRATE, hr);
+//
+//        database.insert(DatabaseHelper.TABLE_HR, null, values);
+//
+//        return new DataPoint(timeStamp, hr, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0, 0);
+//    }
+
+    public DataPoint createDataPointAttention(int sessionId, long timeStamp, double attention) {
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_TIMESTAMP, timeStamp);
-        values.put(DatabaseHelper.COLUMN_GPS_KEY, gpsKey);
-        values.put(DatabaseHelper.COLUMN_HEARTRATE, hr);
-
-        database.insert(DatabaseHelper.TABLE_HR, null, values);
-
-        return new DataPoint(timeStamp, hr, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0, 0);
-    }
-
-    public DataPoint createDataPointAttention(long timeStamp, int gpsKey, double attention, int day, int month) {
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_TIMESTAMP, timeStamp);
-        values.put(DatabaseHelper.COLUMN_GPS_KEY, gpsKey);
+        values.put(DatabaseHelper.COLUMN_SESSION_ID, sessionId);
         values.put(DatabaseHelper.COLUMN_ATTENTION, attention);
-        values.put(DatabaseHelper.COLUMN_DAY, day);
-        values.put(DatabaseHelper.COLUMN_MONTH, month);
+        values.put(DatabaseHelper.COLUMN_TIMESTAMP, timeStamp);
+
 
         database.insert(DatabaseHelper.TABLE_ATTENTION, null, values);
 
-        return new DataPoint(timeStamp, 0, 0, 0, 0, attention, 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0, 0, day, month);
+        return new DataPoint(sessionId, timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, "",0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    }
+
+    public DataPoint createDataPointAnnotation(int sessionId, long timeStamp, String annotation, int attention){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_SESSION_ID, sessionId);
+        values.put(DatabaseHelper.COLUMN_TIMESTAMP, timeStamp);
+        values.put(DatabaseHelper.COLUMN_USER_ANNOTATION, annotation);
+        values.put(DatabaseHelper.COLUMN_SUBJECTIVE_ATTENTION, attention);
+
+        database.insert(DatabaseHelper.TABLE_ANNOTATION, null, values);
+
+        return new DataPoint(sessionId, timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, annotation, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0);
     }
 //	public DataPoint createDataPointAttention(long timeStamp, int gpsKey, double attention)
 //	{
@@ -122,20 +127,19 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_ATTENTION, null, values);
 
-        return new DataPoint(timeStamp, 0, 0, 0, 0, 0, ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8, gpsKey, 0, 0, 0);
+        return new DataPoint(0, timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "",ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8, gpsKey, 0, 0);
     }
 
-    public DataPoint createDataPointGps(long timeStamp, int gpsKey, double latitude, double longitude, double accuracy) {
+    public DataPoint createDataPointGps(long timeStamp, int gpsKey, double latitude, double longitude) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_GPS_KEY, gpsKey);
         values.put(DatabaseHelper.COLUMN_TIMESTAMP, timeStamp);
         values.put(DatabaseHelper.COLUMN_LONGITUDE, longitude);
         values.put(DatabaseHelper.COLUMN_LATITUDE, latitude);
-        values.put(DatabaseHelper.COLUMN_ACCURACY, accuracy);
 
         long testvalue = database.insert(DatabaseHelper.TABLE_GPS, null, values);
 
-        return new DataPoint(timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, latitude, longitude, accuracy);
+        return new DataPoint(0, timeStamp, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, latitude, longitude);
     }
 
     /**

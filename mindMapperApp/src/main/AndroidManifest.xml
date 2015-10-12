@@ -55,12 +55,12 @@
         <activity
             android:name=".GraphActivity"
             android:label="@string/title_activity_graph"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name=".OnboardActivity"
             android:label="@string/title_activity_onboard"
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:theme="@android:style/Theme.Light.NoTitleBar">
         </activity>
     </application>
 

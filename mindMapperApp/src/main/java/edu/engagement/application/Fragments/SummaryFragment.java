@@ -64,6 +64,7 @@ public class SummaryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+
     private class SummaryLoadTask extends AsyncTask<Void, Void, Void> {
 
         private Context context;
