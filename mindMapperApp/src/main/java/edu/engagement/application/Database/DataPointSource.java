@@ -62,7 +62,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_EEG, null, values);
 
-        return new DataPoint(0, timeStamp, 0, alpha, alpha_1, alpha_2, beta, beta_1, beta_2, theta, pope, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0);
+        return new DataPoint(0, "",timeStamp, 0, alpha, alpha_1, alpha_2, beta, beta_1, beta_2, theta, pope, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0);
     }
 
 //    public DataPoint createDataPointHR(long timeStamp, int gpsKey, double hr) {
@@ -76,7 +76,7 @@ public class DataPointSource {
 //        return new DataPoint(timeStamp, hr, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0, 0);
 //    }
 
-    public DataPoint createDataPointAttention(int sessionId, long timeStamp, double attention) {
+    public DataPoint createDataPointAttention(int sessionId, int attention, long timeStamp) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_SESSION_ID, sessionId);
         values.put(DatabaseHelper.COLUMN_ATTENTION, attention);
@@ -85,7 +85,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_ATTENTION, null, values);
 
-        return new DataPoint(sessionId, timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, "",0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return new DataPoint(sessionId, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, "",0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     public DataPoint createDataPointAnnotation(int sessionId, long timeStamp, String annotation, int attention){
@@ -97,7 +97,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_ANNOTATION, null, values);
 
-        return new DataPoint(sessionId, timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, annotation, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0);
+        return new DataPoint(sessionId, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, annotation, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0);
     }
 //	public DataPoint createDataPointAttention(long timeStamp, int gpsKey, double attention)
 //	{
@@ -127,19 +127,28 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_ATTENTION, null, values);
 
-        return new DataPoint(0, timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "",ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8, gpsKey, 0, 0);
+        return new DataPoint(0, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "",ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8, gpsKey, 0, 0);
     }
 
-    public DataPoint createDataPointGps(long timeStamp, int gpsKey, double latitude, double longitude) {
+    public DataPoint createDataPointGps(double latitude, double longitude, String locationName) {
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_GPS_KEY, gpsKey);
-        values.put(DatabaseHelper.COLUMN_TIMESTAMP, timeStamp);
-        values.put(DatabaseHelper.COLUMN_LONGITUDE, longitude);
         values.put(DatabaseHelper.COLUMN_LATITUDE, latitude);
+        values.put(DatabaseHelper.COLUMN_LONGITUDE, longitude);
+        values.put(DatabaseHelper.COLUMN_LOCATION_NAME, locationName);
 
-        long testvalue = database.insert(DatabaseHelper.TABLE_GPS, null, values);
+        database.insert(DatabaseHelper.TABLE_GPS, null, values);
 
-        return new DataPoint(0, timeStamp, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, latitude, longitude);
+        return new DataPoint(0, locationName,0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, latitude, longitude);
+    }
+
+    public DataPoint createDataPointSession(int sessionId, String locationName){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_SESSION_ID, sessionId);
+        values.put(DatabaseHelper.COLUMN_LOCATION_NAME, locationName);
+
+        database.insert(DatabaseHelper.TABLE_SESSION, null, values);
+
+        return new DataPoint(sessionId, locationName,0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     /**

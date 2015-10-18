@@ -10,6 +10,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_HR = "table_hr";
     public static final String TABLE_GPS = "table_gps";
     public static final String TABLE_EEG = "table_eeg";
+    public static final String TABLE_SESSION = "table_session";
     public static final String TABLE_ATTENTION = "table_attention";
     public static final String TABLE_ANNOTATION = "table_annotation";
     public static final String TABLE_RAW = "table_raw";
@@ -47,12 +48,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "commments.db";
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE_EEG = "CREATE TABLE IF NOT EXISTS "
             + TABLE_EEG + "(" + COLUMN_TIMESTAMP + " INTEGER, "
-            + COLUMN_GPS_KEY + " INTEGER, "
+            + COLUMN_SESSION_ID + " INTEGER, "
             + COLUMN_ALPHA_AVERAGE + " REAL, "
             + COLUMN_ALPHA1 + " REAL, "
             + COLUMN_ALPHA2 + " REAL, "
@@ -65,7 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_HR = "CREATE TABLE IF NOT EXISTS "
             + TABLE_HR + "(" + COLUMN_TIMESTAMP + " INTEGER, "
-            + COLUMN_GPS_KEY + " INTEGER, "
+            + COLUMN_SESSION_ID + " INTEGER, "
             + COLUMN_HEARTRATE + " REAL"
             + " );";
 
@@ -86,17 +87,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_GPS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_GPS + "("
-            + COLUMN_GPS_KEY + " INTEGER, "
-            + COLUMN_TIMESTAMP + " INTEGER, "
             + COLUMN_LATITUDE + " REAL, "
             + COLUMN_LONGITUDE + " REAL, "
+            + COLUMN_LOCATION_NAME + " VARCHAR"
+            + " );";
+
+    private static final String DATABASE_CREATE_SESSION = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_SESSION + "("
+            + COLUMN_SESSION_ID + " INTEGER, "
             + COLUMN_LOCATION_NAME + " VARCHAR"
             + " );";
 
 
     private static final String DATABASE_CREATE_RAW = "CREATE TABLE IF NOT EXISTS "
             + TABLE_RAW + "(" + COLUMN_TIMESTAMP + " INTEGER, "
-            + COLUMN_GPS_KEY + " INTEGER, "
+            + COLUMN_SESSION_ID + " INTEGER, "
             + COLUMN_CH1 + " REAL, "
             + COLUMN_CH2 + " REAL, "
             + COLUMN_CH3 + " REAL, "
@@ -115,18 +120,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE_EEG);
-        database.execSQL(DATABASE_CREATE_EEG);
-        database.execSQL(DATABASE_CREATE_GPS);
-        database.execSQL(DATABASE_CREATE_HR);
-        database.execSQL(DATABASE_CREATE_ATTENTION);
-        database.execSQL(DATABASE_CREATE_RAW);
         database.execSQL(DATABASE_CREATE_GPS);
         database.execSQL(DATABASE_CREATE_HR);
         database.execSQL(DATABASE_CREATE_ATTENTION);
         database.execSQL(DATABASE_CREATE_ANNOTATION);
+        database.execSQL(DATABASE_CREATE_SESSION);
         database.execSQL(DATABASE_CREATE_RAW);
-
-        System.out.println("Created DBs if necessary");
     }
 
     @Override
@@ -144,6 +143,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EEG);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ATTENTION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANNOTATION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RAW);
         onCreate(db);
     }

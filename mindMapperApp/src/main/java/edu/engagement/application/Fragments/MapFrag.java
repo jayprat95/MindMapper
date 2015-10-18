@@ -63,7 +63,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.map, container, false);
 
-        locationTable = new HashMap<String, Location>();
+        locationTable = new HashMap<>();
         mapView = (MapView) view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
@@ -240,17 +240,11 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         public void loadData(DataPointSource dpSource) {
             System.out.println("Cleared map");
 
-            List<double[]> results = dpSource.getMapDataset();
+            //group data by session Id to count the number of sessions
+            //compute ave attention for all sessions
+            //List<double[]> results = dpSource.getMapDataset();
 
-            for (int i = 0; i < results.size(); i++) {
-                double[] data = results.get(i);
 
-                System.out.println("\nMap Dataset results: " + i);
-
-                for (double d : data) {
-                    System.out.print(d + ", ");
-                }
-            }
 
             System.out.println("Exited Dataset for loop");
 
@@ -292,6 +286,11 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
                 //0 for eeg; 1 for self report
                 optionsData.add(new Double[]{pointArray[1], pointArray[4]});
+
+
+
+                //two important infomation before adding marker: 1. AVE attetion for all sessions; 2. the number
+                // of session to be shown on marker
                 addMarker(pointArray[2], pointArray[3], pointArray[1],pointArray[4], 100.0);
             }
         }

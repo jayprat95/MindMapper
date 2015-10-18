@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
@@ -48,7 +46,7 @@ public class MindwaveService extends Service {
     BluetoothAdapter adapter = null;
     TGDevice tgDevice = null;
     DataPointSource dataSource = null;
-    int gpsKey = 0;
+    //int gpsKey = 0;
 
     /*
      * interface for clients that bind
@@ -71,22 +69,22 @@ public class MindwaveService extends Service {
     private boolean recording = false;
 
     // Define a listener that responds to location updates
-    LocationListener locationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            // Called when a new location is found by the network location provider.
-            makeUseOfNewLocation(location);
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            System.out.println("Status Changed");
-        }
-
-        public void onProviderEnabled(String provider) {
-        }
-
-        public void onProviderDisabled(String provider) {
-        }
-    };
+//    LocationListener locationListener = new LocationListener() {
+//        public void onLocationChanged(Location location) {
+//            // Called when a new location is found by the network location provider.
+//            makeUseOfNewLocation(location);
+//        }
+//
+//        public void onStatusChanged(String provider, int status, Bundle extras) {
+//            System.out.println("Status Changed");
+//        }
+//
+//        public void onProviderEnabled(String provider) {
+//        }
+//
+//        public void onProviderDisabled(String provider) {
+//        }
+//    };
 
     /**
      * Called when the service is being created.
@@ -116,9 +114,9 @@ public class MindwaveService extends Service {
         // need to change this to best provider
 //		  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 100, locationListener);
 //		  locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 100, locationListener);
+        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 100, locationListener);
 
-        System.out.println("Requested Location Updates from Location Manager");
+        //System.out.println("Requested Location Updates from Location Manager");
 
         return START_NOT_STICKY;
     }
@@ -172,26 +170,26 @@ public class MindwaveService extends Service {
 //			}
     }
 
-    public void makeUseOfNewLocation(Location location) {
-        //check if location is in same "place" as older gpsKey
-        //if not get next gpsKey
-        //	storeGpsKey
-
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        System.out.println(msg);
-
-        gpsKey = readGpsKey();
-        //setting the value to confirm sharedPreferences stored
-        gpsKey = storeGpsKey(gpsKey + 1);
-
-
-       //dataSource.createDataPointGps(gpsKey, System.currentTimeMillis(), location.getLatitude(), location.getLongitude());
-
-        System.out.println("Set gpsKey to: " + gpsKey);
-    }
+//    public void makeUseOfNewLocation(Location location) {
+//        //check if location is in same "place" as older gpsKey
+//        //if not get next gpsKey
+//        //	storeGpsKey
+//
+//        String msg = "Updated Location: " +
+//                Double.toString(location.getLatitude()) + "," +
+//                Double.toString(location.getLongitude());
+//        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//        System.out.println(msg);
+//
+//        gpsKey = readGpsKey();
+//        //setting the value to confirm sharedPreferences stored
+//        gpsKey = storeGpsKey(gpsKey + 1);
+//
+//
+//       //dataSource.createDataPointGps(gpsKey, System.currentTimeMillis(), location.getLatitude(), location.getLongitude());
+//
+//        System.out.println("Set gpsKey to: " + gpsKey);
+//    }
 
     // Store baseline in persistent storage
     public int storeGpsKey(int key) {
@@ -246,8 +244,8 @@ public class MindwaveService extends Service {
         Log.d(App.NAME, "MindwaveService destroyed!");
 
         // Remove the listener previously added
-        locationManager.removeUpdates(locationListener);
-        Log.d(App.NAME, "Stop listening for location updates");
+        //locationManager.removeUpdates(locationListener);
+        //Log.d(App.NAME, "Stop listening for location updates");
 
         dataSource.close();
     }
@@ -488,10 +486,13 @@ public class MindwaveService extends Service {
 
 
                         // TODO: Need to do this in a separate thread
-                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                        int sharedSessionId = prefs.getInt("sessionId", 0);
-                        if(RealTimeDataFragment.sessionId != 0 && RealTimeDataFragment.sessionId == sharedSessionId){
-                            dataSource.createDataPointAttention(RealTimeDataFragment.sessionId,  att,System.currentTimeMillis());
+                        if(RealTimeDataFragment.sessionId != 0){
+                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                            int sharedSessionId = prefs.getInt("sessionId", RealTimeDataFragment.sessionId);
+                            Log.v("The sessionId","The service session id: " + sharedSessionId);
+                            if(RealTimeDataFragment.sessionId == sharedSessionId){
+                                dataSource.createDataPointAttention(RealTimeDataFragment.sessionId, att, System.currentTimeMillis());
+                            }
                         }
                     }
                     break;
@@ -507,7 +508,7 @@ public class MindwaveService extends Service {
                     double beta = (beta_1 + beta_2) / 2;
                     double theta = eegPow.theta;
 //
-                    dataSource.createDataPointEEG(System.currentTimeMillis(), gpsKey, alpha, alpha_1, alpha_2, beta, beta_1, beta_2,theta);
+                    //dataSource.createDataPointEEG(System.currentTimeMillis(), gpsKey, alpha, alpha_1, alpha_2, beta, beta_1, beta_2,theta);
 
 //					TextView tv = (TextView) findViewById(R.id.EEGText);
 //					DecimalFormat df = new DecimalFormat("#.##");

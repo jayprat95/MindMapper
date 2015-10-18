@@ -3,11 +3,15 @@ package edu.engagement.application;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -64,6 +68,29 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
     //private SlidingDrawer drawer;
     private CharSequence Titles[] = {"Map", "Summary"};
     private int Numboftabs = 2;
+
+    private Location mLocation = null;
+
+    // Define a listener that responds to locationName updates
+    LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            // Called when a new locationName is found by the network locationName provider.
+            mLocation = location;
+            Log.v("mLocation","location is changed");
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            System.out.println("Status Changed");
+        }
+
+        public void onProviderEnabled(String provider) {
+        }
+
+        public void onProviderDisabled(String provider) {
+        }
+    };
+
+    LocationManager locationManager;
     // location from place picker
     private String location = "";
     /**
@@ -100,7 +127,8 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         int sessionId = prefs.getInt("sessionId", RealTimeDataFragment.sessionId);
         SharedPreferences.Editor edit = prefs.edit();
-        edit.putInt("sessionId", sessionId++);
+        edit.putInt("sessionId", ++sessionId);
+        Log.v("The sessionId", "The end session id: " + sessionId);
         edit.commit();
         stopService(new Intent(getBaseContext(), MindwaveService.class));
     }
@@ -110,8 +138,12 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
      *
      * @return locatioin name
      */
-    public String getLocation() {
+    public String getLocationName() {
         return this.location;
+    }
+
+    public Location getLocation(){
+        return mLocation;
     }
 
     @Override
@@ -134,7 +166,7 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
 
         realTimeInstantiated = false;
 
-
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 
@@ -166,6 +198,9 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000,
+                        50, locationListener);
                 Log.d(App.NAME, "Showing Place Picker");
                 showPlacePicker();
             }
@@ -225,6 +260,7 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 location = PlacePicker.getPlace(data, this).getName().toString();
+                PlacePicker.getLatLngBounds(data);
 
                 changeState(ApplicationState.RECORDING);
 
