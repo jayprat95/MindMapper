@@ -5,11 +5,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
 
@@ -35,7 +38,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     private ImageView eegStatusImage;
 
     // Attention circle
-    private TextView location;
+    private TextView locationName;
 
     // Annotation
     private SeekBar annotationBar = null;
@@ -55,6 +58,13 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
     private boolean recordingCurrentState;
     private boolean recordingSavedState;
+    DataPointSource mDataPointSource = null;
+
+    private Location mLocation = null;
+
+
+
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -67,15 +77,18 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
+
+        mDataPointSource = new DataPointSource(this.getActivity().getApplicationContext());
+        mDataPointSource.open();
         View view = inflater.inflate(R.layout.real_time_fragment_layout, container, false);
 
         // Set up initial screen layout and button listeners
         attentionText = (TextView) view.findViewById(R.id.attentionCircle);
-        location = (TextView) view.findViewById(R.id.locationTextView);
+        locationName = (TextView) view.findViewById(R.id.locationTextView);
 
-        location.setText(activity.getLocation());
-        location.setSingleLine(true);
-        location.setEllipsize(TextUtils.TruncateAt.END);
+        locationName.setText(activity.getLocationName());
+        locationName.setSingleLine(true);
+        locationName.setEllipsize(TextUtils.TruncateAt.END);
 
         startButton = (Button) view.findViewById(R.id.start);
 
@@ -134,9 +147,20 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                 dialog.show(activity.getSupportFragmentManager(), "dialog");
                 break;
             case R.id.start:
+
+                mLocation = activity.getLocation();
                 //create sharedPreferences with init value 1, increase everytime when user presses "End Session"
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
                 sessionId = prefs.getInt("sessionId", 1);
+                Log.v("The sessionId","The init session id: " + sessionId);
+                String currentLocationName = locationName.getText().toString();
+
+                //saving data tp GPS table and Session table when this is a new location:
+                if(!MapFrag.locationTable.containsKey(currentLocationName)) {
+                    mDataPointSource.createDataPointGps(mLocation.getLatitude(), mLocation.getLongitude(), currentLocationName);
+                }
+                //saving data to session table
+                mDataPointSource.createDataPointSession(sessionId, currentLocationName);
                 // Change button states to pause and stop
                 hideButtons(startButton);
                 showButtons(pauseButton, notesButton);
@@ -285,6 +309,9 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         void onRecordingStarted();
         void onRecordingStopped();
     }
+
+
+
 }
 
 

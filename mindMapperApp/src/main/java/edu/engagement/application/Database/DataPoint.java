@@ -26,15 +26,17 @@ public class DataPoint
 	private double lat;
 	private double lng;
     private String annotation;
+	private String locationName;
 	
 	//TODO modification just for the attention database
 	private int day;
 	private int month;
 
-	public DataPoint(int sessionId, long timeStamp, double hr, double alpha, double alpha_1,double alpha_2,double beta, double beta_1, double beta_2,double theta, double pope, double attention, String annotation, double ch1,
+	public DataPoint(int sessionId, String locationName, long timeStamp, double hr, double alpha, double alpha_1,double alpha_2,double beta, double beta_1, double beta_2,double theta, double pope, double attention, String annotation, double ch1,
 			double ch2, double ch3, double ch4, double ch5, double ch6, double ch7, double ch8, int gpsKey, double lat, double lng)
 	{
 		this.sessionId = sessionId;
+		this.locationName = locationName;
 		this.timeStamp = timeStamp;
 		this.heartRate = hr;
 		this.alpha = alpha;
