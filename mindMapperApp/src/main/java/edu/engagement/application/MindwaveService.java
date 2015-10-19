@@ -41,7 +41,7 @@ public class MindwaveService extends Service {
     // Listeners for Eeg events
     private List<EegListener> listeners = new ArrayList<>();
 
-    // Acquire a reference to the system Location Manager
+    // Acquire a reference to the system SessionLocation Manager
     LocationManager locationManager;
     BluetoothAdapter adapter = null;
     TGDevice tgDevice = null;
@@ -70,7 +70,7 @@ public class MindwaveService extends Service {
 
     // Define a listener that responds to location updates
 //    LocationListener locationListener = new LocationListener() {
-//        public void onLocationChanged(Location location) {
+//        public void onLocationChanged(SessionLocation location) {
 //            // Called when a new location is found by the network location provider.
 //            makeUseOfNewLocation(location);
 //        }
@@ -110,13 +110,13 @@ public class MindwaveService extends Service {
 //		  generateRandomData();
 //          generateDummyDataPoints();
 //
-        // Register the listener with the Location Manager to receive location updates
+        // Register the listener with the SessionLocation Manager to receive location updates
         // need to change this to best provider
 //		  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 100, locationListener);
 //		  locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 100, locationListener);
 
-        //System.out.println("Requested Location Updates from Location Manager");
+        //System.out.println("Requested SessionLocation Updates from SessionLocation Manager");
 
         return START_NOT_STICKY;
     }
@@ -170,12 +170,12 @@ public class MindwaveService extends Service {
 //			}
     }
 
-//    public void makeUseOfNewLocation(Location location) {
+//    public void makeUseOfNewLocation(SessionLocation location) {
 //        //check if location is in same "place" as older gpsKey
 //        //if not get next gpsKey
 //        //	storeGpsKey
 //
-//        String msg = "Updated Location: " +
+//        String msg = "Updated SessionLocation: " +
 //                Double.toString(location.getLatitude()) + "," +
 //                Double.toString(location.getLongitude());
 //        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

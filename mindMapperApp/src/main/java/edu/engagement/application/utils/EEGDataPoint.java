@@ -5,12 +5,12 @@ import java.util.Date;
 /**
  * Created by alex on 10/17/15.
  */
-public class GraphDataPoint {
-    public final Date time;
+public class EEGDataPoint {
+    public final long timeStamp;
     public final float attention;
 
-    public GraphDataPoint(Date time, float attention) {
-        this.time = time;
+    public EEGDataPoint(long timeStamp, float attention) {
+        this.timeStamp = timeStamp;
         this.attention = attention;
     }
 }

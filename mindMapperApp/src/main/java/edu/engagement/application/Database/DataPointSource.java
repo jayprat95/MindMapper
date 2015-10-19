@@ -16,6 +16,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import edu.engagement.application.AttentionLevel;
+import edu.engagement.application.utils.Annotation;
+import edu.engagement.application.utils.EEGDataPoint;
+import edu.engagement.application.utils.SessionLocation;
+import edu.engagement.application.utils.Session;
 import edu.engagement.thrift.EegAttention;
 import edu.engagement.thrift.EegPower;
 import edu.engagement.thrift.EegRaw;
@@ -286,6 +291,204 @@ public class DataPointSource {
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Loads and returns a list of sessions from the database that occur between t1 and t2.
+     * @return
+     */
+    public List<Session> getSessionsInTimeRange(long t1, long t2) {
+        Integer[] sessionIds = getSessionIdsInTimeRange(t1, t2);
+
+        List<Session> sessions = new ArrayList<>();
+        for (int sessionId : sessionIds) {
+            Session s = loadSessionData(sessionId);
+        }
+        return sessions;
+    }
+
+    /**
+     * Loads and returns session data for a given session id.
+     * @param sessionId
+     * @return
+     */
+    public Session loadSessionData(int sessionId) {
+        String[] columns = { DatabaseHelper.COLUMN_LOCATION_NAME };
+
+        String selection = DatabaseHelper.COLUMN_SESSION_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(sessionId) };
+
+        Cursor cursor = database.query(
+                DatabaseHelper.TABLE_SESSION,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+
+        cursor.moveToFirst();
+
+        String locationName = cursor.getString(0);
+
+        SessionLocation location = loadLocation(locationName);
+
+        Session s = new Session(sessionId, location);
+
+        s.addAnnotations(loadAnnotationData(sessionId));
+        s.addDataPoints(loadEEGData(sessionId));
+
+        return s;
+    }
+
+    public List<Annotation> loadAnnotationData(int sessionId) {
+        String[] columns = {    DatabaseHelper.COLUMN_TIMESTAMP,
+                                DatabaseHelper.COLUMN_USER_ANNOTATION,
+                                DatabaseHelper.COLUMN_SUBJECTIVE_ATTENTION  };
+
+        String selection = DatabaseHelper.COLUMN_SESSION_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(sessionId) };
+
+        Cursor cursor = database.query(
+                DatabaseHelper.TABLE_ANNOTATION,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                DatabaseHelper.COLUMN_TIMESTAMP);
+
+        List<Annotation> annotations = new ArrayList<>();
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            long timeStamp = cursor.getLong(0);
+            String text = cursor.getString(1);
+            AttentionLevel attentionLevel = AttentionLevel.fromInt(cursor.getInt(2));
+
+            annotations.add(new Annotation(text, attentionLevel, timeStamp));
+
+            cursor.moveToNext();
+        }
+
+        return annotations;
+    }
+
+    public List<EEGDataPoint> loadEEGData(int sessionId) {
+        String[] columns = { DatabaseHelper.COLUMN_TIMESTAMP, DatabaseHelper.COLUMN_ATTENTION };
+
+        String selection = DatabaseHelper.COLUMN_SESSION_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(sessionId) };
+
+        Cursor cursor = database.query(
+                DatabaseHelper.TABLE_ATTENTION,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                DatabaseHelper.COLUMN_TIMESTAMP);
+
+        List<EEGDataPoint> dataPoints = new ArrayList<>();
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            long timeStamp = cursor.getLong(0);
+            float attention = cursor.getFloat(1);
+
+            dataPoints.add(new EEGDataPoint(timeStamp, attention));
+
+            cursor.moveToNext();
+        }
+
+        return dataPoints;
+    }
+
+    public SessionLocation loadLocation(String locationName) {
+        String[] columns = {    DatabaseHelper.COLUMN_LONGITUDE, DatabaseHelper.COLUMN_LONGITUDE };
+
+        String selection = DatabaseHelper.COLUMN_LOCATION_NAME + " = ?";
+        String[] selectionArgs = { locationName };
+
+        Cursor cursor = database.query(
+                DatabaseHelper.TABLE_GPS,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+
+        cursor.moveToFirst();
+        double longitude = cursor.getDouble(0);
+        double latitude = cursor.getDouble(1);
+
+        return new SessionLocation(locationName, latitude, longitude);
+    }
+
+    /**
+     * Finds session ids that fall within the given range of t1 and t2
+     * @param t1
+     * @param t2
+     * @return
+     */
+    public Integer[] getSessionIdsInTimeRange(long t1, long t2) {
+
+        String[] columns = { DatabaseHelper.COLUMN_SESSION_ID };
+        String selection = DatabaseHelper.COLUMN_TIMESTAMP + " >= ? AND " +
+                            DatabaseHelper.COLUMN_TIMESTAMP + " <= ?";
+        String[] selectionArgs = { String.valueOf(t1), String.valueOf(t2) };
+
+        Cursor cursor = database.query(
+                true,
+                DatabaseHelper.TABLE_EEG,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                DatabaseHelper.COLUMN_SESSION_ID,
+                null);
+
+        List<Integer> sessionIds = new ArrayList<>();
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            sessionIds.add(cursor.getInt(0));
+            cursor.moveToNext();
+        }
+
+        return sessionIds.toArray(new Integer[sessionIds.size()]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public List<EegPower> getAllDataPointsEEG() {
         List<EegPower> points = new ArrayList<EegPower>();

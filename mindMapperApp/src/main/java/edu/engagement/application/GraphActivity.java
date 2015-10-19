@@ -20,11 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.engagement.application.Database.DataPointSource;
-import edu.engagement.application.utils.GraphAnnotation;
+import edu.engagement.application.utils.Annotation;
+import edu.engagement.application.utils.Session;
 
 public class GraphActivity extends Activity implements OnChartValueSelectedListener {
 
-    List<GraphAnnotation> mAnnotations;
+    List<Annotation> mAnnotations;
     ListView mListView;
     private CombinedChart mChart;
 
@@ -121,9 +122,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 DataPointSource dataSource = new DataPointSource(context);
                 dataSource.open();
 
-                // Load values to cards
-                loadAnnotationPoints(dataSource);
-                loadReflectionData(dataSource);
+                Session s = dataSource.loadSessionData(1);
+
 
             } catch (Exception e) {
                 // sqlite db locked - concurrency issue
@@ -138,94 +138,23 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             GraphListViewAdpter adapter = new GraphListViewAdpter(mAnnotations);
             mListView.setAdapter(adapter);
 
-            CombinedData data = new CombinedData()
+            CombinedData data = new CombinedData();
         }
 
-        private void loadAnnotationPoints(DataPointSource dbSource) {
+        private void loadSession(DataPointSource dbSource) {
 
             //List<double[]> results = dbSource.getMapDataset();
             //List<EventSummary> events = new ArrayList<>(results.size());
 
 
-            GraphAnnotation annotation1 = new GraphAnnotation("Annotation #1", "at 8.30am", "I am now coding at Mcb student lounge.");
-            GraphAnnotation annotation2 = new GraphAnnotation("Annotation #2", "at 10.00am", "I am now do HW at at Mcb student lounge.");
-            GraphAnnotation annotation3 = new GraphAnnotation("Annotation #3", "at 12.05am", "I am reading book at Mcb student lounge.");
-            GraphAnnotation annotation4 = new GraphAnnotation("Annotation #4", "at 1.05pm", "I am talking with friends at Mcb student lounge.");
+            Annotation annotation1 = new Annotation("I am now coding at Mcb student lounge.", AttentionLevel.HIGH, 0);
+            Annotation annotation2 = new Annotation("I am now do HW at at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
+            Annotation annotation3 = new Annotation("I am reading book at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
+            Annotation annotation4 = new Annotation("I am talking with friends at Mcb student lounge.", AttentionLevel.LOW, 0);
             mAnnotations.add(annotation1);
             mAnnotations.add(annotation2);
             mAnnotations.add(annotation3);
             mAnnotations.add(annotation4);
         }
-
-        private void loadReflectionData(DataPointSource dpSource) {
-            List<double[]> results = dpSource.getDayGraphDataset();
-
-            //timestamp starts 1417546011230
-            long currentTime = System.currentTimeMillis();
-
-    	/*
-		 * 0 - timestamp
-		 * 1 - Attention
-		 */
-
-            ArrayList<String> xVals = new ArrayList<String>();
-            //for(double[] pointArray : results)
-            for (int i = results.size() - 1; i >= 0; i--) {
-                double[] pointArray = results.get(i);
-                if (pointArray[1] != 0) {
-                    xVals.add(i/*pointArray[0]-currentTime*/ + "");
-                    System.out.println("Add xVal: " + i/*pointArray[0]-currentTime*/);
-                }
-            }
-
-            ArrayList<Entry> vals1 = new ArrayList<Entry>();
-
-            //for(double[] pointArray : results)
-            for (int i = results.size() - 1; i >= 0; i--) {
-                double[] pointArray = results.get(i);
-                if (pointArray[1] != 0) {
-                    vals1.add(new Entry((float) pointArray[1], (int) (i/*pointArray[0]-currentTime*/)));
-                    System.out.println("Add vals1: (" + pointArray[1] + ", " + (i/*pointArray[0]-currentTime*/) + ")");
-                }
-            }
-
-
-            // create a dataset and give it a type
-            LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
-            set1.setDrawCubic(false);
-            set1.setCubicIntensity(0.2f);
-            set1.setDrawFilled(false);
-            set1.setDrawCircles(true);
-            set1.setLineWidth(2f);
-            set1.setCircleSize(5f);
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setColor(Color.rgb(104, 241, 175));
-
-            ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-            dataSets.add(set1);
-
-            // create a data object with the datasets
-            LineData data = new LineData(xVals, dataSets);
-
-            // set data
-            mChart.setData(data);
-
-//    	List<double[]> results = dpSource.getMapDataset();
-//
-//		for(int i=0; i < results.size(); i++){
-//			double[] data = results.get(i);
-//
-//			System.out.println("\nDay Graph Dataset results: " + i);
-//			for(int j=0; j < data.length; j++){
-//				System.out.print(data[j] + ", ");
-//			}
-//		}
-
-//    	for(double[] pointArray : results)
-//		{
-//		//	addPoint(pointArray[2], pointArray[3], radius, getEngagementColor(pointArray[1], 100));
-//		}
-        }
     }
-
 }

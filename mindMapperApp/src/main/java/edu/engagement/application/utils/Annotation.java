@@ -5,13 +5,13 @@ import java.util.Date;
 
 import edu.engagement.application.AttentionLevel;
 
-public class GraphAnnotation  {
+public class Annotation {
 
     private String annotation;
     private AttentionLevel attentionLevel;
     private long timeStamp;
 
-    public GraphAnnotation(String annotation, AttentionLevel attentionLevel, long timeStamp){
+    public Annotation(String annotation, AttentionLevel attentionLevel, long timeStamp){
         this.annotation = annotation;
         this.attentionLevel = attentionLevel;
         this.timeStamp = timeStamp;

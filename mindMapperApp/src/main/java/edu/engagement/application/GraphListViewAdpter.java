@@ -9,16 +9,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import edu.engagement.application.utils.GraphAnnotation;
+import edu.engagement.application.utils.Annotation;
 
 /**
  * Created by IvenRee on 10/12/15.
  */
 public class GraphListViewAdpter extends BaseAdapter {
 
-    List<GraphAnnotation> mAnnotations;
+    List<Annotation> mAnnotations;
 
-    public GraphListViewAdpter(List<GraphAnnotation> annotations){
+    public GraphListViewAdpter(List<Annotation> annotations){
         this.mAnnotations = annotations;
     }
     @Override
@@ -54,10 +54,10 @@ public class GraphListViewAdpter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        GraphAnnotation annotation = mAnnotations.get(position);
+        Annotation annotation = mAnnotations.get(position);
 
-        holder.annotationNumber.setText(annotation.getAnnotationNumber());
-        holder.annotationTime.setText(annotation.getTime());
+        holder.annotationNumber.setText("Annotation #" + position);
+        holder.annotationTime.setText("at " + annotation.getTimeFormatted("hh:mm a"));
         holder.annotation.setText((annotation.getAnnotation()));
 
         return convertView;
