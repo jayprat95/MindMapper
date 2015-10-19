@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -25,6 +26,8 @@ import edu.engagement.application.utils.Session;
 
 public class GraphActivity extends Activity implements OnChartValueSelectedListener {
 
+    public static final String SESSION_ID_TAG = "SessionId";
+
     List<Annotation> mAnnotations;
     ListView mListView;
     private CombinedChart mChart;
@@ -39,51 +42,39 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         mListView = (ListView) findViewById(R.id.listView);
 
 
-            mChart = (CombinedChart) findViewById(R.id.chart);
-            mChart.setOnChartValueSelectedListener(this);
+        mChart = (CombinedChart) findViewById(R.id.chart);
+        mChart.setOnChartValueSelectedListener(this);
 
-            // no description text
-            mChart.setDescription("AVG Attention vs gpsKey");
-            //mChart.setUnit(" $");
+        // no description text
+        mChart.setDescription("AVG Attention vs gpsKey");
+        //mChart.setUnit(" $");
 
-            // enable value highlighting
-            mChart.setHighlightEnabled(true);
+        // enable value highlighting
+        mChart.setHighlightEnabled(true);
 
-            // enable touch gestures
-            mChart.setTouchEnabled(true);
+        // enable touch gestures
+        mChart.setTouchEnabled(true);
 
-            // enable scaling and dragging
-            mChart.setDragEnabled(true);
-            mChart.setScaleEnabled(true);
+        // enable scaling and dragging
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
 
-            // if disabled, scaling can be done on x- and y-axis separately
-            mChart.setPinchZoom(true);
+        // if disabled, scaling can be done on x- and y-axis separately
+        mChart.setPinchZoom(true);
 
-            mChart.setDrawGridBackground(false);
+        mChart.setDrawGridBackground(false);
 
-            mChart.getXAxis().setDrawGridLines(false);
-            mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        mChart.getXAxis().setDrawGridLines(false);
+        mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
-//	        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-//	        mChart.setValueTypeface(tf);
+        mChart.animateXY(2000, 2000);
 
-//	        XLabels x = mChart.getXLabels();
-//	        x.setTypeface(tf);
-//
-//	        YLabels y = mChart.getYLabels();
-//	        y.setTypeface(tf);
-//	        y.setLabelCount(5);
+        // dont forget to refresh the drawing
+        mChart.invalidate();
 
-            // add data
-            //setData(45, 100);
+        int id = getIntent().getExtras().getInt(SESSION_ID_TAG);
 
-            mChart.animateXY(2000, 2000);
-
-            // dont forget to refresh the drawing
-            mChart.invalidate();
-
-
-        new GraphLoadTask(this).execute();
+        new GraphLoadTask(this).execute(id);
 
     }
 
@@ -98,8 +89,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
     }
 
 
-
-    private class GraphLoadTask extends AsyncTask<Void, Void, Void> {
+    private class GraphLoadTask extends AsyncTask<Integer, Void, Void> {
 
         private Context context;
 
@@ -108,7 +98,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(Integer... params) {
 
             // idk, man, this just works
             try {
@@ -122,8 +112,9 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 DataPointSource dataSource = new DataPointSource(context);
                 dataSource.open();
 
-                Session s = dataSource.loadSessionData(1);
+                int id = params[0];
 
+                Session s = dataSource.loadSessionData(id);
 
             } catch (Exception e) {
                 // sqlite db locked - concurrency issue
