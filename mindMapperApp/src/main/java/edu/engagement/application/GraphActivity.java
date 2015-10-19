@@ -6,10 +6,14 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -22,14 +26,15 @@ import java.util.List;
 
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.utils.Annotation;
+import edu.engagement.application.utils.EEGDataPoint;
 import edu.engagement.application.utils.Session;
+import edu.engagement.application.utils.SessionLocation;
 
-public class GraphActivity extends Activity implements OnChartValueSelectedListener {
+public class GraphActivity extends Activity implements OnChartValueSelectedListener, AbsListView.OnScrollListener {
 
     public static final String SESSION_ID_TAG = "SessionId";
 
-    List<Annotation> mAnnotations;
-    ListView mListView;
+    private ListView mListView;
     private CombinedChart mChart;
 
     @Override
@@ -37,10 +42,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
-        mAnnotations = new ArrayList<>();
-
         mListView = (ListView) findViewById(R.id.listView);
-
+        mListView.setOnScrollListener(this);
 
         mChart = (CombinedChart) findViewById(R.id.chart);
         mChart.setOnChartValueSelectedListener(this);
@@ -88,8 +91,18 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
     }
 
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-    private class GraphLoadTask extends AsyncTask<Integer, Void, Void> {
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
+
+
+    private class GraphLoadTask extends AsyncTask<Integer, Void, Session> {
 
         private Context context;
 
@@ -98,54 +111,116 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         }
 
         @Override
-        protected Void doInBackground(Integer... params) {
+        protected Session doInBackground(Integer... params) {
 
-            // idk, man, this just works
-            try {
-                Thread.sleep(250);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Session s = null;
 
-            /* ---------------------- load data begin ---------------------- */
-            try {
-                DataPointSource dataSource = new DataPointSource(context);
-                dataSource.open();
+//            try {
+//                DataPointSource dataSource = new DataPointSource(context);
+//                dataSource.open();
+//
+//                int id = params[0];
+//
+//                s = dataSource.loadSessionData(id);
+//            } catch (Exception e) {
+//                // sqlite db locked - concurrency issue
+//                System.out.println("Graph - sqlite db locked - concurrency issue ");
+//                System.out.println(e.toString());
+//            }
 
-                int id = params[0];
+            // THIS WILL HAVE TO DO WHILE I DON'T HAVE ACCESS TO THE EEG
+            s = getFakeSession();
 
-                Session s = dataSource.loadSessionData(id);
-
-            } catch (Exception e) {
-                // sqlite db locked - concurrency issue
-                System.out.println("Graph - sqlite db locked - concurrency issue ");
-                System.out.println(e.toString());
-            }
-            return null;
+            return s;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            GraphListViewAdpter adapter = new GraphListViewAdpter(mAnnotations);
+        protected void onPostExecute(Session session) {
+            GraphListViewAdpter adapter = new GraphListViewAdpter(session.getAnnotations());
             mListView.setAdapter(adapter);
 
-            CombinedData data = new CombinedData();
+            drawGraph(session);
         }
 
-        private void loadSession(DataPointSource dbSource) {
+        private Session getFakeSession() {
+            Session s = new Session(1, new SessionLocation("McBryde Hall", 5.3, 2.3));
 
-            //List<double[]> results = dbSource.getMapDataset();
-            //List<EventSummary> events = new ArrayList<>(results.size());
+            s.addDataPoint(1, 75);
+            s.addDataPoint(1000 * 60 * 1, 67);
+            s.addDataPoint(1000 * 60 * 2, 50);
+            s.addDataPoint(1000 * 60 * 3, 59);
+            s.addDataPoint(1000 * 60 * 4, 82);
+            s.addDataPoint(1000 * 60 * 5, 71);
+            s.addDataPoint(1000 * 60 * 6, 62);
+            s.addDataPoint(1000 * 60 * 7, 58);
+            s.addDataPoint(1000 * 60 * 8, 76);
+            s.addDataPoint(1000 * 60 * 9, 86);
 
+            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM_HIGH, 5000);
+            s.addAnnotation("Annotation 2", AttentionLevel.HIGH, 1000 * 60 * 6);
+            s.addAnnotation("Annotation 3", AttentionLevel.MEDIUM_LOW, 1000 * 60 * 8);
 
-            Annotation annotation1 = new Annotation("I am now coding at Mcb student lounge.", AttentionLevel.HIGH, 0);
-            Annotation annotation2 = new Annotation("I am now do HW at at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
-            Annotation annotation3 = new Annotation("I am reading book at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
-            Annotation annotation4 = new Annotation("I am talking with friends at Mcb student lounge.", AttentionLevel.LOW, 0);
-            mAnnotations.add(annotation1);
-            mAnnotations.add(annotation2);
-            mAnnotations.add(annotation3);
-            mAnnotations.add(annotation4);
+            return s;
+        }
+
+        private void drawGraph(Session session) {
+
+            List<EEGDataPoint> dataPoints = session.getEEGData();
+            List<Annotation> annotations = session.getAnnotations();
+            List<String> xLabels = getXLabels(dataPoints);
+
+            CombinedData combinedData = new CombinedData(xLabels);
+
+            LineData lineData = new LineData();
+            BarData barData = new BarData();
+
+            List<Entry> lineEntries = new ArrayList<>();
+            List<BarEntry> barEntries = new ArrayList<>();
+
+            int annotationIndex = 0;
+            for (int i = 0; i < xLabels.size(); i++) {
+                EEGDataPoint dataPoint = dataPoints.get(i);
+                Annotation annotation = annotations.get(annotationIndex);
+
+                lineEntries.add(new Entry(dataPoint.attention, i));
+
+                if (annotation.getTimeStamp() < dataPoint.timeStamp) {
+
+                    float attention = annotation.getAttentionLevel().ordinal() * 25;
+
+                    barEntries.add(new BarEntry(attention, i-1));
+                    annotationIndex++;
+                }
+            }
+
+            LineDataSet lineDataSet = new LineDataSet(lineEntries, "EEG Data");
+            lineDataSet.setColor(Color.MAGENTA);
+            lineDataSet.setCircleSize(3f);
+            lineDataSet.setLineWidth(5f);
+
+            BarDataSet barDataSet = new BarDataSet(barEntries, "Annotations");
+            barDataSet.setColor(Color.GRAY);
+            barDataSet.setHighLightColor(Color.WHITE);
+            barDataSet.setDrawValues(false);
+
+            lineData.addDataSet(lineDataSet);
+            barData.addDataSet(barDataSet);
+
+            combinedData.setData(lineData);
+            combinedData.setData(barData);
+
+            mChart.setData(combinedData);
+            mChart.invalidate();
+        }
+
+        private List<String> getXLabels(List<EEGDataPoint> dataPoints) {
+            List<String> xLabels = new ArrayList<>();
+
+            for (EEGDataPoint dataPoint : dataPoints) {
+                Log.d("AHHHHHHHHH", dataPoint.timeStampFormatted());
+                xLabels.add(dataPoint.timeStampFormatted());
+            }
+            return xLabels;
         }
     }
 }
