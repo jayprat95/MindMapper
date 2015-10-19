@@ -7,8 +7,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -19,12 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.engagement.application.Database.DataPointSource;
+import edu.engagement.application.utils.GraphAnnotation;
 
 public class GraphActivity extends Activity implements OnChartValueSelectedListener {
 
     List<GraphAnnotation> mAnnotations;
     ListView mListView;
-    private LineChart mChart;
+    private CombinedChart mChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         mListView = (ListView) findViewById(R.id.listView);
 
 
-            mChart = (LineChart) findViewById(R.id.chart);
+            mChart = (CombinedChart) findViewById(R.id.chart);
             mChart.setOnChartValueSelectedListener(this);
 
             // no description text
@@ -125,8 +127,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
             } catch (Exception e) {
                 // sqlite db locked - concurrency issue
-                System.out
-                        .println("Graph - sqlite db locked - concurrency issue ");
+                System.out.println("Graph - sqlite db locked - concurrency issue ");
                 System.out.println(e.toString());
             }
             return null;
@@ -136,6 +137,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         protected void onPostExecute(Void aVoid) {
             GraphListViewAdpter adapter = new GraphListViewAdpter(mAnnotations);
             mListView.setAdapter(adapter);
+
+            CombinedData data = new CombinedData()
         }
 
         private void loadAnnotationPoints(DataPointSource dbSource) {

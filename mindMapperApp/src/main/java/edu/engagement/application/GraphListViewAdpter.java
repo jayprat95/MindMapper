@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import edu.engagement.application.utils.GraphAnnotation;
+
 /**
  * Created by IvenRee on 10/12/15.
  */
