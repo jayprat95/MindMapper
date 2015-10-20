@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -23,6 +24,7 @@ import com.github.mikephil.charting.utils.Highlight;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.utils.Annotation;
@@ -78,7 +80,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         int id = getIntent().getExtras().getInt(SESSION_ID_TAG);
 
         new GraphLoadTask(this).execute(id);
-
     }
 
     @Override
@@ -145,20 +146,18 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         private Session getFakeSession() {
             Session s = new Session(1, new SessionLocation("McBryde Hall", 5.3, 2.3));
 
-            s.addDataPoint(1, 75);
-            s.addDataPoint(1000 * 60 * 1, 67);
-            s.addDataPoint(1000 * 60 * 2, 50);
-            s.addDataPoint(1000 * 60 * 3, 59);
-            s.addDataPoint(1000 * 60 * 4, 82);
-            s.addDataPoint(1000 * 60 * 5, 71);
-            s.addDataPoint(1000 * 60 * 6, 62);
-            s.addDataPoint(1000 * 60 * 7, 58);
-            s.addDataPoint(1000 * 60 * 8, 76);
-            s.addDataPoint(1000 * 60 * 9, 86);
+            Random r = new Random(SystemClock.elapsedRealtime());
+            for (int i = 0; i <= 60; i++) {
+                float attention = r.nextInt(50) + 50;
+                s.addDataPoint(1000 * 60 * i, attention);
+            }
 
-            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM_HIGH, 5000);
-            s.addAnnotation("Annotation 2", AttentionLevel.HIGH, 1000 * 60 * 6);
-            s.addAnnotation("Annotation 3", AttentionLevel.MEDIUM_LOW, 1000 * 60 * 8);
+            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM, 1000*60*5);
+            s.addAnnotation("Annotation 2", AttentionLevel.MEDIUM_HIGH, 1000*60*22);
+            s.addAnnotation("Annotation 3", AttentionLevel.HIGH, 1000 * 60 * 30);
+            s.addAnnotation("Annotation 4", AttentionLevel.HIGH, 1000 * 60 * 39);
+            s.addAnnotation("Annotation 5", AttentionLevel.MEDIUM_HIGH, 1000 * 60 * 49);
+            s.addAnnotation("Annotation 6", AttentionLevel.MEDIUM_LOW, 1000 * 60 * 55);
 
             return s;
         }
@@ -178,32 +177,55 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             List<BarEntry> barEntries = new ArrayList<>();
 
             int annotationIndex = 0;
+            float sum = 0;
             for (int i = 0; i < xLabels.size(); i++) {
                 EEGDataPoint dataPoint = dataPoints.get(i);
-                Annotation annotation = annotations.get(annotationIndex);
 
-                lineEntries.add(new Entry(dataPoint.attention, i));
+                float attention = dataPoint.attention;
+                sum += attention;
 
-                if (annotation.getTimeStamp() < dataPoint.timeStamp) {
+                lineEntries.add(new Entry(attention, i));
 
-                    float attention = annotation.getAttentionLevel().ordinal() * 25;
+                if (annotationIndex < annotations.size()) {
+                    Annotation annotation = annotations.get(annotationIndex);
+                    if (annotation.getTimeStamp() < dataPoint.timeStamp) {
 
-                    barEntries.add(new BarEntry(attention, i-1));
-                    annotationIndex++;
+                        float selfReport = annotation.getAttentionLevel().ordinal() * 25;
+
+                        barEntries.add(new BarEntry(selfReport, i - 1));
+                        annotationIndex++;
+                    }
                 }
             }
 
-            LineDataSet lineDataSet = new LineDataSet(lineEntries, "EEG Data");
-            lineDataSet.setColor(Color.MAGENTA);
-            lineDataSet.setCircleSize(3f);
-            lineDataSet.setLineWidth(5f);
+            float avg = sum / lineEntries.size();
+
+            List<Entry> avgLineEntries = new ArrayList<>();
+            avgLineEntries.add(new Entry(avg, 0));
+            avgLineEntries.add(new Entry(avg, lineEntries.size()));
+
+            LineDataSet dataPointSet = new LineDataSet(lineEntries, "EEG Data");
+            dataPointSet.setDrawCubic(true);
+            dataPointSet.setColor(Color.MAGENTA);
+            dataPointSet.setCircleSize(3f);
+            dataPointSet.setLineWidth(5f);
+            dataPointSet.setDrawCircles(false);
+            dataPointSet.setDrawValues(false);
+
+            LineDataSet avgEegSet = new LineDataSet(avgLineEntries, "Avg EEG Data");
+            avgEegSet.enableDashedLine(10, 10, 0);
+            avgEegSet.setLineWidth(3f);
+            avgEegSet.setColor(Color.BLACK);
+            avgEegSet.setDrawValues(false);
+            avgEegSet.setDrawCircles(false);
 
             BarDataSet barDataSet = new BarDataSet(barEntries, "Annotations");
             barDataSet.setColor(Color.GRAY);
             barDataSet.setHighLightColor(Color.WHITE);
             barDataSet.setDrawValues(false);
 
-            lineData.addDataSet(lineDataSet);
+            lineData.addDataSet(dataPointSet);
+            lineData.addDataSet(avgEegSet);
             barData.addDataSet(barDataSet);
 
             combinedData.setData(lineData);
