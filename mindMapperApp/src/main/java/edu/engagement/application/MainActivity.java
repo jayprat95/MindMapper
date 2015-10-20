@@ -10,7 +10,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -72,23 +71,24 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
     private Location mLocation = null;
 
     // Define a listener that responds to locationName updates
-    LocationListener locationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            // Called when a new locationName is found by the network locationName provider.
-            mLocation = location;
-            Log.v("mLocation","location is changed");
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            System.out.println("Status Changed");
-        }
-
-        public void onProviderEnabled(String provider) {
-        }
-
-        public void onProviderDisabled(String provider) {
-        }
-    };
+//    LocationListener locationListener = new LocationListener() {
+//        public void onLocationChanged(Location location) {
+//            // Called when a new locationName is found by the network locationName provider.
+//
+//            Toast.makeText(getApplicationContext(), "The Location is initialized", Toast.LENGTH_SHORT);
+//
+//        }
+//
+//        public void onStatusChanged(String provider, int status, Bundle extras) {
+//            System.out.println("Status Changed");
+//        }
+//
+//        public void onProviderEnabled(String provider) {
+//        }
+//
+//        public void onProviderDisabled(String provider) {
+//        }
+//    };
 
     LocationManager locationManager;
     // location from place picker
@@ -199,8 +199,10 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
             @Override
             public void onClick(View v) {
 
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000,
-                        50, locationListener);
+                mLocation = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+                Log.d("location manager", "get current location");
+                        //requestLocationUpdates(LocationManager.GPS_PROVIDER, 600,
+                        //100, locationListener);
                 Log.d(App.NAME, "Showing Place Picker");
                 showPlacePicker();
             }

@@ -21,6 +21,7 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.MainActivity;
@@ -134,75 +135,83 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()) {
-            case R.id.makeNoteButton:
+            switch (view.getId()) {
+                case R.id.makeNoteButton:
 
-                //display dialog to make note for annotation
+                    //display dialog to make note for annotation
 //                FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //                Fragment prev = getFragmentManager().findFragmentByTag("dialog");
 //                if(prev != null){
 //                    transaction.remove(prev);
 //                }
-                RecordingDialogFragment dialog = new RecordingDialogFragment();
-                dialog.show(activity.getSupportFragmentManager(), "dialog");
-                break;
-            case R.id.start:
+                    RecordingDialogFragment dialog = new RecordingDialogFragment();
+                    dialog.show(activity.getSupportFragmentManager(), "dialog");
+                    break;
+                case R.id.start:
 
-                mLocation = activity.getLocation();
-                //create sharedPreferences with init value 1, increase everytime when user presses "End Session"
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
-                sessionId = prefs.getInt("sessionId", 1);
-                Log.v("The sessionId","The init session id: " + sessionId);
-                String currentLocationName = locationName.getText().toString();
+                    mLocation = activity.getLocation();
 
-                //saving data tp GPS table and Session table when this is a new location:
-                if(!MapFrag.locationTable.containsKey(currentLocationName)) {
-                    mDataPointSource.createDataPointGps(mLocation.getLatitude(), mLocation.getLongitude(), currentLocationName);
-                }
-                //saving data to session table
-                mDataPointSource.createDataPointSession(sessionId, currentLocationName);
-                // Change button states to pause and stop
-                hideButtons(startButton);
-                showButtons(pauseButton, notesButton);
+                    if(mLocation != null){
+                    //create sharedPreferences with init value 1, increase everytime when user presses "End Session"
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
+                    sessionId = prefs.getInt("sessionId", 1);
+                    Log.v("The sessionId", "The init session id: " + sessionId);
+                    String currentLocationName = locationName.getText().toString();
 
-                timer.setFormat("[Total Time: %s]");
-
-                startRecording();
-                break;
-            case R.id.pause:
-
-                stopRecording();
-
-                // display confirm dialog
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-                dialogBuilder.setTitle("You are currently paused. ");
-                dialogBuilder.setMessage("No data is currently being logged.");
-                dialogBuilder.setPositiveButton("End Activity", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        // Stop reading data from EEG
-                        stopService();
-
-
-                        realTimeListener.onRecordingStopped();
-
-                        // Move back to the summary view
-                        activity.changeState(MainActivity.ApplicationState.REFLECTION);
-                        activity.pagerChange(1);
+                    //saving data tp GPS table and Session table when this is a new location:
+                    if (!MapFrag.locationTable.containsKey(currentLocationName)) {
+                        mDataPointSource.createDataPointGps(mLocation.getLatitude(), mLocation.getLongitude(), currentLocationName);
                     }
-                });
-                dialogBuilder.setNegativeButton("Resume Activity", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                    //saving data to session table
+                        mDataPointSource.createDataPointSession(sessionId, currentLocationName);
+                    // Change button states to pause and stop
+                        hideButtons(startButton);
+                        showButtons(pauseButton, notesButton);
+
+                        timer.setFormat("[Total Time: %s]");
+
                         startRecording();
                     }
-                });
 
-                dialogBuilder.create().show();
-                break;
-        }
+                    else{
+                        Toast.makeText(activity.getApplicationContext(), "The Location is initializing...", Toast.LENGTH_SHORT);
+                    }
+                    break;
+                case R.id.pause:
+
+                    stopRecording();
+
+                    // display confirm dialog
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                    dialogBuilder.setTitle("You are currently paused. ");
+                    dialogBuilder.setMessage("No data is currently being logged.");
+                    dialogBuilder.setPositiveButton("End Activity", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            // Stop reading data from EEG
+                            stopService();
+
+
+                            realTimeListener.onRecordingStopped();
+
+                            // Move back to the summary view
+                            activity.changeState(MainActivity.ApplicationState.REFLECTION);
+                            activity.pagerChange(1);
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Resume Activity", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            startRecording();
+                        }
+                    });
+
+                    dialogBuilder.create().show();
+                    break;
+            }
+
     }
 
     public void restoreRecordingState() {

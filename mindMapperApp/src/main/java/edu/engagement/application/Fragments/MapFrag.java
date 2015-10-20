@@ -46,6 +46,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
     //keep track of status of buttons
     // 1 for eeg; 2 for report; 3 for pope
     private static int status = 1;
+    private double eegAverage;
+    private double selfAverage;
 
 
 	DataFilter filter;
@@ -242,7 +244,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
             //group data by session Id to count the number of sessions
             //compute ave attention for all sessions
-            //List<double[]> results = dpSource.getMapDataset();
+            List<String[]> results = dpSource.getMapDataset();
 
 
 
@@ -250,28 +252,28 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
             // TODO remove these later
             /** --------------- Test points for place picker------------------- **/
-            double[] testPoint = new double[5];
-            testPoint[0] = 0;
-            testPoint[1] = 40; //average eeg attention
-            testPoint[2] = 37.230632; // Latitude
-            testPoint[3] = -80.423106; // Longitude
-            testPoint[4] = 5.0; //average self report
-
-            double[] testPoint1 = new double[5];
-            testPoint1[0] = 0;
-            testPoint1[1] = 60;
-            testPoint1[2] = 37.233061; // Latitude
-            testPoint1[3] = -80.423106; // Longitude
-            testPoint[4] = 1.0; //average self report
-
-            mapData.add(testPoint);
-            mapData.add(testPoint1);
+//            double[] testPoint = new double[5];
+//            testPoint[0] = 0;
+//            testPoint[1] = 40; //average eeg attention
+//            testPoint[2] = 37.230632; // Latitude
+//            testPoint[3] = -80.423106; // Longitude
+//            testPoint[4] = 5.0; //average self report
+//
+//            double[] testPoint1 = new double[5];
+//            testPoint1[0] = 0;
+//            testPoint1[1] = 60;
+//            testPoint1[2] = 37.233061; // Latitude
+//            testPoint1[3] = -80.423106; // Longitude
+//            testPoint[4] = 1.0; //average self report
+//
+//            mapData.add(testPoint);
+//            mapData.add(testPoint1);
 
 
 
             /** --------------- Test points for place picker------------------- **/
 
-            for (double[] pointArray : mapData) {
+            for (String[] pointArray : results) {
 			/*
 			 * 0 - gps_key
 			 * 1 - Attention
@@ -279,19 +281,21 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 			 * 3 - Longitude
 			 * 4 - self report
 			 */
-                if (pointArray[1] == 0) {
-                    //break if there is no eeg attention
-                    break;
-                }
+//                if (pointArray[1]. == 0) {
+//                    //break if there is no eeg attention
+//                    break;
+//                }
 
                 //0 for eeg; 1 for self report
-                optionsData.add(new Double[]{pointArray[1], pointArray[4]});
+                //optionsData.add(new Double[]{pointArray[1], pointArray[4]});
+                String test = "session id: " + pointArray[0] + ", Attention: " + pointArray[1]
+                        + ", location name: " + pointArray[2] + ", lat - long: " + pointArray[3] + ", " + pointArray[4];
 
-
+                Log.v("retrive data for mag", test);
 
                 //two important infomation before adding marker: 1. AVE attetion for all sessions; 2. the number
                 // of session to be shown on marker
-                addMarker(pointArray[2], pointArray[3], pointArray[1],pointArray[4], 100.0);
+                //addMarker(pointArray[2], pointArray[3], pointArray[1],pointArray[4], 100.0);
             }
         }
 

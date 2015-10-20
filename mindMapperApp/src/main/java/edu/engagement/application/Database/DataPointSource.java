@@ -365,13 +365,12 @@ public class DataPointSource {
         double[] gps = new double[5];
         Cursor cursor = database.query(DatabaseHelper.TABLE_GPS, null, null, null, null, null, null);
         cursor.moveToLast();
-        int counter = 0;
+
         while (!cursor.isBeforeFirst()) {
-            /*0 - Key
-            * 1 - Timestamp
-			* 2 - Lat
-			* 3 - Lon
-			* 4 - Accuracy
+            /*
+			* 1 - Lat
+			* 2 - Lon
+			* 3 - location
 			*/
             gps[0] = cursor.getInt(0);
             gps[1] = cursor.getDouble(1);
@@ -437,27 +436,44 @@ public class DataPointSource {
         return list;
     }
 
-    public List<double[]> getMapDataset() {
-        List<double[]> list = new ArrayList<double[]>();
+    public List<String[]> getMapDataset() {
+        List<String[]> list = new ArrayList<String[]>();
         String query;
 
         //selects the lat, long and AVERAGE attention level
         //associated with each unique gpskey
-        query = "SELECT a.gps_key, AVG(a.Attention), b.Latitude, b.Longitude"
-                + " FROM " + DatabaseHelper.TABLE_ATTENTION + " AS a "
-                + " INNER JOIN " + DatabaseHelper.TABLE_GPS + " AS b "
-                + " ON a.gps_key = b.gps_key"
-                + " GROUP BY a.gps_key";
+        query = "SELECT table_attention.Session_Id, " +
+                "AVG(table_attention.Attention), " +
+                "table_gps.LocationName, " +
+                "table_gps.Latitude, " +
+                "table_gps.Longitude, " +
+                "table_session.Session_Id, " +
+                "table_session.LocationName"
+                + " FROM " + DatabaseHelper.TABLE_ATTENTION + ", " + DatabaseHelper.TABLE_GPS
+                + " INNER JOIN " + DatabaseHelper.TABLE_SESSION
+                + " ON table_attention.Session_Id = table_session.Session_Id AND table_gps.LocationName = table_session.LocationName"
+                + " GROUP BY table_gps.LocationName";
+//                + " INNER JOIN " + DatabaseHelper.TABLE_SESSION + " AS b.LocationName "
+//                + " ON table_session.LocationName = table_gps.LocationName"
+//                + " GROUP BY table_session.LocationName";
 
         Cursor cursor = database.rawQuery(query, null);
 
+        /*
+         * 0 - session id
+         * 1 - Attention
+         * 2 - LocationName
+         * 3 - lat
+         * 4 - lon
+         */
         cursor.moveToLast();
         while (!cursor.isBeforeFirst()) {
-            double[] data = new double[4];
-            data[0] = cursor.getDouble(0);
-            data[1] = cursor.getDouble(1);
-            data[2] = cursor.getDouble(2);
-            data[3] = cursor.getDouble(3);
+            String[] data = new String[5];
+            data[0] = cursor.getInt(0) + "";
+            data[1] = cursor.getDouble(1) + "";
+            data[2] = cursor.getString(2) + "";
+            data[3] = cursor.getDouble(3) + "";
+            data[4] = cursor.getDouble(4) + "";
 
             list.add(data);
             cursor.moveToPrevious();

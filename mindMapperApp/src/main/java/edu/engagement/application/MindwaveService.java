@@ -376,7 +376,7 @@ public class MindwaveService extends Service {
 
         @Override
         public boolean handleMessage(Message msg) {
-            Log.d("AAAAAAAAAAAAAA", Thread.currentThread().getName());
+            //Log.d("AAAAAAAAAAAAAA", Thread.currentThread().getName());
 
             switch (msg.what) {
                 case TGDevice.MSG_STATE_CHANGE:
