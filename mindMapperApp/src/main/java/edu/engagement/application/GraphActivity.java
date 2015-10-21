@@ -5,10 +5,16 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -18,15 +24,19 @@ import com.github.mikephil.charting.utils.Highlight;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.utils.Annotation;
+import edu.engagement.application.utils.EEGDataPoint;
 import edu.engagement.application.utils.Session;
+import edu.engagement.application.utils.SessionLocation;
 
-public class GraphActivity extends Activity implements OnChartValueSelectedListener {
+public class GraphActivity extends Activity implements OnChartValueSelectedListener, AbsListView.OnScrollListener {
 
-    List<Annotation> mAnnotations;
-    ListView mListView;
+    public static final String SESSION_ID_TAG = "SessionId";
+
+    private ListView mListView;
     private CombinedChart mChart;
 
     @Override
@@ -34,57 +44,42 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
-        mAnnotations = new ArrayList<>();
-
         mListView = (ListView) findViewById(R.id.listView);
+        mListView.setOnScrollListener(this);
 
+        mChart = (CombinedChart) findViewById(R.id.chart);
+        mChart.setOnChartValueSelectedListener(this);
 
-            mChart = (CombinedChart) findViewById(R.id.chart);
-            mChart.setOnChartValueSelectedListener(this);
+        // no description text
+        mChart.setDescription("AVG Attention vs gpsKey");
+        //mChart.setUnit(" $");
 
-            // no description text
-            mChart.setDescription("AVG Attention vs gpsKey");
-            //mChart.setUnit(" $");
+        // enable value highlighting
+        mChart.setHighlightEnabled(true);
 
-            // enable value highlighting
-            mChart.setHighlightEnabled(true);
+        // enable touch gestures
+        mChart.setTouchEnabled(true);
 
-            // enable touch gestures
-            mChart.setTouchEnabled(true);
+        // enable scaling and dragging
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
 
-            // enable scaling and dragging
-            mChart.setDragEnabled(true);
-            mChart.setScaleEnabled(true);
+        // if disabled, scaling can be done on x- and y-axis separately
+        mChart.setPinchZoom(true);
 
-            // if disabled, scaling can be done on x- and y-axis separately
-            mChart.setPinchZoom(true);
+        mChart.setDrawGridBackground(false);
 
-            mChart.setDrawGridBackground(false);
+        mChart.getXAxis().setDrawGridLines(false);
+        mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
-            mChart.getXAxis().setDrawGridLines(false);
-            mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        mChart.animateXY(2000, 2000);
 
-//	        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-//	        mChart.setValueTypeface(tf);
+        // dont forget to refresh the drawing
+        mChart.invalidate();
 
-//	        XLabels x = mChart.getXLabels();
-//	        x.setTypeface(tf);
-//
-//	        YLabels y = mChart.getYLabels();
-//	        y.setTypeface(tf);
-//	        y.setLabelCount(5);
+        int id = getIntent().getExtras().getInt(SESSION_ID_TAG);
 
-            // add data
-            //setData(45, 100);
-
-            mChart.animateXY(2000, 2000);
-
-            // dont forget to refresh the drawing
-            mChart.invalidate();
-
-
-        new GraphLoadTask(this).execute();
-
+        new GraphLoadTask(this).execute(id);
     }
 
     @Override
@@ -97,9 +92,18 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
     }
 
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
 
 
-    private class GraphLoadTask extends AsyncTask<Void, Void, Void> {
+    private class GraphLoadTask extends AsyncTask<Integer, Void, Session> {
 
         private Context context;
 
@@ -108,53 +112,137 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Session doInBackground(Integer... params) {
 
-            // idk, man, this just works
-            try {
-                Thread.sleep(250);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Session s = null;
 
-            /* ---------------------- load data begin ---------------------- */
-            try {
-                DataPointSource dataSource = new DataPointSource(context);
-                dataSource.open();
+//            try {
+//                DataPointSource dataSource = new DataPointSource(context);
+//                dataSource.open();
+//
+//                int id = params[0];
+//
+//                s = dataSource.loadSessionData(id);
+//            } catch (Exception e) {
+//                // sqlite db locked - concurrency issue
+//                System.out.println("Graph - sqlite db locked - concurrency issue ");
+//                System.out.println(e.toString());
+//            }
 
-                Session s = dataSource.loadSessionData(1);
+            // THIS WILL HAVE TO DO WHILE I DON'T HAVE ACCESS TO THE EEG
+            s = getFakeSession();
 
-
-            } catch (Exception e) {
-                // sqlite db locked - concurrency issue
-                System.out.println("Graph - sqlite db locked - concurrency issue ");
-                System.out.println(e.toString());
-            }
-            return null;
+            return s;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            GraphListViewAdpter adapter = new GraphListViewAdpter(mAnnotations);
+        protected void onPostExecute(Session session) {
+            GraphListViewAdpter adapter = new GraphListViewAdpter(session.getAnnotations());
             mListView.setAdapter(adapter);
 
-            CombinedData data = new CombinedData();
+            drawGraph(session);
         }
 
-        private void loadSession(DataPointSource dbSource) {
+        private Session getFakeSession() {
+            Session s = new Session(1, new SessionLocation("McBryde Hall", 5.3, 2.3));
 
-            //List<double[]> results = dbSource.getMapDataset();
-            //List<EventSummary> events = new ArrayList<>(results.size());
+            Random r = new Random(SystemClock.elapsedRealtime());
+            for (int i = 0; i <= 60; i++) {
+                float attention = r.nextInt(50) + 50;
+                s.addDataPoint(1000 * 60 * i, attention);
+            }
 
+            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM, 1000*60*5);
+            s.addAnnotation("Annotation 2", AttentionLevel.MEDIUM_HIGH, 1000*60*22);
+            s.addAnnotation("Annotation 3", AttentionLevel.HIGH, 1000 * 60 * 30);
+            s.addAnnotation("Annotation 4", AttentionLevel.HIGH, 1000 * 60 * 39);
+            s.addAnnotation("Annotation 5", AttentionLevel.MEDIUM_HIGH, 1000 * 60 * 49);
+            s.addAnnotation("Annotation 6", AttentionLevel.MEDIUM_LOW, 1000 * 60 * 55);
 
-            Annotation annotation1 = new Annotation("I am now coding at Mcb student lounge.", AttentionLevel.HIGH, 0);
-            Annotation annotation2 = new Annotation("I am now do HW at at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
-            Annotation annotation3 = new Annotation("I am reading book at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
-            Annotation annotation4 = new Annotation("I am talking with friends at Mcb student lounge.", AttentionLevel.LOW, 0);
-            mAnnotations.add(annotation1);
-            mAnnotations.add(annotation2);
-            mAnnotations.add(annotation3);
-            mAnnotations.add(annotation4);
+            return s;
+        }
+
+        private void drawGraph(Session session) {
+
+            List<EEGDataPoint> dataPoints = session.getEEGData();
+            List<Annotation> annotations = session.getAnnotations();
+            List<String> xLabels = getXLabels(dataPoints);
+
+            CombinedData combinedData = new CombinedData(xLabels);
+
+            LineData lineData = new LineData();
+            BarData barData = new BarData();
+
+            List<Entry> lineEntries = new ArrayList<>();
+            List<BarEntry> barEntries = new ArrayList<>();
+
+            int annotationIndex = 0;
+            float sum = 0;
+            for (int i = 0; i < xLabels.size(); i++) {
+                EEGDataPoint dataPoint = dataPoints.get(i);
+
+                float attention = dataPoint.attention;
+                sum += attention;
+
+                lineEntries.add(new Entry(attention, i));
+
+                if (annotationIndex < annotations.size()) {
+                    Annotation annotation = annotations.get(annotationIndex);
+                    if (annotation.getTimeStamp() < dataPoint.timeStamp) {
+
+                        float selfReport = annotation.getAttentionLevel().ordinal() * 25;
+
+                        barEntries.add(new BarEntry(selfReport, i - 1));
+                        annotationIndex++;
+                    }
+                }
+            }
+
+            float avg = sum / lineEntries.size();
+
+            List<Entry> avgLineEntries = new ArrayList<>();
+            avgLineEntries.add(new Entry(avg, 0));
+            avgLineEntries.add(new Entry(avg, lineEntries.size()));
+
+            LineDataSet dataPointSet = new LineDataSet(lineEntries, "EEG Data");
+            dataPointSet.setDrawCubic(true);
+            dataPointSet.setColor(Color.MAGENTA);
+            dataPointSet.setCircleSize(3f);
+            dataPointSet.setLineWidth(5f);
+            dataPointSet.setDrawCircles(false);
+            dataPointSet.setDrawValues(false);
+
+            LineDataSet avgEegSet = new LineDataSet(avgLineEntries, "Avg EEG Data");
+            avgEegSet.enableDashedLine(10, 10, 0);
+            avgEegSet.setLineWidth(3f);
+            avgEegSet.setColor(Color.BLACK);
+            avgEegSet.setDrawValues(false);
+            avgEegSet.setDrawCircles(false);
+
+            BarDataSet barDataSet = new BarDataSet(barEntries, "Annotations");
+            barDataSet.setColor(Color.GRAY);
+            barDataSet.setHighLightColor(Color.WHITE);
+            barDataSet.setDrawValues(false);
+
+            lineData.addDataSet(dataPointSet);
+            lineData.addDataSet(avgEegSet);
+            barData.addDataSet(barDataSet);
+
+            combinedData.setData(lineData);
+            combinedData.setData(barData);
+
+            mChart.setData(combinedData);
+            mChart.invalidate();
+        }
+
+        private List<String> getXLabels(List<EEGDataPoint> dataPoints) {
+            List<String> xLabels = new ArrayList<>();
+
+            for (EEGDataPoint dataPoint : dataPoints) {
+                Log.d("AHHHHHHHHH", dataPoint.timeStampFormatted());
+                xLabels.add(dataPoint.timeStampFormatted());
+            }
+            return xLabels;
         }
     }
 }
