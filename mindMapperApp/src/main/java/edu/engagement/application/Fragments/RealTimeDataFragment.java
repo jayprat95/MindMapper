@@ -152,19 +152,19 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                     mLocation = activity.getLocation();
 
                     if(mLocation != null){
-                    //create sharedPreferences with init value 1, increase everytime when user presses "End Session"
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
-                    sessionId = prefs.getInt("sessionId", 1);
-                    Log.v("The sessionId", "The init session id: " + sessionId);
-                    String currentLocationName = locationName.getText().toString();
+                        //create sharedPreferences with init value 1, increase everytime when user presses "End Session"
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
+                        sessionId = prefs.getInt("sessionId", 1);
+                        Log.v("The sessionId", "The init session id: " + sessionId);
+                        String currentLocationName = locationName.getText().toString();
 
-                    //saving data tp GPS table and Session table when this is a new location:
-                    if (!MapFrag.locationTable.containsKey(currentLocationName)) {
+                        //saving data tp GPS table and Session table when this is a new location:
+                        if (!MapFrag.locationTable.containsKey(currentLocationName)) {
                         mDataPointSource.createDataPointGps(mLocation.getLatitude(), mLocation.getLongitude(), currentLocationName);
-                    }
-                    //saving data to session table
+                        }
+                        //saving data to session table
                         mDataPointSource.createDataPointSession(sessionId, currentLocationName);
-                    // Change button states to pause and stop
+                        // Change button states to pause and stop
                         hideButtons(startButton);
                         showButtons(pauseButton, notesButton);
 
@@ -172,7 +172,6 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
                         startRecording();
                     }
-
                     else{
                         Toast.makeText(activity.getApplicationContext(), "The Location is initializing...", Toast.LENGTH_SHORT);
                     }
@@ -189,6 +188,10 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
+                            //
+                            hideButtons(pauseButton, notesButton);
+                            showButtons(startButton);
+                            stopTimer();
                             // Stop reading data from EEG
                             stopService();
 

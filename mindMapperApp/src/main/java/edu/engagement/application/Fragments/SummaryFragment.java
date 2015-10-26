@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.engagement.application.AttentionLevel;
-import edu.engagement.application.EventSummary;
 import edu.engagement.application.Database.DataPointSource;
+import edu.engagement.application.EventSummary;
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
 import edu.engagement.application.RVAdapter;
@@ -131,6 +130,10 @@ public class SummaryFragment extends Fragment {
 
                 eventSummaryList.add(new EventSummary(id, locationName, startTime, stopTime, avgSelf, avgEEG));
             }
+
+            eventSummaryList.add(new EventSummary(3, "Home", 144586814, 144586880, AttentionLevel.MEDIUM, 30.5));
+            eventSummaryList.add(new EventSummary(4, "Home", 144586814, 144586880, AttentionLevel.MEDIUM, 50.5));
+            eventSummaryList.add(new EventSummary(5, "Home", 144586814, 144586880, AttentionLevel.HIGH, 60.5));
         }
     }
 }

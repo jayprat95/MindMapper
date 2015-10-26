@@ -2,7 +2,6 @@ package edu.engagement.application;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -11,8 +10,6 @@ import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 
@@ -28,11 +25,14 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
     List<Annotation> mAnnotations;
     ListView mListView;
     private CombinedChart mChart;
+    private int sessionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
+
+        sessionId = getIntent().getExtras().getInt("sessionId");
 
         mAnnotations = new ArrayList<>();
 
@@ -103,6 +103,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
         private Context context;
 
+        private Session s;
+
         public GraphLoadTask(Context context) {
             this.context = context;
         }
@@ -122,7 +124,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 DataPointSource dataSource = new DataPointSource(context);
                 dataSource.open();
 
-                Session s = dataSource.loadSessionData(1);
+                s = dataSource.loadSessionData(sessionId);
+                loadSession(s);
 
 
             } catch (Exception e) {
@@ -141,20 +144,20 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             CombinedData data = new CombinedData();
         }
 
-        private void loadSession(DataPointSource dbSource) {
+        private void loadSession(Session s) {
 
-            //List<double[]> results = dbSource.getMapDataset();
-            //List<EventSummary> events = new ArrayList<>(results.size());
+            List<Annotation> annotations = s.getAnnotations();
+            int size = annotations.size();
+            for(int i = 0; i < size; i++){
+                Annotation annotation = new Annotation(annotations.get(i).getAnnotation(),annotations.get(i).getAttentionLevel(), annotations.get(i).getTimeStamp());
+                mAnnotations.add(annotation);
+            }
+//
+//            Annotation annotation1 = new Annotation("I am now coding at Mcb student lounge.", AttentionLevel.HIGH, 0);
+//            Annotation annotation2 = new Annotation("I am now do HW at at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
+//            Annotation annotation3 = new Annotation("I am reading book at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
+//            Annotation annotation4 = new Annotation("I am talking with friends at Mcb student lounge.", AttentionLevel.LOW, 0);
 
-
-            Annotation annotation1 = new Annotation("I am now coding at Mcb student lounge.", AttentionLevel.HIGH, 0);
-            Annotation annotation2 = new Annotation("I am now do HW at at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
-            Annotation annotation3 = new Annotation("I am reading book at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
-            Annotation annotation4 = new Annotation("I am talking with friends at Mcb student lounge.", AttentionLevel.LOW, 0);
-            mAnnotations.add(annotation1);
-            mAnnotations.add(annotation2);
-            mAnnotations.add(annotation3);
-            mAnnotations.add(annotation4);
         }
     }
 }

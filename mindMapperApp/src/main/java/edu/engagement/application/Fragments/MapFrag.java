@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +29,7 @@ import com.google.maps.android.ui.IconGenerator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.engagement.application.Database.DataFilter;
 import edu.engagement.application.Database.DataPointSource;
@@ -145,12 +147,12 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 @Override
                 public View getInfoContents(Marker marker) {
                     View v = getActivity().getLayoutInflater().inflate(R.layout.marker_info_window, null);
-//                    TextView locationLabel = (TextView) v.findViewById(R.id.locationLabel);
-//                    TextView eegLabel = (TextView) v.findViewById(R.id.eegLabel);
-//                    TextView reportLabel = (TextView) v.findViewById(R.id.reportLabel);
+                    TextView locationLabel = (TextView) v.findViewById(R.id.locationLabel);
+                    TextView eegLabel = (TextView) v.findViewById(R.id.eegLabel);
+                    TextView reportLabel = (TextView) v.findViewById(R.id.reportLabel);
 
-//                    locationLabel.setText(marker.getTitle());
-//                    eegLabel.setText("AVE EEG: " + marker.getSnippet());
+                    locationLabel.setText(marker.getTitle());
+                    eegLabel.setText("AVE EEG: " + marker.getSnippet());
                     return v;
                 }
             });
@@ -191,11 +193,14 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
         private List<MarkerOptions> optionsList;
         private List<Double[]> optionsData;
+        private HashMap<String, MarkerInfo> markerInfoMap;
+
 
         public MapLoadTask (Context context) {
             this.context = context;
             optionsList = new ArrayList<>();
             optionsData = new ArrayList<>();
+            markerInfoMap = new HashMap<>();
         }
 
         @Override
@@ -246,11 +251,6 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             //compute ave attention for all sessions
             List<String[]> results = dpSource.getMapDataset();
 
-
-
-            System.out.println("Exited Dataset for loop");
-
-            // TODO remove these later
             /** --------------- Test points for place picker------------------- **/
 //            double[] testPoint = new double[5];
 //            testPoint[0] = 0;
@@ -269,33 +269,49 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 //            mapData.add(testPoint);
 //            mapData.add(testPoint1);
 
-
-
             /** --------------- Test points for place picker------------------- **/
 
             for (String[] pointArray : results) {
 			/*
-			 * 0 - gps_key
-			 * 1 - Attention
-			 * 2 - Latitude
-			 * 3 - Longitude
-			 * 4 - self report
-			 */
-//                if (pointArray[1]. == 0) {
-//                    //break if there is no eeg attention
-//                    break;
-//                }
+             * 0 - session id
+             * 1 - Attention
+             * 2 - LocationName
+             * 3 - lat
+             * 4 - lon
+             */
+                if (Double.parseDouble(pointArray[1]) == 0) {
+                    //break if there is no eeg attention
+                    break;
+                }
 
-                //0 for eeg; 1 for self report
-                //optionsData.add(new Double[]{pointArray[1], pointArray[4]});
-                String test = "session id: " + pointArray[0] + ", Attention: " + pointArray[1]
-                        + ", location name: " + pointArray[2] + ", lat - long: " + pointArray[3] + ", " + pointArray[4];
 
-                Log.v("retrive data for mag", test);
+//                String test = "session id: " + pointArray[0] + ", Attention: " + pointArray[1]
+//                        + ", location name: " + pointArray[2] + ", lat - long: " + pointArray[3] + ", " + pointArray[4];
+//
+//                Log.v("Mag frg", test);
 
-                //two important infomation before adding marker: 1. AVE attetion for all sessions; 2. the number
-                // of session to be shown on marker
-                //addMarker(pointArray[2], pointArray[3], pointArray[1],pointArray[4], 100.0);
+                if(locationTable.containsKey(pointArray[2])){
+                    MarkerInfo info = markerInfoMap.get(pointArray[2]);
+
+                    info.setSessions(info.getSessions() + 1);
+                    info.setAttention(info.getAttention() + Double.parseDouble(pointArray[1]));
+                }
+                else{
+                    Location location = new Location("");
+                    location.setLatitude(Double.parseDouble(pointArray[3]));
+                    location.setLongitude(Double.parseDouble(pointArray[4]));
+                    locationTable.put(pointArray[2], location);
+
+                    MarkerInfo marker = new MarkerInfo(Double.parseDouble(pointArray[3]), Double.parseDouble(pointArray[4]), Double.parseDouble(pointArray[1]), pointArray[2]);
+                    markerInfoMap.put(pointArray[2], marker);
+                    //
+                }
+            }
+            //two important infomation before adding marker: 1. AVE attetion for all sessions; 2. the number
+            // of session to be shown on marker
+            for(Map.Entry<String, MarkerInfo> entry : markerInfoMap.entrySet()){
+                MarkerInfo info = entry.getValue();
+                addMarker(info.getLatitue(), info.getLongitude(), info.getAttention(), info.getLocation(), info.getSessions(), 100.0);
             }
         }
 
@@ -304,16 +320,18 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
      * color: 0-bule; 1-cyan; 2-green; 3-Yellow; 4-orange
      */
         private void addMarker(double latitude, double longitude,
-                               double eegEngagement, double selfReportEngagement, double baselineEngagement) {
+                               double eegEngagement, String location, int sessions, double baselineEngagement) {
 
             MarkerOptions opt = new MarkerOptions();
             opt.position(new LatLng(latitude, longitude));
-            opt.title("McBryde Hall");
+            opt.title(location);
             //snippet carry data from database for infowindow
-            opt.snippet(String.valueOf(eegEngagement) + "/" + String.valueOf(selfReportEngagement));
+            opt.snippet(String.valueOf(eegEngagement/sessions));
+
+                    //+ "/" + String.valueOf(selfReportEngagement));
 
 
-            double percent = eegEngagement / baselineEngagement;
+            double percent = eegEngagement/ sessions  / baselineEngagement;
         /*  5 stage:
             very low: 0 - 0.2;
             somewhat low: 0.2 - 0.4;
@@ -340,7 +358,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 iconFactory.setColor(Color.RED);
             }
 
-            opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon("5")));
+            opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(sessions + "")));
 
             optionsList.add(opt);
         }
@@ -376,6 +394,64 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon("5")));
 
             publishProgress();
+        }
+    }
+
+    private class MarkerInfo{
+        private double latitue;
+        private double longitude;
+        private double attention;
+        private String location;
+        private int sessions;
+
+        public MarkerInfo(double latitude, double longitude,
+                          double attention, String location){
+            this.latitue = latitude;
+            this.longitude = longitude;
+            this.attention = attention;
+            this.location = location;
+            this.sessions = 1;
+
+        }
+
+        public double getLatitue() {
+            return latitue;
+        }
+
+        public void setLatitue(double latitue) {
+            this.latitue = latitue;
+        }
+
+        public double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(double longitude) {
+            this.longitude = longitude;
+        }
+
+        public double getAttention() {
+            return attention;
+        }
+
+        public void setAttention(double attention) {
+            this.attention = attention;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+
+        public int getSessions() {
+            return sessions;
+        }
+
+        public void setSessions(int sessions) {
+            this.sessions = sessions;
         }
     }
 }

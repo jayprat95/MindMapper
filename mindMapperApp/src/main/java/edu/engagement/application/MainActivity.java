@@ -199,8 +199,7 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
             @Override
             public void onClick(View v) {
 
-                mLocation = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-                Log.d("location manager", "get current location");
+
                         //requestLocationUpdates(LocationManager.GPS_PROVIDER, 600,
                         //100, locationListener);
                 Log.d(App.NAME, "Showing Place Picker");
@@ -262,6 +261,15 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 location = PlacePicker.getPlace(data, this).getName().toString();
+
+                if(mLocation == null){
+                    mLocation = new Location("");
+                }
+                mLocation.setLatitude(PlacePicker.getPlace(data, this).getLatLng().latitude);
+                mLocation.setLongitude(PlacePicker.getPlace(data, this).getLatLng().longitude);
+                Log.d("location manager", "get current location");
+
+
                 PlacePicker.getLatLngBounds(data);
 
                 changeState(ApplicationState.RECORDING);

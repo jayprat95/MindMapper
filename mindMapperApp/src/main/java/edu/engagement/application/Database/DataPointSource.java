@@ -468,28 +468,6 @@ public class DataPointSource {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public List<EegPower> getAllDataPointsEEG() {
         List<EegPower> points = new ArrayList<EegPower>();
 
@@ -655,10 +633,7 @@ public class DataPointSource {
                 + " FROM " + DatabaseHelper.TABLE_ATTENTION + ", " + DatabaseHelper.TABLE_GPS
                 + " INNER JOIN " + DatabaseHelper.TABLE_SESSION
                 + " ON table_attention.Session_Id = table_session.Session_Id AND table_gps.LocationName = table_session.LocationName"
-                + " GROUP BY table_gps.LocationName";
-//                + " INNER JOIN " + DatabaseHelper.TABLE_SESSION + " AS b.LocationName "
-//                + " ON table_session.LocationName = table_gps.LocationName"
-//                + " GROUP BY table_session.LocationName";
+                + " GROUP BY table_session.Session_Id";
 
         Cursor cursor = database.rawQuery(query, null);
 

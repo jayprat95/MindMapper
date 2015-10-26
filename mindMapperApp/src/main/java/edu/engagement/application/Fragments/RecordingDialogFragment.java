@@ -49,6 +49,7 @@ public class RecordingDialogFragment extends DialogFragment {
         mDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDataPointSource.close();
                 dismiss();
             }
         });
@@ -67,7 +68,6 @@ public class RecordingDialogFragment extends DialogFragment {
                     mSeekBar.setProgress(0);
                 }
 
-                mDataPointSource.close();
             }
         });
 
