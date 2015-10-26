@@ -110,7 +110,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SummaryHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), GraphActivity.class);
-                intent.putExtra("sessionId", event.getSessionId());
+                intent.putExtra(GraphActivity.SESSION_ID_TAG, event.getSessionId());
                 v.getContext().startActivity(intent);
             }
         });
