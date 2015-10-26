@@ -2,7 +2,6 @@ package edu.engagement.application.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -20,9 +19,6 @@ import java.util.List;
 import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.EventSummary;
-
-import edu.engagement.application.GraphActivity;
-
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
 import edu.engagement.application.RVAdapter;
@@ -42,10 +38,6 @@ public class SummaryFragment extends Fragment {
         super.onAttach(activity);
         this.activity = (MainActivity) activity;
 
-        Intent intent = new Intent(activity.getApplicationContext(), GraphActivity.class);
-        intent.putExtra(GraphActivity.SESSION_ID_TAG, 0);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.getApplicationContext().startActivity(intent);
     }
 
     @Override

@@ -38,8 +38,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
     private ListView mListView;
     private CombinedChart mChart;
-    private int sessionId;
-    private List<Annotation> mAnnotations;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +46,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         setContentView(R.layout.activity_graph);
 
 
-        sessionId = getIntent().getExtras().getInt("sessionId");
-
-        mAnnotations = new ArrayList<>();
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setOnScrollListener(this);
 
@@ -128,7 +124,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 DataPointSource dataSource = new DataPointSource(context);
                 dataSource.open();
 
-                s = dataSource.loadSessionData(sessionId);
+                s = dataSource.loadSessionData(params[0]);
                 //loadSession(s);
             } catch (Exception e) {
                 // sqlite db locked - concurrency issue
@@ -138,7 +134,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
 
             // THIS WILL HAVE TO DO WHILE I DON'T HAVE ACCESS TO THE EEG
-            s = getFakeSession();
+            //s = getFakeSession();
 
             return s;
         }
@@ -170,15 +166,15 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             return s;
         }
 
-        private void loadSession(Session s) {
-
-            List<Annotation> annotations = s.getAnnotations();
-            int size = annotations.size();
-            for (int i = 0; i < size; i++) {
-                Annotation annotation = new Annotation(annotations.get(i).getAnnotation(), annotations.get(i).getAttentionLevel(), annotations.get(i).getTimeStamp());
-                mAnnotations.add(annotation);
-            }
-        }
+//        private void loadSession(Session s) {
+//
+//            List<Annotation> annotations = s.getAnnotations();
+//            int size = annotations.size();
+//            for (int i = 0; i < size; i++) {
+//                Annotation annotation = new Annotation(annotations.get(i).getAnnotation(), annotations.get(i).getAttentionLevel(), annotations.get(i).getTimeStamp());
+//                mAnnotations.add(annotation);
+//            }
+//        }
 //
 //            Annotation annotation1 = new Annotation("I am now coding at Mcb student lounge.", AttentionLevel.HIGH, 0);
 //            Annotation annotation2 = new Annotation("I am now do HW at at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
