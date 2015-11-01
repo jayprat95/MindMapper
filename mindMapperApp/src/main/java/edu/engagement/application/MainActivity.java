@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -96,7 +97,7 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
     /**
      * Fab Button variables
      */
-    private TextView fab;
+    private FloatingActionButton fab;
     private boolean fabClicked;
 
     /**
@@ -192,7 +193,7 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
         /** End of Sliding Tabs Shit */
 
         /* Fab Button Shit */
-        fab = (TextView) findViewById(R.id.fabButton);
+        fab = (FloatingActionButton) findViewById(R.id.fabButton);
         fabClicked = false;
         final Activity thisActivity = this; // Use this for the toast
         fab.setOnClickListener(new View.OnClickListener() {
@@ -209,8 +210,6 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
         /* End of Fab Button Shit */
 
         System.out.println("Opened data source (DB)");
-
-        initActionBar();
     }
 
     /**
@@ -222,12 +221,12 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
     public void changeState(ApplicationState someState) {
 
         if (someState == ApplicationState.RECORDING) {
-                pager.setVisibility(View.INVISIBLE);
-                tabs.setVisibility(View.INVISIBLE);
-                frameLayout.setVisibility(View.VISIBLE);
-                fab.setVisibility(View.INVISIBLE);
+            pager.setVisibility(View.INVISIBLE);
+            tabs.setVisibility(View.INVISIBLE);
+            frameLayout.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.INVISIBLE);
 
-                switchToFragment("REAL_TIME_FRAGMENT");
+            switchToFragment("REAL_TIME_FRAGMENT");
 
         } else {    // Changed from realtime to sliding tab
             pager.setVisibility(View.VISIBLE);
@@ -235,20 +234,6 @@ public class MainActivity extends FragmentActivity implements EegListener, RealT
             fab.setVisibility(View.VISIBLE);
             frameLayout.setVisibility(View.INVISIBLE);
         }
-    }
-
-    private void initActionBar() {
-        // Set up the action bar.
-        final ActionBar actionBar = getActionBar();
-        actionBar.hide();
-        // Creates a contextual action bar that allows the user to connect
-        //mActionMode = startActionMode(mActionModeCallback);
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
     }
 
     /*

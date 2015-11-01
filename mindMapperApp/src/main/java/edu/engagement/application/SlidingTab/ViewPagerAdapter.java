@@ -17,7 +17,6 @@ import edu.engagement.application.Fragments.SummaryFragment;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private MapFrag mapFragment;
-    private ReflectionGraphFragment reflectionGraphFragment;
     private SummaryFragment summaryFragment;
     private List<Fragment> mFragmentList;
 

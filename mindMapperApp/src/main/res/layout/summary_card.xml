@@ -20,6 +20,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
             android:textSize="35dp"
             android:text="McBryde Hall"/>
 
@@ -28,7 +29,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/black"
             android:textSize="15dp"
             android:text="8:00 - 9:00 AM" />
 
@@ -54,6 +55,7 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:textSize="10dp"
                 android:text="EEG Attention Average"/>
         </LinearLayout>
@@ -78,6 +80,7 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:textSize="10dp"
                 android:text="Self-Report Average"/>
         </LinearLayout>

@@ -149,6 +149,8 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                     break;
                 case R.id.start:
 
+
+
                     mLocation = activity.getLocation();
 
                     if(mLocation != null){
@@ -173,7 +175,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                         startRecording();
                     }
                     else{
-                        Toast.makeText(activity.getApplicationContext(), "The Location is initializing...", Toast.LENGTH_SHORT);
+                        Toast.makeText(activity.getApplicationContext(), "The Location is initializing...", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case R.id.pause:
@@ -321,9 +323,6 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         void onRecordingStarted();
         void onRecordingStopped();
     }
-
-
-
 }
 
 

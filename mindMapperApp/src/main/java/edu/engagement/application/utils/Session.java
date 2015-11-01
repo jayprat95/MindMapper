@@ -49,7 +49,7 @@ public class Session {
         for (Annotation annotation : annotations) {
             sum += annotation.getAttentionLevel().ordinal();
         }
-        int avg = sum / annotations.size();
+        int avg = annotations.size() == 0 ? 0 : (sum / annotations.size());
 
         return AttentionLevel.fromInt(avg);
     }

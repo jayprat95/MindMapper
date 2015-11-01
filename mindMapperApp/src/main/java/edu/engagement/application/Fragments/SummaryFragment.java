@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.engagement.application.App;
 import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.EventSummary;
@@ -41,11 +43,6 @@ public class SummaryFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity = (MainActivity) activity;
-
-        Intent intent = new Intent(activity.getApplicationContext(), GraphActivity.class);
-        intent.putExtra(GraphActivity.SESSION_ID_TAG, 0);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.getApplicationContext().startActivity(intent);
     }
 
     @Override
@@ -77,7 +74,7 @@ public class SummaryFragment extends Fragment {
     }
 
 
-    private class SummaryLoadTask extends AsyncTask<Void, Void, Void> {
+    private class SummaryLoadTask extends AsyncTask<Void, EventSummary, Void> {
 
         private Context context;
 
@@ -104,16 +101,21 @@ public class SummaryFragment extends Fragment {
                 loadPoints(dataSource);
 
             } catch (Exception e) {
-                // sqlite db locked - concurrency issue
-                System.out
-                        .println("Cardview - sqlite db locked - concurrency issue ");
-                System.out.println(e.toString());
+                e.printStackTrace();
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            Log.d("AAAAAAAAAAAAA", String.valueOf(eventSummaryList.size()));
+        }
+
+        @Override
+        protected void onProgressUpdate(EventSummary... values) {
+            EventSummary summary = values[0];
+            eventSummaryList.add(summary);
+
             rv.getAdapter().notifyDataSetChanged();
         }
 
@@ -125,9 +127,14 @@ public class SummaryFragment extends Fragment {
 
             List<Session> sessions = dbSource.getSessionsInTimeRange(t1, t2);
 
+            Log.d(App.NAME, "Sessions returned: " + sessions.size());
+
             for (Session s : sessions) {
+                Log.d(App.NAME, "Sanity Check");
                 int id = s.getId();
                 String locationName = s.getLocation().getName();
+                Log.d(App.NAME, locationName);
+
 
                 // Getting start and stop times
                 List<EEGDataPoint> data = s.getEEGData();
@@ -137,12 +144,8 @@ public class SummaryFragment extends Fragment {
                 float avgEEG = s.getEEGAverage();
                 AttentionLevel avgSelf = s.getSelfReportAverage();
 
-                eventSummaryList.add(new EventSummary(id, locationName, startTime, stopTime, avgSelf, avgEEG));
+                publishProgress(new EventSummary(id, locationName, startTime, stopTime, avgSelf, avgEEG));
             }
-
-            eventSummaryList.add(new EventSummary(3, "Home", 144586814, 144586880, AttentionLevel.MEDIUM, 30.5));
-            eventSummaryList.add(new EventSummary(4, "Home", 144586814, 144586880, AttentionLevel.MEDIUM, 50.5));
-            eventSummaryList.add(new EventSummary(5, "Home", 144586814, 144586880, AttentionLevel.HIGH, 60.5));
         }
     }
 }

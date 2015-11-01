@@ -292,15 +292,6 @@ public class DataPointSource {
 
     }
 
-
-
-
-
-
-
-
-
-
     /**
      * Loads and returns a list of sessions from the database that occur between t1 and t2.
      * @return
@@ -309,8 +300,10 @@ public class DataPointSource {
         Integer[] sessionIds = getSessionIdsInTimeRange(t1, t2);
 
         List<Session> sessions = new ArrayList<>();
+
         for (int sessionId : sessionIds) {
             Session s = loadSessionData(sessionId);
+            sessions.add(s);
         }
         return sessions;
     }
@@ -447,13 +440,13 @@ public class DataPointSource {
 
         Cursor cursor = database.query(
                 true,
-                DatabaseHelper.TABLE_EEG,
+                DatabaseHelper.TABLE_ATTENTION,
                 columns,
-                selection,
-                selectionArgs,
                 null,
                 null,
-                DatabaseHelper.COLUMN_SESSION_ID,
+                null,
+                null,
+                null,
                 null);
 
         List<Integer> sessionIds = new ArrayList<>();

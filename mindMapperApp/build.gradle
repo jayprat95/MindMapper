@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "edu.engagement.application"
         minSdkVersion 15
-        targetSdkVersion 19
+        targetSdkVersion 23
         multiDexEnabled true
     }
 
@@ -40,9 +40,10 @@ dependencies {
     compile files('libs/servlet-api-2.5.jar')
     compile files('libs/slf4j-api-1.5.8.jar')
     compile files('libs/slf4j-log4j12-1.5.8.jar')
-    compile 'com.android.support:cardview-v7:21.0.+'
-    compile 'com.android.support:recyclerview-v7:21.0.+'
-    compile 'com.android.support:appcompat-v7:21.0.+'
+    compile 'com.android.support:cardview-v7:23.1.0'
+    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:design:23.1.0'
 }
 
 android {

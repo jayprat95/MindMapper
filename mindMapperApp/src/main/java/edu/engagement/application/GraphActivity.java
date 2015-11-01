@@ -38,7 +38,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
     private ListView mListView;
     private CombinedChart mChart;
-    private int sessionId;
     private List<Annotation> mAnnotations;
 
     @Override
@@ -46,8 +45,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
-
-        sessionId = getIntent().getExtras().getInt("sessionId");
 
         mAnnotations = new ArrayList<>();
         mListView = (ListView) findViewById(R.id.listView);
@@ -121,24 +118,15 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
         @Override
         protected Session doInBackground(Integer... params) {
-
-
-
             try {
+                int id = params[0];
+
                 DataPointSource dataSource = new DataPointSource(context);
                 dataSource.open();
-
-                s = dataSource.loadSessionData(sessionId);
-                //loadSession(s);
+                s = dataSource.loadSessionData(id);
             } catch (Exception e) {
-                // sqlite db locked - concurrency issue
-                System.out.println("Graph - sqlite db locked - concurrency issue ");
-                System.out.println(e.toString());
+                e.printStackTrace();
             }
-
-
-            // THIS WILL HAVE TO DO WHILE I DON'T HAVE ACCESS TO THE EEG
-            s = getFakeSession();
 
             return s;
         }
