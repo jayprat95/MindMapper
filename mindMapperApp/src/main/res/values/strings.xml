@@ -8,7 +8,10 @@
 	<string name="drawer_close">Close</string>
 	<string name="start_service">Connect</string>
 	<string name="stop_service">Disconnect</string>
-	
+
+	<string name="recording_name">Activity</string>
+	<string name="recording_name_multiple">Activities</string>
+
 	<string name="map_option">Map</string>
 	<string name="graph_option">Graphs</string>
 	

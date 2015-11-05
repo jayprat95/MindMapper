@@ -33,8 +33,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         this.mFragmentList = new ArrayList<>();
         mapFragment = new MapFrag();
         summaryFragment = new SummaryFragment();
-        mFragmentList.add(mapFragment);
         mFragmentList.add(summaryFragment);
+        mFragmentList.add(mapFragment);
     }
 
     //This method return the fragment for the every position in the View Pager
