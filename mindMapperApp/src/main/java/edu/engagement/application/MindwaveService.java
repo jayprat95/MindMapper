@@ -30,7 +30,7 @@ import java.util.List;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Eeg.EegListener;
 import edu.engagement.application.Eeg.EegState;
-import edu.engagement.application.Fragments.RealTimeDataFragment;
+import edu.engagement.application.Fragments.RecordingFragment;
 
 
 public class MindwaveService extends Service {
@@ -486,12 +486,12 @@ public class MindwaveService extends Service {
 
 
                         // TODO: Need to do this in a separate thread
-                        if(RealTimeDataFragment.sessionId != 0){
+                        if(RecordingFragment.sessionId != 0){
                             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                            int sharedSessionId = prefs.getInt("sessionId", RealTimeDataFragment.sessionId);
+                            int sharedSessionId = prefs.getInt("sessionId", RecordingFragment.sessionId);
                             Log.v("The sessionId","The service session id: " + sharedSessionId);
-                            if(RealTimeDataFragment.sessionId == sharedSessionId){
-                                dataSource.createDataPointAttention(RealTimeDataFragment.sessionId, att, System.currentTimeMillis());
+                            if(RecordingFragment.sessionId == sharedSessionId){
+                                dataSource.createDataPointAttention(RecordingFragment.sessionId, att, System.currentTimeMillis());
                             }
                         }
                     }

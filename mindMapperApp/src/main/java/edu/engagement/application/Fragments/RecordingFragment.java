@@ -23,11 +23,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
 
-public class RealTimeDataFragment extends Fragment implements OnClickListener {
+public class RecordingFragment extends Fragment implements OnClickListener {
+
+    public static final String LOCATION_NAME_KEY = "LOCATION_NAME";
+    public static final String LOCATION_LAT_KEY = "LOCATION_LATITUDE";
+    public static final String LOCATION_LONG_KEY = "LOCATION_LONGITUDE";
 
     private MainActivity activity;
 
@@ -61,11 +67,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     private boolean recordingSavedState;
     DataPointSource mDataPointSource = null;
 
-    private Location mLocation = null;
-
-
-
-
+    private LatLng location;
 
     @Override
     public void onAttach(Activity activity) {
@@ -77,7 +79,13 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        Bundle b = getArguments();
 
+        String locationStr = b.getString(LOCATION_NAME_KEY, "Location error");
+        double latitude = b.getDouble(LOCATION_LAT_KEY, 0);
+        double longitude = b.getDouble(LOCATION_LONG_KEY, 0);
+
+        location = new LatLng(latitude, longitude);
 
         mDataPointSource = new DataPointSource(this.getActivity().getApplicationContext());
         mDataPointSource.open();
@@ -87,7 +95,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
         attentionText = (TextView) view.findViewById(R.id.attentionCircle);
         locationName = (TextView) view.findViewById(R.id.locationTextView);
 
-        locationName.setText(activity.getLocationName());
+        locationName.setText(locationStr);
         locationName.setSingleLine(true);
         locationName.setEllipsize(TextUtils.TruncateAt.END);
 
@@ -149,11 +157,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
                     break;
                 case R.id.start:
 
-
-
-                    mLocation = activity.getLocation();
-
-                    if(mLocation != null){
+                    if(location != null){
                         //create sharedPreferences with init value 1, increase everytime when user presses "End Session"
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
                         sessionId = prefs.getInt("sessionId", 1);
@@ -162,7 +166,7 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
                         //saving data tp GPS table and Session table when this is a new location:
                         if (!MapFrag.locationTable.containsKey(currentLocationName)) {
-                        mDataPointSource.createDataPointGps(mLocation.getLatitude(), mLocation.getLongitude(), currentLocationName);
+                        mDataPointSource.createDataPointGps(location.latitude, location.longitude, currentLocationName);
                         }
                         //saving data to session table
                         mDataPointSource.createDataPointSession(sessionId, currentLocationName);
@@ -200,9 +204,9 @@ public class RealTimeDataFragment extends Fragment implements OnClickListener {
 
                             realTimeListener.onRecordingStopped();
 
-                            // Move back to the summary view
-                            activity.changeState(MainActivity.ApplicationState.REFLECTION);
-                            activity.pagerChange(1);
+//                            // Move back to the summary view
+//                            activity.changeState(MainActivity.ApplicationState.REFLECTION);
+//                            activity.pagerChange(1);
                         }
                     });
                     dialogBuilder.setNegativeButton("Resume Activity", new DialogInterface.OnClickListener() {

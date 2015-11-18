@@ -62,7 +62,7 @@ public class RecordingDialogFragment extends DialogFragment {
                 else{
                     //save annotation
                     //
-                    mDataPointSource.createDataPointAnnotation(RealTimeDataFragment.sessionId, System.currentTimeMillis(), mAnnotation.getText().toString(), mSeekBar.getProgress());
+                    mDataPointSource.createDataPointAnnotation(RecordingFragment.sessionId, System.currentTimeMillis(), mAnnotation.getText().toString(), mSeekBar.getProgress());
                     Toast.makeText(getActivity(), "Your experience saved!", Toast.LENGTH_SHORT).show();
                     mAnnotation.setText("");
                     mSeekBar.setProgress(0);

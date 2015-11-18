@@ -37,7 +37,6 @@ public class StatusDialogFragment extends DialogFragment {
     private Timer t;
 
     private ConnectionLostDialogListener connectionListener;
-    private DialogInterface.OnDismissListener dismissListener;
 
     private static final int counter = 5;
 
@@ -46,13 +45,6 @@ public class StatusDialogFragment extends DialogFragment {
         super.onAttach(activity);
 
         this.connectionListener = (ConnectionLostDialogListener)activity;
-        this.dismissListener = (DialogInterface.OnDismissListener)activity;
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
-        dismissListener.onDismiss(dialog);
     }
 
     @Override
