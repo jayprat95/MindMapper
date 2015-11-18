@@ -68,6 +68,11 @@ public class MindwaveService extends Service {
      */
     private boolean recording = false;
 
+    /*
+     *
+     */
+    private int setAttentionInteval = 1;
+
     // Define a listener that responds to location updates
 //    LocationListener locationListener = new LocationListener() {
 //        public void onLocationChanged(SessionLocation location) {
@@ -482,8 +487,13 @@ public class MindwaveService extends Service {
 
                     int att = msg.arg1;
                     if (att != 0) {
-                        sendAttentionToListeners(att);
-
+                        if(setAttentionInteval == 3){
+                            sendAttentionToListeners(att);
+                            setAttentionInteval = 1;
+                        }
+                        else{
+                            setAttentionInteval += 1;
+                        }
 
                         // TODO: Need to do this in a separate thread
                         if(RecordingFragment.sessionId != 0){
@@ -491,7 +501,7 @@ public class MindwaveService extends Service {
                             int sharedSessionId = prefs.getInt("sessionId", RecordingFragment.sessionId);
                             Log.v("The sessionId","The service session id: " + sharedSessionId);
                             if(RecordingFragment.sessionId == sharedSessionId){
-                                dataSource.createDataPointAttention(RecordingFragment.sessionId, att, System.currentTimeMillis());
+                                dataSource.createDataPointAttention(RecordingFragment.sessionId, att, System.currentTimeMillis(), day, month);
                             }
                         }
                     }

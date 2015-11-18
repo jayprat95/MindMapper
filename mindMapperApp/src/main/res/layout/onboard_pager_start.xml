@@ -11,16 +11,5 @@
         android:scaleType="fitXY"
         android:src="@drawable/onboard_start"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Click to Start"
-        android:textColor="#ffffff"
-        android:textSize="30sp"
-        android:padding="20dp"
-        android:id="@+id/startTextView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

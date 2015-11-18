@@ -67,7 +67,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_EEG, null, values);
 
-        return new DataPoint(0, "",timeStamp, 0, alpha, alpha_1, alpha_2, beta, beta_1, beta_2, theta, pope, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0);
+        return new DataPoint(0, "",timeStamp, 0, alpha, alpha_1, alpha_2, beta, beta_1, beta_2, theta, pope, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0, 0 ,0);
     }
 
 //    public DataPoint createDataPointHR(long timeStamp, int gpsKey, double hr) {
@@ -81,16 +81,18 @@ public class DataPointSource {
 //        return new DataPoint(timeStamp, hr, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0, 0);
 //    }
 
-    public DataPoint createDataPointAttention(int sessionId, int attention, long timeStamp) {
+    public DataPoint createDataPointAttention(int sessionId, int attention, long timeStamp, int day, int month) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_SESSION_ID, sessionId);
         values.put(DatabaseHelper.COLUMN_ATTENTION, attention);
         values.put(DatabaseHelper.COLUMN_TIMESTAMP, timeStamp);
+        values.put(DatabaseHelper.COLUMN_DAY, day);
+        values.put(DatabaseHelper.COLUMN_MONTH, month);
 
 
         database.insert(DatabaseHelper.TABLE_ATTENTION, null, values);
 
-        return new DataPoint(sessionId, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, "",0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return new DataPoint(sessionId, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, "",0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0);
     }
 
     public DataPoint createDataPointAnnotation(int sessionId, long timeStamp, String annotation, int attention){
@@ -102,7 +104,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_ANNOTATION, null, values);
 
-        return new DataPoint(sessionId, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, annotation, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0);
+        return new DataPoint(sessionId, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, annotation, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0 , 0 ,0);
     }
 //	public DataPoint createDataPointAttention(long timeStamp, int gpsKey, double attention)
 //	{
@@ -132,7 +134,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_ATTENTION, null, values);
 
-        return new DataPoint(0, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "",ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8, gpsKey, 0, 0);
+        return new DataPoint(0, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "",ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8, gpsKey, 0, 0, 0, 0);
     }
 
     public DataPoint createDataPointGps(double latitude, double longitude, String locationName) {
@@ -143,7 +145,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_GPS, null, values);
 
-        return new DataPoint(0, locationName,0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, latitude, longitude);
+        return new DataPoint(0, locationName,0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, latitude, longitude, 0, 0);
     }
 
     public DataPoint createDataPointSession(int sessionId, String locationName){
@@ -153,7 +155,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_SESSION, null, values);
 
-        return new DataPoint(sessionId, locationName,0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return new DataPoint(sessionId, locationName,0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     /**
@@ -291,13 +293,15 @@ public class DataPointSource {
         }
 
     }
+    /*----------------Retrive data from Database------------------*/
+
 
     /**
      * Loads and returns a list of sessions from the database that occur between t1 and t2.
      * @return
      */
-    public List<Session> getSessionsInTimeRange(long t1, long t2) {
-        Integer[] sessionIds = getSessionIdsInTimeRange(t1, t2);
+    public List<Session> getSessionsInTimeRange(int day) {
+        Integer[] sessionIds = getSessionIdsInTimeRange(day);
 
         List<Session> sessions = new ArrayList<>();
 
@@ -427,16 +431,14 @@ public class DataPointSource {
 
     /**
      * Finds session ids that fall within the given range of t1 and t2
-     * @param t1
-     * @param t2
+     * @param day
      * @return
      */
-    public Integer[] getSessionIdsInTimeRange(long t1, long t2) {
+    public Integer[] getSessionIdsInTimeRange(int day) {
 
         String[] columns = { DatabaseHelper.COLUMN_SESSION_ID };
-        String selection = DatabaseHelper.COLUMN_TIMESTAMP + " >= ? AND " +
-                            DatabaseHelper.COLUMN_TIMESTAMP + " <= ?";
-        String[] selectionArgs = { String.valueOf(t1), String.valueOf(t2) };
+        String selection = DatabaseHelper.COLUMN_DAY + " = ?";
+        String[] selectionArgs = { String.valueOf(day)};
 
         Cursor cursor = database.query(
                 true,
@@ -614,18 +616,27 @@ public class DataPointSource {
         List<String[]> list = new ArrayList<String[]>();
         String query;
 
+        Calendar c = Calendar.getInstance();
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        // The Calendar function returns the index of the month. (ex: Jan = 0, Feb = 1)
+        int month = (c.get(Calendar.MONTH) + 1);
+
         //selects the lat, long and AVERAGE attention level
         //associated with each unique gpskey
-        query = "SELECT table_attention.Session_Id, " +
+        query = "SELECT table_attention.day, " +
+                "table_attention.Session_Id, " +
                 "AVG(table_attention.Attention), " +
                 "table_gps.LocationName, " +
                 "table_gps.Latitude, " +
                 "table_gps.Longitude, " +
+                "AVG(table_annotation.SubjectiveAttention), " +
+                "table_annotation.Session_Id, " +
                 "table_session.Session_Id, " +
                 "table_session.LocationName"
-                + " FROM " + DatabaseHelper.TABLE_ATTENTION + ", " + DatabaseHelper.TABLE_GPS
+                + " FROM " + DatabaseHelper.TABLE_ATTENTION + ", " + DatabaseHelper.TABLE_GPS + ", " + DatabaseHelper.TABLE_ANNOTATION
                 + " INNER JOIN " + DatabaseHelper.TABLE_SESSION
-                + " ON table_attention.Session_Id = table_session.Session_Id AND table_gps.LocationName = table_session.LocationName"
+                + " ON table_attention.day = " + day + " AND table_attention.Session_Id = table_session.Session_Id AND table_gps.LocationName = table_session.LocationName AND table_attention.Session_Id = table_annotation.Session_Id"
                 + " GROUP BY table_session.Session_Id";
 
         Cursor cursor = database.rawQuery(query, null);
@@ -639,12 +650,13 @@ public class DataPointSource {
          */
         cursor.moveToLast();
         while (!cursor.isBeforeFirst()) {
-            String[] data = new String[5];
-            data[0] = cursor.getInt(0) + "";
-            data[1] = cursor.getDouble(1) + "";
-            data[2] = cursor.getString(2) + "";
-            data[3] = cursor.getDouble(3) + "";
-            data[4] = cursor.getDouble(4) + "";
+            String[] data = new String[6];
+            data[0] = cursor.getInt(1) + "";
+            data[1] = cursor.getDouble(2) + "";
+            data[2] = cursor.getString(3) + "";
+            data[3] = cursor.getDouble(4) + "";
+            data[4] = cursor.getDouble(5) + "";
+            data[5] = cursor.getDouble(6) + "";
 
             list.add(data);
             cursor.moveToPrevious();

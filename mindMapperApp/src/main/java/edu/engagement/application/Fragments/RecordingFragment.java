@@ -3,8 +3,10 @@ package edu.engagement.application.Fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
+import edu.engagement.application.utils.AttentionColor;
 
 public class RecordingFragment extends Fragment implements OnClickListener {
 
@@ -57,9 +60,6 @@ public class RecordingFragment extends Fragment implements OnClickListener {
     // The elapsed timer
     private Chronometer timer;
     private long elapsedTime = 0L;
-
-    // Text Button remove later when eeg status detecable TODO
-    private Button testButton;
 
     private StatusDialogFragment sdf;
 
@@ -109,9 +109,6 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 
         eegStatusImage = (ImageView)view.findViewById(R.id.statusView);
 
-        //TODO text Button remover later
-        testButton = (Button) view.findViewById(R.id.testButton);
-        testButton.setOnClickListener(this);
 
         startButton.setOnClickListener(this);
 
@@ -138,6 +135,24 @@ public class RecordingFragment extends Fragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //
+        hideButtons(pauseButton, notesButton);
+        showButtons(startButton);
+        stopTimer();
+        // Stop reading data from EEG
+        stopService();
+
+        realTimeListener.onRecordingStopped();
+
+        // Move back to the summary view
+        activity.showFragment(MainActivity.REFLECTION_TAG, null);
+
     }
 
     @Override
@@ -194,19 +209,13 @@ public class RecordingFragment extends Fragment implements OnClickListener {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            //
-                            hideButtons(pauseButton, notesButton);
-                            showButtons(startButton);
-                            stopTimer();
-                            // Stop reading data from EEG
-                            stopService();
-
 
                             realTimeListener.onRecordingStopped();
 
-//                            // Move back to the summary view
-//                            activity.changeState(MainActivity.ApplicationState.REFLECTION);
-//                            activity.pagerChange(1);
+                            EndRecordingDialogFragment endDialog = new EndRecordingDialogFragment();
+                            endDialog.setTargetFragment(RecordingFragment.this, 1);
+                            endDialog.show(activity.getSupportFragmentManager(), "dialog");
+                            
                         }
                     });
                     dialogBuilder.setNegativeButton("Resume Activity", new DialogInterface.OnClickListener() {
@@ -247,7 +256,11 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 
     public void setAttention(int attention) {
         attentionText.setText(String.valueOf(attention));
+        GradientDrawable backgroundGradient = (GradientDrawable)attentionText.getBackground();
+        backgroundGradient.setColor(AttentionColor.getAttentionColor(attention));
     }
+
+
 
     public void onEegNotFound() {
         if (sdf.isVisible()) {

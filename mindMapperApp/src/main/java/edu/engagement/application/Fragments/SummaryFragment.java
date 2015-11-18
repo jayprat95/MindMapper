@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import edu.engagement.application.App;
@@ -121,11 +121,14 @@ public class SummaryFragment extends Fragment {
 
         private void loadPoints(DataPointSource dbSource) {
 
-            // time range of 24 hours
-            long t2 = SystemClock.elapsedRealtime();
-            long t1 = t2 - (1000*60*60*24);
+            // time range of day and month
 
-            List<Session> sessions = dbSource.getSessionsInTimeRange(t1, t2);
+            Calendar c = Calendar.getInstance();
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // The Calendar function returns the index of the month. (ex: Jan = 0, Feb = 1)
+            int month = (c.get(Calendar.MONTH) + 1);
+            List<Session> sessions = dbSource.getSessionsInTimeRange(day);
 
             Log.d(App.NAME, "Sessions returned: " + sessions.size());
 
@@ -146,6 +149,8 @@ public class SummaryFragment extends Fragment {
 
                 publishProgress(new EventSummary(id, locationName, startTime, stopTime, avgSelf, avgEEG));
             }
+
+
         }
     }
 }

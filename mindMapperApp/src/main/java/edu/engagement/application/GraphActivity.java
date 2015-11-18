@@ -147,13 +147,13 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 float attention = r.nextInt(50) + 50;
                 s.addDataPoint(1000 * 60 * i, attention);
             }
-
-            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM, 1000*60*5);
-            s.addAnnotation("Annotation 2", AttentionLevel.MEDIUM_HIGH, 1000*60*22);
-            s.addAnnotation("Annotation 3", AttentionLevel.HIGH, 1000 * 60 * 30);
-            s.addAnnotation("Annotation 4", AttentionLevel.HIGH, 1000 * 60 * 39);
-            s.addAnnotation("Annotation 5", AttentionLevel.MEDIUM_HIGH, 1000 * 60 * 49);
-            s.addAnnotation("Annotation 6", AttentionLevel.MEDIUM_LOW, 1000 * 60 * 55);
+//
+//            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM, 1000*60*5);
+//            s.addAnnotation("Annotation 2", AttentionLevel.MEDIUM_HIGH, 1000*60*22);
+//            s.addAnnotation("Annotation 3", AttentionLevel.HIGH, 1000 * 60 * 30);
+//            s.addAnnotation("Annotation 4", AttentionLevel.HIGH, 1000 * 60 * 39);
+//            s.addAnnotation("Annotation 5", AttentionLevel.MEDIUM_HIGH, 1000 * 60 * 49);
+//            s.addAnnotation("Annotation 6", AttentionLevel.MEDIUM_LOW, 1000 * 60 * 55);
 
             return s;
         }

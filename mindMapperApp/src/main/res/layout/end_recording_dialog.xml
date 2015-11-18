@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#F5F5DC">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#F5F5DC">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="How focused do you feel right now?"
+        android:text="Overall, how focused did you feel?"
         android:textSize="20sp"
         android:textStyle="bold"
         android:paddingTop="5dp"
@@ -39,7 +39,7 @@
         android:layout_alignLeft="@id/annotation_bar"
         android:layout_below="@+id/annotation_bar"
         android:layout_marginLeft="15dp"
-        android:text="Low" />
+        android:text="Not at all" />
 
     <TextView
         android:id="@+id/textViewMedium"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/annotation_bar"
         android:layout_centerHorizontal="true"
-        android:text="Medium" />
+        android:text="" />
 
     <TextView
         android:id="@+id/textViewHigh"
@@ -56,7 +56,7 @@
         android:layout_alignRight="@id/annotation_bar"
         android:layout_below="@+id/annotation_bar"
         android:layout_marginRight="15dp"
-        android:text="High" />
+        android:text="Very Focused" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -72,17 +72,17 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:background="@color/wallet_holo_blue_light"
-        android:text="Save Notes"
+        android:text="Save"
         android:layout_marginTop="46dp"
         android:layout_below="@+id/annotation"
         android:layout_alignRight="@+id/textView"
         android:layout_alignEnd="@+id/textView"/>
 
     <Button
-        android:id="@+id/doneButton"
+        android:id="@+id/skipButton"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:text="Cancel"
+        android:text="Skip"
         android:background="@color/wallet_holo_blue_light"
         android:layout_alignTop="@+id/saveNotes"
         android:layout_alignLeft="@+id/textView"

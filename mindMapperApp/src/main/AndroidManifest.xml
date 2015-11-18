@@ -54,7 +54,12 @@
         <activity
             android:name=".OnboardActivity"
             android:label="@string/title_activity_onboard"
-            android:theme="@style/Theme.AppCompat">
+            android:theme="@style/Theme.AppCompat.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".RecordingStartup"
+            android:label="@string/title_activity_recording_startup"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
         </activity>
     </application>
 

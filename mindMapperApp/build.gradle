@@ -4,6 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "21.1.2"
 
+
     defaultConfig {
         applicationId "edu.engagement.application"
         minSdkVersion 15
@@ -19,7 +20,13 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
+
 dependencies {
+    compile 'com.github.paolorotolo:appintro:3.2.0'
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.google.android.gms:play-services:+'
     compile 'com.akexorcist:RoundCornerProgressBar:2.0.3'
@@ -45,6 +52,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
 }
+
+
+
 
 android {
     packagingOptions {

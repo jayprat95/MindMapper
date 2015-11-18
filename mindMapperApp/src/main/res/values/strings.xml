@@ -40,5 +40,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_graph">GraphActivity</string>
+    <string name="title_activity_recording_startup">RecordingStartup</string>
     
 </resources>

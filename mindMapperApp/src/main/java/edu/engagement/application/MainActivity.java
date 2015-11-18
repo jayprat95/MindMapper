@@ -1,7 +1,6 @@
 package edu.engagement.application;
 
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -13,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.FrameLayout;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -31,8 +31,8 @@ import edu.engagement.application.Fragments.StatusDialogFragment;
  */
 public class MainActivity extends FragmentActivity implements EegListener, RecordingFragment.RealTimeListener, StatusDialogFragment.ConnectionLostDialogListener {
 
-    public final String RECORDING_TAG = "REAL_TIME_FRAGMENT";
-    public final String REFLECTION_TAG = "REFLECTION_FRAGMENT";
+    public static final String RECORDING_TAG = "REAL_TIME_FRAGMENT";
+    public static final String REFLECTION_TAG = "REFLECTION_FRAGMENT";
 
     private MindwaveService mindwaveService;
 
@@ -44,7 +44,7 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         boolean boardingStart = prefs.getBoolean("first", true);
-
+//
         if(boardingStart) {
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean("first", false);
@@ -59,7 +59,6 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
     public void showFragment(String tag, Bundle bundle) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-
         // The fragment is not being shown right now
         if (fragmentManager.findFragmentByTag(tag) == null) {
 
@@ -108,6 +107,12 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
             } else {
                 Log.d(App.NAME, "PlacePicker cancelled!");
             }
+        }
+        if(requestCode == 2){
+            if(resultCode == RESULT_OK){
+                showPlacePicker();
+            }
+
         }
     }
 

@@ -81,7 +81,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                     //
 
                     for(int i = 0; i < task.optionsList.size(); i++){
-                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[0], 100.0);
+                        Double sessions = task.optionsData.get(i)[2];
+                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[0], 100.0, (int)Math.round(sessions));
                     }
                     MapFrag.status = 1;
                 }
@@ -97,7 +98,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                     //
                     Log.d("This is from Map frag", "report clicked");
                     for(int i = 0; i < task.optionsList.size(); i++){
-                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[1], 5.0);
+                        Double sessions = task.optionsData.get(i)[2];
+                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[1], 5.0, (int)Math.round(sessions));
                     }
                     MapFrag.status = 2;
                 }
@@ -152,7 +154,10 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                     TextView reportLabel = (TextView) v.findViewById(R.id.reportLabel);
 
                     locationLabel.setText(marker.getTitle());
-                    eegLabel.setText("AVE EEG: " + marker.getSnippet());
+                    String[] texts = marker.getSnippet().split("/");
+                    eegLabel.setText("AVE EEG: " + texts[0]);
+                    reportLabel.setText("AVE Report: " + texts[1]);
+
                     return v;
                 }
             });
@@ -278,6 +283,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
              * 2 - LocationName
              * 3 - lat
              * 4 - lon
+             * 5 - self report
              */
                 if (Double.parseDouble(pointArray[1]) == 0) {
                     //break if there is no eeg attention
@@ -285,10 +291,10 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 }
 
 
-//                String test = "session id: " + pointArray[0] + ", Attention: " + pointArray[1]
-//                        + ", location name: " + pointArray[2] + ", lat - long: " + pointArray[3] + ", " + pointArray[4];
-//
-//                Log.v("Mag frg", test);
+                String test = "session id: " + pointArray[0] + ", Attention: " + pointArray[1]
+                        + ", location name: " + pointArray[2] + ", lat - long: " + pointArray[3] + ", " + pointArray[4] + ", " + pointArray[5];
+
+                Log.v("Mag frg", test);
 
                 if(locationTable.containsKey(pointArray[2])){
                     MarkerInfo info = markerInfoMap.get(pointArray[2]);
@@ -302,7 +308,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                     location.setLongitude(Double.parseDouble(pointArray[4]));
                     locationTable.put(pointArray[2], location);
 
-                    MarkerInfo marker = new MarkerInfo(Double.parseDouble(pointArray[3]), Double.parseDouble(pointArray[4]), Double.parseDouble(pointArray[1]), pointArray[2]);
+                    MarkerInfo marker = new MarkerInfo(Double.parseDouble(pointArray[3]), Double.parseDouble(pointArray[4]), Double.parseDouble(pointArray[1]), pointArray[2], Double.parseDouble(pointArray[5]));
                     markerInfoMap.put(pointArray[2], marker);
                     //
                 }
@@ -310,8 +316,15 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             //two important infomation before adding marker: 1. AVE attetion for all sessions; 2. the number
             // of session to be shown on marker
             for(Map.Entry<String, MarkerInfo> entry : markerInfoMap.entrySet()){
+
                 MarkerInfo info = entry.getValue();
-                addMarker(info.getLatitue(), info.getLongitude(), info.getAttention(), info.getLocation(), info.getSessions(), 100.0);
+                Double[] dataSet = new Double[3];
+                dataSet[0] = info.getAttention();
+                dataSet[1] = info.getSelfReport();
+                dataSet[2] = (double)info.getSessions();
+                Log.v("Mag frg", dataSet[0] + ", " + dataSet[1]);
+                optionsData.add(dataSet);
+                addMarker(info.getLatitue(), info.getLongitude(), info.getAttention(), info.getSelfReport(), info.getLocation(), info.getSessions(), 100.0);
             }
         }
 
@@ -320,15 +333,13 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
      * color: 0-bule; 1-cyan; 2-green; 3-Yellow; 4-orange
      */
         private void addMarker(double latitude, double longitude,
-                               double eegEngagement, String location, int sessions, double baselineEngagement) {
+                               double eegEngagement, double selfReportEngagement, String location, int sessions, double baselineEngagement) {
 
             MarkerOptions opt = new MarkerOptions();
             opt.position(new LatLng(latitude, longitude));
             opt.title(location);
             //snippet carry data from database for infowindow
-            opt.snippet(String.valueOf(eegEngagement/sessions));
-
-                    //+ "/" + String.valueOf(selfReportEngagement));
+            opt.snippet(String.format("%.4f", eegEngagement / sessions) + "/" + String.format("%.4f", selfReportEngagement / sessions));
 
 
             double percent = eegEngagement/ sessions  / baselineEngagement;
@@ -363,8 +374,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             optionsList.add(opt);
         }
 
-        private void setOptionsColor(MarkerOptions opt, double engagement, double baselineEngagement){
-            double percent = engagement / baselineEngagement;
+        private void setOptionsColor(MarkerOptions opt, double engagement, double baselineEngagement, int sessions){
+            double percent = engagement / sessions /baselineEngagement;
         /*  5 stage:
             very low: 0 - 0.2;
             somewhat low: 0.2 - 0.4;
@@ -391,7 +402,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 iconFactory.setColor(Color.RED);
             }
 
-            opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon("5")));
+            opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(sessions + "")));
 
             publishProgress();
         }
@@ -403,17 +414,26 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         private double attention;
         private String location;
         private int sessions;
+        private double selfReport;
 
         public MarkerInfo(double latitude, double longitude,
-                          double attention, String location){
+                          double attention, String location, double selfReport){
             this.latitue = latitude;
             this.longitude = longitude;
             this.attention = attention;
             this.location = location;
             this.sessions = 1;
+            this.selfReport = selfReport;
+
 
         }
 
+        public double getSelfReport() {
+            return this.selfReport;
+        }
+        public void setSelfReport(double report){
+            this.selfReport = report;
+        }
         public double getLatitue() {
             return latitue;
         }

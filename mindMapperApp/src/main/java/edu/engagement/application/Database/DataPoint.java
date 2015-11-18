@@ -33,7 +33,7 @@ public class DataPoint
 	private int month;
 
 	public DataPoint(int sessionId, String locationName, long timeStamp, double hr, double alpha, double alpha_1,double alpha_2,double beta, double beta_1, double beta_2,double theta, double pope, double attention, String annotation, double ch1,
-			double ch2, double ch3, double ch4, double ch5, double ch6, double ch7, double ch8, int gpsKey, double lat, double lng)
+			double ch2, double ch3, double ch4, double ch5, double ch6, double ch7, double ch8, int gpsKey, double lat, double lng, int day, int month)
 	{
 		this.sessionId = sessionId;
 		this.locationName = locationName;
@@ -60,6 +60,8 @@ public class DataPoint
 		this.gpsKey = gpsKey;
 		this.lat = lat;
 		this.lng = lng;
+		this.day = day;
+		this.month = month;
 	}
 	// TODO overload for attention table changes
 	public DataPoint(long timeStamp, double hr, double alpha, double beta, double theta, double attention, double ch1,

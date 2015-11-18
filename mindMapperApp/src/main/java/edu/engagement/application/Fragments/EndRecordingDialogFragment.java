@@ -11,20 +11,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.R;
 
 /**
- * Created by IvenRee on 7/25/15.
+ * Created by IvenRee on 11/18/15.
  */
-public class RecordingDialogFragment extends DialogFragment {
+public class EndRecordingDialogFragment extends DialogFragment {
 
-    private Button mSaveNote;
+    private Button mSave;
     private EditText mAnnotation;
-    private Button mDone;
+    private Button mSkip;
     private SeekBar mSeekBar;
 
     private AttentionLevel attentionLevel;
@@ -36,37 +35,29 @@ public class RecordingDialogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View dialogView = inflater.inflate(R.layout.recording_dialog, container, false);
+        View dialogView = inflater.inflate(R.layout.end_recording_dialog, container, false);
 
         mDataPointSource = new DataPointSource(this.getActivity().getApplicationContext());
         mDataPointSource.open();
 
-        mSaveNote = (Button) dialogView.findViewById(R.id.saveNotes);
-        mDone = (Button) dialogView.findViewById(R.id.doneButton);
+        mSave = (Button) dialogView.findViewById(R.id.saveNotes);
+        mSkip = (Button) dialogView.findViewById(R.id.skipButton);
         mAnnotation = (EditText) dialogView.findViewById(R.id.annotation);
         mSeekBar = (SeekBar) dialogView.findViewById(R.id.annotation_bar);
 
-        mDone.setOnClickListener(new View.OnClickListener() {
+        mSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDataPointSource.close();
                 dismiss();
+                getTargetFragment().onActivityResult(1, 2, null);
             }
         });
-        mSaveNote.setOnClickListener(new View.OnClickListener() {
+        mSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mAnnotation.getText().length() == 0){
-                    Toast.makeText(getActivity(), "Please describe your experience!", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    //save annotation
-                    //
-                    mDataPointSource.createDataPointAnnotation(RecordingFragment.sessionId, System.currentTimeMillis(), mAnnotation.getText().toString(), mSeekBar.getProgress());
-                    Toast.makeText(getActivity(), "Your experience saved!", Toast.LENGTH_SHORT).show();
-                    mAnnotation.setText("");
-                    mSeekBar.setProgress(0);
-                }
+
+                dismiss();
 
             }
         });
