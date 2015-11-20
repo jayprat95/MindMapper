@@ -34,6 +34,6 @@
         android:layout_marginBottom="35dp"
         android:src="@drawable/plus_icon"
         app:fabSize="normal"
-        app:backgroundTint="#FFEB3B"/>
+        app:backgroundTint="#FFEB3B" />
 
 </RelativeLayout>

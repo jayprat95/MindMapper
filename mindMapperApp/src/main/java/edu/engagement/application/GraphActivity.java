@@ -6,11 +6,15 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -19,6 +23,9 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.interfaces.ScatterDataProvider;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 
@@ -32,12 +39,13 @@ import edu.engagement.application.utils.EEGDataPoint;
 import edu.engagement.application.utils.Session;
 import edu.engagement.application.utils.SessionLocation;
 
-public class GraphActivity extends Activity implements OnChartValueSelectedListener, AbsListView.OnScrollListener {
+public class GraphActivity extends Activity implements OnChartValueSelectedListener{
 
     public static final String SESSION_ID_TAG = "SessionId";
 
-    private ListView mListView;
     private CombinedChart mChart;
+
+    private RecyclerView rv;
     private List<Annotation> mAnnotations;
 
     @Override
@@ -47,18 +55,18 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
 
         mAnnotations = new ArrayList<>();
-        mListView = (ListView) findViewById(R.id.listView);
-        mListView.setOnScrollListener(this);
+        rv = (RecyclerView) findViewById(R.id.graph_recycler_view);
 
         mChart = (CombinedChart) findViewById(R.id.chart);
         mChart.setOnChartValueSelectedListener(this);
 
         // no description text
-        mChart.setDescription("AVG Attention vs gpsKey");
+        mChart.setDescription("");
         //mChart.setUnit(" $");
 
         // enable value highlighting
         mChart.setHighlightEnabled(true);
+        mChart.setHighlightIndicatorEnabled(false);
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
@@ -75,7 +83,11 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         mChart.getXAxis().setDrawGridLines(false);
         mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
-        mChart.animateXY(2000, 2000);
+        mChart.getAxisRight().setEnabled(false);
+        mChart.getAxisLeft().setLabelCount(2);
+        mChart.getAxisLeft().setDrawGridLines(false);
+
+        mChart.animateXY(2000, 0);
 
         // dont forget to refresh the drawing
         mChart.invalidate();
@@ -95,17 +107,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
     }
 
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-    }
-
-
     private class GraphLoadTask extends AsyncTask<Integer, Void, Session> {
 
         private Context context;
@@ -124,6 +125,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 DataPointSource dataSource = new DataPointSource(context);
                 dataSource.open();
                 s = dataSource.loadSessionData(id);
+//                s = getFakeSession();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -133,8 +135,13 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
         @Override
         protected void onPostExecute(Session session) {
-            GraphListViewAdpter adapter = new GraphListViewAdpter(session.getAnnotations());
-            mListView.setAdapter(adapter);
+            AnnotationListAdapter adapter = new AnnotationListAdapter(session.getAnnotations());
+
+            LinearLayoutManager llm = new LinearLayoutManager(GraphActivity.this);
+            llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+            rv.setLayoutManager(llm);
+            rv.setAdapter(adapter);
 
             drawGraph(session);
         }
@@ -147,13 +154,13 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 float attention = r.nextInt(50) + 50;
                 s.addDataPoint(1000 * 60 * i, attention);
             }
-//
-//            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM, 1000*60*5);
-//            s.addAnnotation("Annotation 2", AttentionLevel.MEDIUM_HIGH, 1000*60*22);
-//            s.addAnnotation("Annotation 3", AttentionLevel.HIGH, 1000 * 60 * 30);
-//            s.addAnnotation("Annotation 4", AttentionLevel.HIGH, 1000 * 60 * 39);
-//            s.addAnnotation("Annotation 5", AttentionLevel.MEDIUM_HIGH, 1000 * 60 * 49);
-//            s.addAnnotation("Annotation 6", AttentionLevel.MEDIUM_LOW, 1000 * 60 * 55);
+
+            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM2, 1000*60*5);
+            s.addAnnotation("Annotation 2", AttentionLevel.MEDIUM_HIGH1, 1000*60*22);
+            s.addAnnotation("Annotation 3", AttentionLevel.HIGH4, 1000 * 60 * 30);
+            s.addAnnotation("Annotation 4", AttentionLevel.HIGH1, 1000 * 60 * 39);
+            s.addAnnotation("Annotation 5", AttentionLevel.MEDIUM_HIGH3, 1000 * 60 * 49);
+            s.addAnnotation("Annotation 6", AttentionLevel.MEDIUM_LOW1, 1000 * 60 * 55);
 
             return s;
         }
@@ -182,10 +189,10 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             CombinedData combinedData = new CombinedData(xLabels);
 
             LineData lineData = new LineData();
-            BarData barData = new BarData();
+            ScatterData scatterData = new ScatterData();
 
             List<Entry> lineEntries = new ArrayList<>();
-            List<BarEntry> barEntries = new ArrayList<>();
+            List<Entry> scatterEntries = new ArrayList<>();
 
             int annotationIndex = 0;
             float sum = 0;
@@ -201,9 +208,9 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                     Annotation annotation = annotations.get(annotationIndex);
                     if (annotation.getTimeStamp() < dataPoint.timeStamp) {
 
-                        float selfReport = annotation.getAttentionLevel().ordinal() * 25;
+                        float selfReport = (annotation.getAttentionLevel().ordinal() + 1) * 4;
 
-                        barEntries.add(new BarEntry(selfReport, i - 1));
+                        scatterEntries.add(new Entry(selfReport, i - 1));
                         annotationIndex++;
                     }
                 }
@@ -211,37 +218,37 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
             float avg = sum / lineEntries.size();
 
-            List<Entry> avgLineEntries = new ArrayList<>();
-            avgLineEntries.add(new Entry(avg, 0));
-            avgLineEntries.add(new Entry(avg, lineEntries.size()));
-
             LineDataSet dataPointSet = new LineDataSet(lineEntries, "EEG Data");
             dataPointSet.setDrawCubic(true);
-            dataPointSet.setColor(Color.MAGENTA);
-            dataPointSet.setCircleSize(3f);
-            dataPointSet.setLineWidth(5f);
+            dataPointSet.setColor(Color.parseColor("#B5D9AF"));
+            dataPointSet.setFillColor(Color.parseColor("#B5D9AF"));
+            dataPointSet.setFillAlpha(255);
+            dataPointSet.setLineWidth(0f);
             dataPointSet.setDrawCircles(false);
             dataPointSet.setDrawValues(false);
+            dataPointSet.setDrawFilled(true);
 
-            LineDataSet avgEegSet = new LineDataSet(avgLineEntries, "Avg EEG Data");
-            avgEegSet.enableDashedLine(10, 10, 0);
-            avgEegSet.setLineWidth(3f);
-            avgEegSet.setColor(Color.BLACK);
-            avgEegSet.setDrawValues(false);
-            avgEegSet.setDrawCircles(false);
-
-            BarDataSet barDataSet = new BarDataSet(barEntries, "Annotations");
-            barDataSet.setColor(Color.GRAY);
-            barDataSet.setHighLightColor(Color.WHITE);
-            barDataSet.setDrawValues(false);
+            ScatterDataSet scatterDataSet = new ScatterDataSet(scatterEntries, "Annotations");
+            scatterDataSet.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
+            scatterDataSet.setScatterShapeSize(12f);
+            scatterDataSet.setColor(Color.parseColor("#9B9B9B"));
+            scatterDataSet.setHighLightColor(Color.WHITE);
+            scatterDataSet.setDrawValues(false);
 
             lineData.addDataSet(dataPointSet);
-            lineData.addDataSet(avgEegSet);
-            barData.addDataSet(barDataSet);
+            scatterData.addDataSet(scatterDataSet);
 
             combinedData.setData(lineData);
-            combinedData.setData(barData);
+            combinedData.setData(scatterData);
 
+            LimitLine ll = new LimitLine(avg, "Focus Average");
+            ll.setLineColor(Color.parseColor("#778490"));
+            ll.setLineWidth(2f);
+            ll.setTextColor(Color.parseColor("#778490"));
+            ll.setTextSize(12f);
+            ll.setLabelPosition(LimitLine.LimitLabelPosition.POS_LEFT);
+
+            mChart.getAxisLeft().addLimitLine(ll);
             mChart.setData(combinedData);
             mChart.invalidate();
         }

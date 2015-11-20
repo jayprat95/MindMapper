@@ -438,7 +438,7 @@ public class DataPointSource {
 
         String[] columns = { DatabaseHelper.COLUMN_SESSION_ID };
         String selection = DatabaseHelper.COLUMN_DAY + " = ?";
-        String[] selectionArgs = { String.valueOf(day)};
+        String[] selectionArgs = { String.valueOf(day) };
 
         Cursor cursor = database.query(
                 true,
