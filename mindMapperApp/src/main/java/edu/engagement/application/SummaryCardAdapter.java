@@ -16,7 +16,7 @@ import java.util.List;
 
 import edu.engagement.application.utils.AttentionColor;
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SummaryHolder> {
+public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.SummaryHolder> {
 
 	public class SummaryHolder extends RecyclerView.ViewHolder {
 
@@ -67,7 +67,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SummaryHolder> {
 
 	private List<EventSummary> eventSummaryList;
 
-	public RVAdapter(List<EventSummary> eventSummaryList) {
+	public SummaryCardAdapter(List<EventSummary> eventSummaryList) {
 		this.eventSummaryList = eventSummaryList;
 	}
 

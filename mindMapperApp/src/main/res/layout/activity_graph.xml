@@ -3,23 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     android:orientation="vertical"
-    >
-
-
+    android:background="#ffffff"
+    android:weightSum="1">
 
     <com.github.mikephil.charting.charts.CombinedChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.85"/>
 
-
-    <ListView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/graph_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/listView"
-        android:layout_gravity="bottom"
-        android:layout_weight="1"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.15" />
 
 </LinearLayout>

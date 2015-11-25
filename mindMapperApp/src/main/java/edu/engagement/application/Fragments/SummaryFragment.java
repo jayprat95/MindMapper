@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,16 +17,19 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import edu.engagement.application.App;
 import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.EventSummary;
+
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
-import edu.engagement.application.RVAdapter;
+import edu.engagement.application.SummaryCardAdapter;
 import edu.engagement.application.utils.EEGDataPoint;
 import edu.engagement.application.utils.Session;
+import edu.engagement.application.utils.SessionLocation;
 
 public class SummaryFragment extends Fragment {
 
@@ -57,7 +61,7 @@ public class SummaryFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        rv.setAdapter(new RVAdapter(eventSummaryList));
+        rv.setAdapter(new SummaryCardAdapter(eventSummaryList));
 
         new SummaryLoadTask(activity.getApplicationContext()).execute();
 
@@ -140,12 +144,31 @@ public class SummaryFragment extends Fragment {
                 List<EEGDataPoint> data = s.getEEGData();
                 int dataLength = data.size();
                 long startTime = data.get(0).timeStamp;
-                long stopTime = data.get(dataLength-1).timeStamp;
+                long stopTime = data.get(dataLength - 1).timeStamp;
                 float avgEEG = s.getEEGAverage();
                 AttentionLevel avgSelf = s.getSelfReportAverage();
 
                 publishProgress(new EventSummary(id, activityName, locationName, startTime, stopTime, avgSelf, avgEEG));
             }
+        }
+
+        private Session getFakeSession() {
+            Session s = new Session(1, "",new SessionLocation("McBryde Hall", 5.3, 2.3));
+
+            Random r = new Random(SystemClock.elapsedRealtime());
+            for (int i = 0; i <= 60; i++) {
+                float attention = r.nextInt(50) + 50;
+                s.addDataPoint(1000 * 60 * i, attention);
+            }
+
+            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM1, 1000 * 60 * 5);
+            s.addAnnotation("Annotation 2", AttentionLevel.MEDIUM_HIGH2, 1000 * 60 * 22);
+            s.addAnnotation("Annotation 3", AttentionLevel.HIGH3, 1000 * 60 * 30);
+            s.addAnnotation("Annotation 4", AttentionLevel.HIGH1, 1000 * 60 * 39);
+            s.addAnnotation("Annotation 5", AttentionLevel.MEDIUM_HIGH4, 1000 * 60 * 49);
+            s.addAnnotation("Annotation 6", AttentionLevel.MEDIUM_LOW1, 1000 * 60 * 55);
+
+            return s;
 
         }
     }

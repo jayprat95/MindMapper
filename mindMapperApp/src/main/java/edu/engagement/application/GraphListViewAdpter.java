@@ -44,9 +44,9 @@ public class GraphListViewAdpter extends BaseAdapter {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_item, parent,false);
             holder = new ViewHolder();
             Log.v("GraphListView","textview init");
-            holder.annotationNumber = (TextView) convertView.findViewById(R.id.numberLabel);
-            holder.annotationTime = (TextView) convertView.findViewById(R.id.timeLabel);
-            holder.annotation = (TextView) convertView.findViewById(R.id.annotationLabel);
+//            holder.annotationNumber = (TextView) convertView.findViewById(R.id.numberLabel);
+//            holder.annotationTime = (TextView) convertView.findViewById(R.id.timeLabel);
+//            holder.annotation = (TextView) convertView.findViewById(R.id.annotationLabel);
 
             convertView.setTag(holder);
         }
