@@ -133,6 +133,8 @@ public class SummaryFragment extends Fragment {
 
             Log.d(App.NAME, "Sessions returned: " + sessions.size());
 
+            sessions.add(getFakeSession());
+
             for (Session s : sessions) {
                 Log.d(App.NAME, "Sanity Check");
                 int id = s.getId();
