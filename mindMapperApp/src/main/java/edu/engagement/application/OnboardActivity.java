@@ -7,8 +7,8 @@ import com.github.paolorotolo.appintro.AppIntro;
 public class OnboardActivity extends AppIntro {
     @Override
     public void init(Bundle savedInstanceState) {
-        addSlide(SampleSlide.newInstance(R.layout.onboard_pager_3));
-        addSlide(SampleSlide.newInstance(R.layout.onboard_pager_4));
+        addSlide(SampleSlide.newInstance(R.layout.onboard_pager_1));
+        addSlide(SampleSlide.newInstance(R.layout.onboard_pager_2));
         addSlide(SampleSlide.newInstance(R.layout.onboard_pager_start));
         // OPTIONAL METHODS
         // Override bar/separator color

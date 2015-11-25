@@ -67,7 +67,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_EEG, null, values);
 
-        return new DataPoint(0, "",timeStamp, 0, alpha, alpha_1, alpha_2, beta, beta_1, beta_2, theta, pope, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0, 0 ,0);
+        return new DataPoint(0, "", "",timeStamp, 0, alpha, alpha_1, alpha_2, beta, beta_1, beta_2, theta, pope, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, gpsKey, 0, 0, 0 ,0);
     }
 
 //    public DataPoint createDataPointHR(long timeStamp, int gpsKey, double hr) {
@@ -92,7 +92,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_ATTENTION, null, values);
 
-        return new DataPoint(sessionId, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, "",0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0);
+        return new DataPoint(sessionId, "", "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, "",0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0);
     }
 
     public DataPoint createDataPointAnnotation(int sessionId, long timeStamp, String annotation, int attention){
@@ -104,7 +104,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_ANNOTATION, null, values);
 
-        return new DataPoint(sessionId, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, annotation, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0 , 0 ,0);
+        return new DataPoint(sessionId, "", "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, attention, annotation, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0 , 0 ,0);
     }
 //	public DataPoint createDataPointAttention(long timeStamp, int gpsKey, double attention)
 //	{
@@ -134,7 +134,7 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_ATTENTION, null, values);
 
-        return new DataPoint(0, "",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "",ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8, gpsKey, 0, 0, 0, 0);
+        return new DataPoint(0, "","",timeStamp, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "",ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8, gpsKey, 0, 0, 0, 0);
     }
 
     public DataPoint createDataPointGps(double latitude, double longitude, String locationName) {
@@ -145,17 +145,18 @@ public class DataPointSource {
 
         database.insert(DatabaseHelper.TABLE_GPS, null, values);
 
-        return new DataPoint(0, locationName,0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, latitude, longitude, 0, 0);
+        return new DataPoint(0, "",locationName,0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, latitude, longitude, 0, 0);
     }
 
-    public DataPoint createDataPointSession(int sessionId, String locationName){
+    public DataPoint createDataPointSession(int sessionId, String activityName,String locationName){
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_SESSION_ID, sessionId);
+        values.put(DatabaseHelper.COLUMN_ACTIVITY_NAME, activityName);
         values.put(DatabaseHelper.COLUMN_LOCATION_NAME, locationName);
 
         database.insert(DatabaseHelper.TABLE_SESSION, null, values);
 
-        return new DataPoint(sessionId, locationName,0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return new DataPoint(sessionId, activityName,locationName,0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     /**
@@ -318,7 +319,9 @@ public class DataPointSource {
      * @return
      */
     public Session loadSessionData(int sessionId) {
-        String[] columns = { DatabaseHelper.COLUMN_LOCATION_NAME };
+        String[] columns = { DatabaseHelper.COLUMN_LOCATION_NAME,
+                                DatabaseHelper.COLUMN_ACTIVITY_NAME
+        };
 
         String selection = DatabaseHelper.COLUMN_SESSION_ID + " = ?";
         String[] selectionArgs = { String.valueOf(sessionId) };
@@ -335,10 +338,11 @@ public class DataPointSource {
         cursor.moveToFirst();
 
         String locationName = cursor.getString(0);
+        String activityName = cursor.getString(1);
 
         SessionLocation location = loadLocation(locationName);
 
-        Session s = new Session(sessionId, location);
+        Session s = new Session(sessionId, activityName, location);
 
         s.addAnnotations(loadAnnotationData(sessionId));
         s.addDataPoints(loadEEGData(sessionId));

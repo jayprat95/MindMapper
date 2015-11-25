@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -23,7 +24,6 @@ public class EndRecordingDialogFragment extends DialogFragment {
 
     private Button mSave;
     private EditText mAnnotation;
-    private Button mSkip;
     private SeekBar mSeekBar;
 
     private AttentionLevel attentionLevel;
@@ -37,26 +37,18 @@ public class EndRecordingDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.end_recording_dialog, container, false);
 
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         mDataPointSource = new DataPointSource(this.getActivity().getApplicationContext());
         mDataPointSource.open();
 
         mSave = (Button) dialogView.findViewById(R.id.saveNotes);
-        mSkip = (Button) dialogView.findViewById(R.id.skipButton);
         mAnnotation = (EditText) dialogView.findViewById(R.id.annotation);
         mSeekBar = (SeekBar) dialogView.findViewById(R.id.annotation_bar);
 
-        mSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDataPointSource.close();
-                dismiss();
-                getTargetFragment().onActivityResult(1, 2, null);
-            }
-        });
         mSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                getTargetFragment().onActivityResult(1, 3, null);
                 dismiss();
 
             }

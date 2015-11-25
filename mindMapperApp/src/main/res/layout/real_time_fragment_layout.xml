@@ -19,7 +19,9 @@
             android:layout_marginTop="50dp"
             android:text="0"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="62sp" />
+            android:textSize="62sp"
+            android:visibility="gone"
+            />
 
         <Chronometer
             android:id="@+id/elapsedTime"
@@ -31,50 +33,44 @@
             android:layout_marginTop="15dp"
             android:layout_below="@+id/attentionCircle"
             android:layout_alignLeft="@+id/attentionCircle"
-            android:layout_alignStart="@+id/attentionCircle"/>
+            android:layout_alignStart="@+id/attentionCircle"
+            android:visibility="gone"
+            />
 
         <!-- Linear layout for start/stop/pause/resume buttons -->
         <LinearLayout
             android:id="@+id/recordingStateButtons"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
+            android:layout_width="220dp"
+            android:layout_height="80dp"
             android:layout_below="@+id/locationTextView"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="70dp"
             android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
-            <Button
-                android:id="@+id/start"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="#4CC94C"
-                android:text="Start"
-                android:textSize="30sp"
-                android:visibility="visible"
-                />
 
-            <Button
+            <ImageButton
                 android:id="@+id/pause"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
-                android:background="#A6A6A6"
-                android:text="Pause"
+                android:background="@drawable/pause_fab"
                 android:visibility="gone"
-                 />
+                />
 
-            <Button
+            <ImageButton
                 android:id="@+id/makeNoteButton"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_marginLeft="3dp"
+                android:layout_marginLeft="60dp"
                 android:layout_weight="1"
-                android:background="@color/wallet_holo_blue_light"
-                android:text="Make Note"
-                android:visibility="gone" />
+                android:background="@drawable/messages_fab"
+                android:visibility="gone"
+                />
+
+
         </LinearLayout>
 
         <TextView
@@ -88,30 +84,235 @@
             android:textSize="25sp"
             android:layout_below="@+id/elapsedTime"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"/>
+            android:layout_marginTop="60dp"
+            android:visibility="gone"
+            />
+
+
+            <ImageView
+                android:id="@+id/messageIcon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/messages_black"
+                android:layout_below="@+id/locationTextView"
+                android:layout_toLeftOf="@+id/messageIcon1"
+                android:layout_toStartOf="@+id/messageIcon1"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/messageIcon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/messages_black"
+                android:layout_below="@+id/locationTextView"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                />
+            <ImageView
+                android:id="@+id/messageIcon3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/messages_black"
+                android:layout_below="@+id/locationTextView"
+                android:layout_toRightOf="@+id/messageIcon1"
+                android:layout_toEndOf="@+id/messageIcon1"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                />
+
+
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:id="@+id/progressBar"
+            android:layout_below="@+id/recordingStateButtons"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Headband is Connecting\nPlase wait..."
+            android:id="@+id/connectionText"
+            android:layout_below="@+id/progressBar"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_marginTop="47dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:text="Ready to start"
+            android:textColor="@color/white"
+            android:id="@+id/readyText"
+            android:textSize="30sp"
+            android:background="@color/orange_500"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/checkmark"
+            android:layout_below="@+id/readyText"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/checkmarkImage"
+            android:visibility="gone"/>
+
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:id="@+id/statusTextView"
-            android:text="EEG Status"
-            android:gravity="center"
-            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:text="I am"
+            android:id="@+id/iAmLabel"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/checkmarkImage"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Studying"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginRight="5dp"
-            android:layout_alignBottom="@+id/statusView"
-            android:layout_toLeftOf="@+id/statusView"
-            android:layout_toStartOf="@+id/statusView"/>
+            android:textColor="#00BCD6"
+            android:id="@+id/activityLabel"
+            android:layout_below="@+id/iAmLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="at"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:id="@+id/atLabel"
+            android:layout_below="@+id/activityLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#00BCD6"
+            android:id="@+id/locationLabel"
+            android:layout_below="@+id/atLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"/>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Start"
+            android:textSize="20sp"
+            android:id="@+id/startButton"
+            android:background="@color/orange_500"
+            android:paddingRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical|right"
+            android:visibility="gone"
+            />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Retry"
+            android:textSize="20sp"
+            android:id="@+id/retryConnectButton"
+            android:background="@color/orange_500"
+            android:paddingRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical|right"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="No Connection"
+            android:id="@+id/noConnectionText"
+            android:layout_marginTop="30dp"
+            android:textSize="40sp"
+            android:paddingLeft="10dp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="1. Make sure your phone's bluetooth is turned on.\n2. Pair your phone with the headband.\n3. make sure Location Services is enabled in your phone's settings."
+            android:id="@+id/noConnectionTips"
+            android:layout_weight="1"
+            android:layout_below="@+id/noConnectionText"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:visibility="gone"
+            />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/statusView"
-            android:src="@drawable/connecting_animation"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/recordingStateButtons"
-            android:layout_toEndOf="@+id/recordingStateButtons"/>
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/noConnectionTips"
+            android:background="@drawable/bluetooth_black"
+            android:layout_marginTop="10dp"
+            android:id="@+id/bluetoothImage"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
+
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:id="@+id/statusTextView"-->
+            <!--android:text="EEG Status"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="bold"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_alignBottom="@+id/statusView"-->
+            <!--android:layout_toLeftOf="@+id/statusView"-->
+            <!--android:layout_toStartOf="@+id/statusView"/>-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:id="@+id/statusView"-->
+            <!--android:src="@drawable/connecting_animation"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_toRightOf="@+id/recordingStateButtons"-->
+            <!--android:layout_toEndOf="@+id/recordingStateButtons"/>-->
+            <!--/>-->
 
 
     </RelativeLayout>

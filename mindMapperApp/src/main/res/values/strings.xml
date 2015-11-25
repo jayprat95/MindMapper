@@ -1,19 +1,19 @@
 <resources>
-  	
+
     <string name="app_name">Mind Mapper</string>
     <string name="action_connect">Connect</string>
     <string name="real_time">Real Time Data</string>
     <string name="trend_data">Trend Data</string>
     <string name="drawer_open">Open</string>
-	<string name="drawer_close">Close</string>
-	<string name="start_service">Connect</string>
-	<string name="stop_service">Disconnect</string>
+    <string name="drawer_close">Close</string>
+    <string name="start_service">Connect</string>
+    <string name="stop_service">Disconnect</string>
 
-	<string name="recording_name">Activity</string>
-	<string name="recording_name_multiple">Activities</string>
+    <string name="recording_name">Activity</string>
+    <string name="recording_name_multiple">Activities</string>
 
-	<string name="map_option">Map</string>
-	<string name="graph_option">Graphs</string>
+    <string name="map_option">Map</string>
+    <string name="graph_option">Graphs</string>
 	
 	<string name="baseline_instruction">
 	    In order to properly use MindMapper
@@ -21,19 +21,19 @@
 	    Make sure your bluetooth device is properly worn
 	    and tap the circle as it appears.
 	</string>
-	<string name="baseline_start">Start</string>
-	<string name="baseline_circle">Tap Here</string>
-	
-	<string name="baseline_instruction_finish">Baseline Testing Complete</string>
-	<string name="baseline_finish">Home</string>
+    <string name="baseline_start">Start</string>
+    <string name="baseline_circle">Tap Here</string>
 
-	<string-array name="time_filter_presets">
-		<item>1 day</item>
-		<item>2 days</item>
-		<item>3 days</item>
-		<item>4 days</item>
-		<item>5 days</item>
-	</string-array>
+    <string name="baseline_instruction_finish">Baseline Testing Complete</string>
+    <string name="baseline_finish">Home</string>
+
+    <string-array name="time_filter_presets">
+        <item>1 day</item>
+        <item>2 days</item>
+        <item>3 days</item>
+        <item>4 days</item>
+        <item>5 days</item>
+    </string-array>
 
     <string name="title_activity_onboard">OnboardActivity</string>
 
@@ -41,5 +41,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_graph">GraphActivity</string>
     <string name="title_activity_recording_startup">RecordingStartup</string>
-    
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

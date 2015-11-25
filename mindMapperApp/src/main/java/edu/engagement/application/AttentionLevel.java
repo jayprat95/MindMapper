@@ -59,7 +59,7 @@ public enum AttentionLevel {
      * @return the attention level
      */
     public static AttentionLevel fromInt(int i) {
-        switch (i) {
+        switch (i+1) {
             case 1:
                 return LOW1;
             case 2:

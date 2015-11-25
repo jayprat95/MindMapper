@@ -49,7 +49,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SummaryHolder> {
 		 * @param eventSummary the event summary to be shown on the card
 		 */
 		public void bindSummary(EventSummary eventSummary) {
-            location.setText(eventSummary.getLocation());
+			if(eventSummary.getActivityName().length() == 0){
+				location.setText(eventSummary.getLocation());
+			}else{
+				location.setText(eventSummary.getActivityName() + " at " + eventSummary.getLocation());
+			}
+
             time.setText(eventSummary.getTimeRangeFormatted("hh:mm a", " -> "));
 
             double att = eventSummary.getEegAttention();

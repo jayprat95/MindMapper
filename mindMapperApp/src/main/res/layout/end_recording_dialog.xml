@@ -2,21 +2,40 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#F5F5DC">
-
-    <TextView
-        android:layout_width="wrap_content"
+                >
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Overall, how focused did you feel?"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:paddingTop="5dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="60dp"
+        android:id="@+id/linearLayout"
+        android:orientation="horizontal">
 
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text="Overall, how focused did you feel?"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="50dp"
+            android:id="@+id/textView"
+            />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:id="@+id/imageView"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_alignRight="@+id/textViewHigh"
+            android:layout_alignEnd="@+id/textViewHigh"
+            android:background="@drawable/brai_blue"/>
+
+    </LinearLayout>
+
 
     <SeekBar
         android:id="@+id/annotation_bar"
@@ -27,8 +46,8 @@
         android:progress="0"
         android:progressDrawable="@drawable/progressbar"
         android:secondaryProgress="0"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/textView"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/linearLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
@@ -39,15 +58,9 @@
         android:layout_alignLeft="@id/annotation_bar"
         android:layout_below="@+id/annotation_bar"
         android:layout_marginLeft="15dp"
-        android:text="Not at all" />
+        android:text="Not at all"
+        android:textSize="10sp"/>
 
-    <TextView
-        android:id="@+id/textViewMedium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/annotation_bar"
-        android:layout_centerHorizontal="true"
-        android:text="" />
 
     <TextView
         android:id="@+id/textViewHigh"
@@ -56,38 +69,28 @@
         android:layout_alignRight="@id/annotation_bar"
         android:layout_below="@+id/annotation_bar"
         android:layout_marginRight="15dp"
-        android:text="Very Focused" />
+        android:text="Very Focused"
+        android:textSize="10sp"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/annotation"
-        android:layout_below="@+id/textViewMedium"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:hint="Describe your experience here [Text Input]"/>
-
-    <Button
-        android:id="@+id/saveNotes"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:background="@color/wallet_holo_blue_light"
-        android:text="Save"
-        android:layout_marginTop="46dp"
-        android:layout_below="@+id/annotation"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView"/>
-
-    <Button
-        android:id="@+id/skipButton"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Skip"
-        android:background="@color/wallet_holo_blue_light"
-        android:layout_alignTop="@+id/saveNotes"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView"/>
+        android:hint="Describe your experience here [Text Input]"
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/annotation_bar"
+        android:layout_centerHorizontal="true"/>
 
 
+        <Button
+            android:id="@+id/saveNotes"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/wallet_holo_blue_light"
+            android:text="Save"
+            android:layout_marginBottom="25dp"
+            android:layout_below="@+id/annotation"
+            android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

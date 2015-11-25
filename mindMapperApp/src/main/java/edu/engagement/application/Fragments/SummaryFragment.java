@@ -2,7 +2,6 @@ package edu.engagement.application.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,9 +21,6 @@ import edu.engagement.application.App;
 import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.EventSummary;
-
-import edu.engagement.application.GraphActivity;
-
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
 import edu.engagement.application.RVAdapter;
@@ -128,6 +124,7 @@ public class SummaryFragment extends Fragment {
 
             // The Calendar function returns the index of the month. (ex: Jan = 0, Feb = 1)
             int month = (c.get(Calendar.MONTH) + 1);
+
             List<Session> sessions = dbSource.getSessionsInTimeRange(day);
 
             Log.d(App.NAME, "Sessions returned: " + sessions.size());
@@ -136,8 +133,8 @@ public class SummaryFragment extends Fragment {
                 Log.d(App.NAME, "Sanity Check");
                 int id = s.getId();
                 String locationName = s.getLocation().getName();
+                String activityName = s.getActivityName();
                 Log.d(App.NAME, locationName);
-
 
                 // Getting start and stop times
                 List<EEGDataPoint> data = s.getEEGData();
@@ -147,9 +144,8 @@ public class SummaryFragment extends Fragment {
                 float avgEEG = s.getEEGAverage();
                 AttentionLevel avgSelf = s.getSelfReportAverage();
 
-                publishProgress(new EventSummary(id, locationName, startTime, stopTime, avgSelf, avgEEG));
+                publishProgress(new EventSummary(id, activityName, locationName, startTime, stopTime, avgSelf, avgEEG));
             }
-
 
         }
     }

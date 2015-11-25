@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -38,6 +39,7 @@ public class RecordingDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.recording_dialog, container, false);
 
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         mDataPointSource = new DataPointSource(this.getActivity().getApplicationContext());
         mDataPointSource.open();
 
@@ -66,7 +68,9 @@ public class RecordingDialogFragment extends DialogFragment {
                     Toast.makeText(getActivity(), "Your experience saved!", Toast.LENGTH_SHORT).show();
                     mAnnotation.setText("");
                     mSeekBar.setProgress(0);
+                    getTargetFragment().onActivityResult(2, 3, null);
                 }
+                dismiss();
 
             }
         });

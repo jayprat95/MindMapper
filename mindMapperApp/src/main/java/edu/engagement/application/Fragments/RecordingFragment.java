@@ -5,9 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.GradientDrawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -18,9 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,13 +38,44 @@ public class RecordingFragment extends Fragment implements OnClickListener {
     public static final String LOCATION_NAME_KEY = "LOCATION_NAME";
     public static final String LOCATION_LAT_KEY = "LOCATION_LATITUDE";
     public static final String LOCATION_LONG_KEY = "LOCATION_LONGITUDE";
+    public static final String ACTIVITY_NAME_KEY = "ACTIVITY_NAME";
+    public static final int END_ACTIVITY_REQUEST = 1;
+    public static final int MAKE_NOTE_REQUEST = 2;
+
+
+    private Boolean connectionSuccessful = false;
 
     private MainActivity activity;
 
     public static int sessionId = 0;
     private RealTimeListener realTimeListener;
-
     private TextView attentionText;
+    private ImageView messageIcon1;
+    private ImageView messageIcon2;
+    private ImageView messageIcon3;
+    private int messagesIconNumber = 0;
+
+
+    //connecting layout
+    private TextView connectionText;
+    private ProgressBar spinner;
+
+    //connection successful layout
+    private TextView readyText;
+    private Button startButton;
+    private ImageView checkmarkImage;
+    private TextView iAmLabel;
+    private TextView atLabel;
+    private TextView activityLabel;
+    private TextView locationLabel;
+
+
+    //on connection layout
+    private Button retryButton;
+    private TextView noConnectionText;
+    private TextView noConnectionTip;
+    private  ImageView bluetoothImage;
+
 
     private ImageView eegStatusImage;
 
@@ -52,10 +84,9 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 
     // Annotation
     private SeekBar annotationBar = null;
-    private Button notesButton;
+    private ImageButton notesButton;
+    private ImageButton pauseButton;
 
-    private Button startButton;
-    private Button pauseButton;
 
     // The elapsed timer
     private Chronometer timer;
@@ -69,6 +100,9 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 
     private LatLng location;
 
+    private String activityName;
+    private String locationStr;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -81,7 +115,8 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 
         Bundle b = getArguments();
 
-        String locationStr = b.getString(LOCATION_NAME_KEY, "Location error");
+        activityName = b.getString(ACTIVITY_NAME_KEY, "_ _");
+        locationStr = b.getString(LOCATION_NAME_KEY, "Location error");
         double latitude = b.getDouble(LOCATION_LAT_KEY, 0);
         double longitude = b.getDouble(LOCATION_LONG_KEY, 0);
 
@@ -95,20 +130,49 @@ public class RecordingFragment extends Fragment implements OnClickListener {
         attentionText = (TextView) view.findViewById(R.id.attentionCircle);
         locationName = (TextView) view.findViewById(R.id.locationTextView);
 
-        locationName.setText(locationStr);
+        if(activityName.length() == 0){
+            locationName.setText(locationStr);
+        }else{
+            locationName.setText(activityName + " at " + locationStr);
+        }
+
         locationName.setSingleLine(true);
         locationName.setEllipsize(TextUtils.TruncateAt.END);
-
-        startButton = (Button) view.findViewById(R.id.start);
-
-        pauseButton = (Button) view.findViewById(R.id.pause);
+        pauseButton = (ImageButton) view.findViewById(R.id.pause);
         //make note: annotation button
-        notesButton = (Button) view.findViewById(R.id.makeNoteButton);
+        notesButton = (ImageButton) view.findViewById(R.id.makeNoteButton);
         //submitButton = (Button) view.findViewById(R.id.submit);
         timer = (Chronometer) view.findViewById(R.id.elapsedTime);
+        //eegStatusImage = (ImageView)view.findViewById(R.id.statusView);
+        messageIcon1 = (ImageView) view.findViewById(R.id.messageIcon1);
+        messageIcon2 = (ImageView) view.findViewById(R.id.messageIcon2);
+        messageIcon3 = (ImageView) view.findViewById(R.id.messageIcon3);
 
-        eegStatusImage = (ImageView)view.findViewById(R.id.statusView);
+        //connecting
+        connectionText = (TextView) view.findViewById(R.id.connectionText);
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
 
+        //connection successful weidgets
+        startButton = (Button) view.findViewById(R.id.startButton);
+        readyText = (TextView) view.findViewById(R.id.readyText);
+        checkmarkImage = (ImageView) view.findViewById(R.id.checkmarkImage);
+        iAmLabel = (TextView) view.findViewById(R.id.iAmLabel);
+        atLabel = (TextView) view.findViewById(R.id.atLabel);
+        activityLabel = (TextView) view.findViewById(R.id.activityLabel);
+        activityLabel.setText(activityName);
+        locationLabel = (TextView) view.findViewById(R.id.locationLabel);
+        locationLabel.setText(locationStr);
+
+        //connection fail weidgets
+        retryButton = (Button) view.findViewById(R.id.retryConnectButton);
+        noConnectionText = (TextView) view.findViewById(R.id.noConnectionText);
+        noConnectionTip = (TextView) view.findViewById(R.id.noConnectionTips);
+        bluetoothImage = (ImageView) view.findViewById(R.id.bluetoothImage);
+
+        activityLabel.setOnClickListener(this);
+        locationLabel.setOnClickListener(this);
+
+        retryButton.setOnClickListener(this);
 
         startButton.setOnClickListener(this);
 
@@ -116,16 +180,17 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 
         notesButton.setOnClickListener(this);
 
-        showEEGConnectionLoadingIcon();
+        //showEEGConnectionLoadingIcon();
 
         activity.startService();
-
-        hideButtons(startButton);
 
         sdf = new StatusDialogFragment();
 
         return view;
     }
+
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -135,30 +200,50 @@ public class RecordingFragment extends Fragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        connectionSuccessful = false;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //
-        hideButtons(pauseButton, notesButton);
-        showButtons(startButton);
-        stopTimer();
-        // Stop reading data from EEG
-        stopService();
+        if(requestCode == END_ACTIVITY_REQUEST && resultCode == 3){
+            hideButtons(pauseButton, notesButton);
+            //showButtons(startButton);
+            stopTimer();
+            // Stop reading data from EEG
+            stopService();
 
-        realTimeListener.onRecordingStopped();
+            realTimeListener.onRecordingStopped();
 
-        // Move back to the summary view
-        activity.showFragment(MainActivity.REFLECTION_TAG, null);
-
+            // Move back to the summary view
+            activity.showFragment(MainActivity.REFLECTION_TAG, null);
+        }
+        if(requestCode == MAKE_NOTE_REQUEST && resultCode == 3){
+            Log.v("messageIconNumber", messagesIconNumber+"");
+            if(messagesIconNumber == 0){
+                messageIcon1.setVisibility(View.VISIBLE);
+                messagesIconNumber += 1;
+            }
+            if(messagesIconNumber == 1){
+                messageIcon2.setVisibility(View.VISIBLE);
+                messagesIconNumber += 1;
+            }
+            if(messagesIconNumber == 2){
+                messageIcon3.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
     public void onClick(View view) {
 
             switch (view.getId()) {
+                case R.id.retryConnectButton:
+                        activity.startService();
+                        hideConnecttionFail();
+                        showConnectionStatus();
+                    break;
                 case R.id.makeNoteButton:
 
                     //display dialog to make note for annotation
@@ -168,26 +253,28 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 //                    transaction.remove(prev);
 //                }
                     RecordingDialogFragment dialog = new RecordingDialogFragment();
+                    dialog.setTargetFragment(RecordingFragment.this, MAKE_NOTE_REQUEST);
                     dialog.show(activity.getSupportFragmentManager(), "dialog");
                     break;
-                case R.id.start:
-
+                case R.id.startButton:
                     if(location != null){
                         //create sharedPreferences with init value 1, increase everytime when user presses "End Session"
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
                         sessionId = prefs.getInt("sessionId", 1);
+                        //log
                         Log.v("The sessionId", "The init session id: " + sessionId);
-                        String currentLocationName = locationName.getText().toString();
 
                         //saving data tp GPS table and Session table when this is a new location:
-                        if (!MapFrag.locationTable.containsKey(currentLocationName)) {
-                        mDataPointSource.createDataPointGps(location.latitude, location.longitude, currentLocationName);
+                        if (!MapFrag.locationTable.containsKey(locationStr)) {
+                            mDataPointSource.createDataPointGps(location.latitude, location.longitude, locationStr);
                         }
+
                         //saving data to session table
-                        mDataPointSource.createDataPointSession(sessionId, currentLocationName);
+                        mDataPointSource.createDataPointSession(sessionId, activityName, locationStr);
+
                         // Change button states to pause and stop
-                        hideButtons(startButton);
-                        showButtons(pauseButton, notesButton);
+                        hideConnecttionSuccessful();
+                        showRecordingLayout();
 
                         timer.setFormat("[Total Time: %s]");
 
@@ -203,9 +290,12 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 
                     // display confirm dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-                    dialogBuilder.setTitle("You are currently paused. ");
-                    dialogBuilder.setMessage("No data is currently being logged.");
-                    dialogBuilder.setPositiveButton("End Activity", new DialogInterface.OnClickListener() {
+
+                    LayoutInflater factory = LayoutInflater.from(activity);
+                    final View dialogView = factory.inflate(R.layout.pause_alert_dialog, null);
+                    dialogBuilder.setView(dialogView);
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setPositiveButton("      End Activity     ", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -213,12 +303,13 @@ public class RecordingFragment extends Fragment implements OnClickListener {
                             realTimeListener.onRecordingStopped();
 
                             EndRecordingDialogFragment endDialog = new EndRecordingDialogFragment();
-                            endDialog.setTargetFragment(RecordingFragment.this, 1);
+
+                            endDialog.setTargetFragment(RecordingFragment.this, END_ACTIVITY_REQUEST);
                             endDialog.show(activity.getSupportFragmentManager(), "dialog");
-                            
+
                         }
                     });
-                    dialogBuilder.setNegativeButton("Resume Activity", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setNegativeButton("     Resume      ", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -226,11 +317,16 @@ public class RecordingFragment extends Fragment implements OnClickListener {
                         }
                     });
 
-                    dialogBuilder.create().show();
+                    AlertDialog alertDialog = dialogBuilder.create();
+                    alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    alertDialog.show();
+
                     break;
             }
 
     }
+
+
 
     public void restoreRecordingState() {
         if (recordingSavedState) {
@@ -260,15 +356,16 @@ public class RecordingFragment extends Fragment implements OnClickListener {
         backgroundGradient.setColor(AttentionColor.getAttentionColor(attention));
     }
 
-
-
     public void onEegNotFound() {
-        if (sdf.isVisible()) {
-            sdf.onReconnectFail();
-        } else {
-            sdf.show(activity.getSupportFragmentManager(), "statusDialog");
+
+        if(connectionSuccessful == false){
+            hideConnectionStatus();
+            showConnecttionFail();
+        }else{
+            Log.v("Recording", "eeg not found, situation needs to handle");
         }
     }
+
 
     public void onEegDisconnect() {
 
@@ -277,56 +374,21 @@ public class RecordingFragment extends Fragment implements OnClickListener {
         if (recordingCurrentState) {
             stopRecording();
         }
-
-        eegStatusImage.setImageResource(R.drawable.disconnected);
-
+        //eegStatusImage.setImageResource(R.drawable.disconnected);
         sdf.show(activity.getSupportFragmentManager(), "statusDialog");
     }
 
     public void onEegConnect() {
-
+        connectionSuccessful = true;
         // The dialog fragment is being shown, so send updates to it
         if (sdf.isVisible()) {
             sdf.onReconnectSuccess();
         } else {
-            hideEEGConnectionLoadingIcon();
-            eegStatusImage.setImageResource(R.drawable.connected);
-
-            showButtons(startButton);
+            //hideEEGConnectionLoadingIcon();
+            //eegStatusImage.setImageResource(R.drawable.connected);
+            hideConnectionStatus();
+            showConnecttionSuccessful();
         }
-    }
-
-    private void startTimer() {
-        timer.setBase(SystemClock.elapsedRealtime() - elapsedTime);
-        timer.start();
-    }
-
-    private void stopTimer() {
-        elapsedTime = SystemClock.elapsedRealtime() - timer.getBase();
-        timer.stop();
-    }
-
-    private void hideEEGConnectionLoadingIcon() {
-        if (eegStatusImage.getDrawable() instanceof  AnimationDrawable) {
-            ((AnimationDrawable) eegStatusImage.getDrawable()).stop();
-            eegStatusImage.clearAnimation();
-            eegStatusImage.setImageResource(0);
-        }
-    }
-
-    private void showEEGConnectionLoadingIcon() {
-        eegStatusImage.setBackgroundResource(R.drawable.connecting_animation);
-        ((AnimationDrawable) eegStatusImage.getDrawable()).start();
-    }
-
-    private void hideButtons(Button... buttons) {
-        for (Button button : buttons)
-            button.setVisibility(View.GONE);
-    }
-
-    private void showButtons(Button... buttons) {
-        for (Button button : buttons)
-            button.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -340,6 +402,93 @@ public class RecordingFragment extends Fragment implements OnClickListener {
         void onRecordingStarted();
         void onRecordingStopped();
     }
+
+    private void startTimer() {
+        timer.setBase(SystemClock.elapsedRealtime() - elapsedTime);
+        timer.start();
+    }
+
+    private void stopTimer() {
+        elapsedTime = SystemClock.elapsedRealtime() - timer.getBase();
+        timer.stop();
+    }
+
+    /* Layout change methods */
+
+    private void showRecordingLayout() {
+        pauseButton.setVisibility(View.VISIBLE);
+        notesButton.setVisibility(View.VISIBLE);
+        attentionText.setVisibility(View.VISIBLE);
+        locationName.setVisibility(View.VISIBLE);
+        timer.setVisibility(View.VISIBLE);
+    }
+
+    private void showConnecttionFail() {
+        retryButton.setVisibility(View.VISIBLE);
+        noConnectionText.setVisibility(View.VISIBLE);
+        noConnectionTip.setVisibility(View.VISIBLE);
+        bluetoothImage.setVisibility(View.VISIBLE);
+    }
+    private void hideConnecttionFail() {
+        retryButton.setVisibility(View.GONE);
+        noConnectionText.setVisibility(View.GONE);
+        noConnectionTip.setVisibility(View.GONE);
+        bluetoothImage.setVisibility(View.GONE);
+    }
+
+    private void showConnecttionSuccessful() {
+        readyText.setVisibility(View.VISIBLE);
+        startButton.setVisibility(View.VISIBLE);
+        iAmLabel.setVisibility(View.VISIBLE);
+        atLabel.setVisibility(View.VISIBLE);
+        activityLabel.setVisibility(View.VISIBLE);
+        locationLabel.setVisibility(View.VISIBLE);
+        checkmarkImage.setVisibility(View.VISIBLE);
+    }
+
+    private void hideConnecttionSuccessful() {
+        readyText.setVisibility(View.GONE);
+        startButton.setVisibility(View.GONE);
+        iAmLabel.setVisibility(View.GONE);
+        atLabel.setVisibility(View.GONE);
+        activityLabel.setVisibility(View.GONE);
+        locationLabel.setVisibility(View.GONE);
+        checkmarkImage.setVisibility(View.GONE);
+    }
+
+    private void showConnectionStatus() {
+        spinner.setVisibility(View.VISIBLE);
+        connectionText.setVisibility(View.VISIBLE);
+    }
+    private void hideConnectionStatus() {
+        spinner.setVisibility(View.GONE);
+        connectionText.setVisibility(View.GONE);
+    }
+
+
+//    private void hideEEGConnectionLoadingIcon() {
+//        if (eegStatusImage.getDrawable() instanceof  AnimationDrawable) {
+//            ((AnimationDrawable) eegStatusImage.getDrawable()).stop();
+//            eegStatusImage.clearAnimation();
+//            eegStatusImage.setImageResource(0);
+//        }
+//    }
+
+//    private void showEEGConnectionLoadingIcon() {
+//        eegStatusImage.setBackgroundResource(R.drawable.connecting_animation);
+//        ((AnimationDrawable) eegStatusImage.getDrawable()).start();
+//    }
+
+    private void hideButtons(ImageButton... buttons) {
+        for (ImageButton button : buttons)
+            button.setVisibility(View.GONE);
+    }
+
+    private void showButtons(ImageButton... buttons) {
+        for (ImageButton button : buttons)
+            button.setVisibility(View.VISIBLE);
+    }
+
 }
 
 

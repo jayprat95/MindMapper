@@ -140,7 +140,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         }
 
         private Session getFakeSession() {
-            Session s = new Session(1, new SessionLocation("McBryde Hall", 5.3, 2.3));
+            Session s = new Session(1, "Study", new SessionLocation("McBryde Hall", 5.3, 2.3));
 
             Random r = new Random(SystemClock.elapsedRealtime());
             for (int i = 0; i <= 60; i++) {

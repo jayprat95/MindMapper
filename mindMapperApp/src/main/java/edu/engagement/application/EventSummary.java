@@ -9,6 +9,7 @@ import java.util.Date;
 public class EventSummary {
 
     private String location;
+    private String activityName;
 
     private Date start;
     private Date stop;
@@ -17,8 +18,9 @@ public class EventSummary {
     private AttentionLevel  selfReportLevel;
     private int sessionId;
 
-    public EventSummary(int sessionId, String location, long start, long stop, AttentionLevel selfReportLevel, double eegData) {
+    public EventSummary(int sessionId, String activityName, String location, long start, long stop, AttentionLevel selfReportLevel, double eegData) {
         this.sessionId = sessionId;
+        this.activityName = activityName;
         this.location = location;
         this.start = new Date(start);
         this.stop = new Date(stop);
@@ -29,6 +31,7 @@ public class EventSummary {
     public int getSessionId(){
         return sessionId;
     }
+
     public Date getStartDate() {
         return start;
     }
@@ -53,5 +56,9 @@ public class EventSummary {
 
     public String getLocation() {
         return this.location;
+    }
+
+    public String getActivityName(){
+        return activityName;
     }
 }

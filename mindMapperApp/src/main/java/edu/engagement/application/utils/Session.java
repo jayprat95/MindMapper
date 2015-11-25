@@ -12,14 +12,19 @@ import edu.engagement.application.AttentionLevel;
 public class Session {
     private final int id;
     private final SessionLocation location;
+    private final String activityName;
     private final List<EEGDataPoint> data = new ArrayList<>();
     private final List<Annotation> annotations = new ArrayList<>();
 
-    public Session(int id, SessionLocation location) {
+    public Session(int id, String activityName,SessionLocation location) {
+        this.activityName = activityName;
         this.id = id;
         this.location = location;
     }
 
+    public String getActivityName(){
+        return activityName;
+    }
     public int getId() {
         return id;
     }

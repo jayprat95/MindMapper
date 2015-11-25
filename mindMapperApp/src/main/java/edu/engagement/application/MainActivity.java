@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.widget.FrameLayout;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -35,6 +34,7 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
     public static final String REFLECTION_TAG = "REFLECTION_FRAGMENT";
 
     private MindwaveService mindwaveService;
+    String activityName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
             f.setArguments(bundle);
             transaction.replace(R.id.content_frame, f, tag).commit();
         }
-        Log.d(App.NAME, "OUTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+
     }
 
     /*
@@ -89,6 +89,17 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
+        //return result from recording startup
+        if(requestCode == 0){
+            if(resultCode == RESULT_OK){
+                activityName = data.getStringExtra(RecordingStartup.RETURN_RESULT_KEY);
+
+                showPlacePicker();
+            }
+
+        }
+        //return result from place picker
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
@@ -99,6 +110,8 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
 
                 // Start recording fragment
                 Bundle bundle = new Bundle();
+                Log.v("activity name: ", activityName);
+                bundle.putString(RecordingFragment.ACTIVITY_NAME_KEY, activityName);
                 bundle.putString(RecordingFragment.LOCATION_NAME_KEY, locationName);
                 bundle.putDouble(RecordingFragment.LOCATION_LAT_KEY, location.latitude);
                 bundle.putDouble(RecordingFragment.LOCATION_LONG_KEY,location.longitude);
@@ -108,12 +121,16 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
                 Log.d(App.NAME, "PlacePicker cancelled!");
             }
         }
-        if(requestCode == 2){
-            if(resultCode == RESULT_OK){
-                showPlacePicker();
-            }
+    }
 
-        }
+    public void showStartupActivity(){
+        /* Place Picker Experiment */
+        int STARTUP_ACTIVIY_REQUEST = 0;
+        Intent intent = new Intent(this, RecordingStartup.class);
+            // identified by a request code.
+        startActivityForResult(intent,
+                    STARTUP_ACTIVIY_REQUEST);
+
     }
 
     /**

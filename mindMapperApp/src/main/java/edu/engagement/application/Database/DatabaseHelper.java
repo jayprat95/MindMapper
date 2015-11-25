@@ -41,6 +41,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ACCURACY = "Accuracy";
     public static final String COLUMN_GPS_KEY = "gps_key";
     public static final String COLUMN_LOCATION_NAME = "LocationName";
+    public static final String COLUMN_ACTIVITY_NAME = "ActivityName";
+
 
 
     public static final String COLUMN_MONTH = "month";
@@ -48,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "commments.db";
-    private static final int DATABASE_VERSION = 16;
+    private static final int DATABASE_VERSION = 17;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE_EEG = "CREATE TABLE IF NOT EXISTS "
@@ -97,6 +99,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE_SESSION = "CREATE TABLE IF NOT EXISTS "
             + TABLE_SESSION + "("
             + COLUMN_SESSION_ID + " INTEGER, "
+            + COLUMN_ACTIVITY_NAME + " VARCHAR, "
             + COLUMN_LOCATION_NAME + " VARCHAR"
             + " );";
 
