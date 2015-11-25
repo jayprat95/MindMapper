@@ -9,17 +9,25 @@ import android.os.SystemClock;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.widget.AbsListView;
+import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.interfaces.ScatterDataProvider;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 
@@ -47,7 +55,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
-
         mAnnotations = new ArrayList<>();
         rv = (RecyclerView) findViewById(R.id.graph_recycler_view);
 
@@ -56,21 +63,20 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
         // no description text
         mChart.setDescription("");
-        //mChart.setUnit(" $");
 
         // enable value highlighting
-        mChart.setHighlightEnabled(true);
         mChart.setHighlightIndicatorEnabled(false);
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
+        mChart.setDragEnabled(false);
+        mChart.setScaleEnabled(false);
+        mChart.setDoubleTapToZoomEnabled(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
+        mChart.setPinchZoom(false);
 
         mChart.setDrawGridBackground(false);
 
@@ -81,11 +87,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         mChart.getAxisLeft().setLabelCount(2);
         mChart.getAxisLeft().setDrawGridLines(false);
 
-        mChart.animateXY(2000, 0);
-
-        // dont forget to refresh the drawing
-        mChart.invalidate();
-
         int id = getIntent().getExtras().getInt(SESSION_ID_TAG);
 
         new GraphLoadTask(this).execute(id);
@@ -93,7 +94,16 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
     @Override
     public void onValueSelected(Entry entry, int i, Highlight highlight) {
+        Object entryData = entry.getData();
+        if (entryData instanceof Integer) {
+            int a = (int)entryData;
 
+            LinearLayoutManager llm  = (LinearLayoutManager)rv.getLayoutManager();
+
+            llm.scrollToPositionWithOffset(a, 0);
+
+            mChart.highlightValues(new Highlight[]{ highlight });
+        }
     }
 
     @Override
@@ -118,8 +128,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
                 DataPointSource dataSource = new DataPointSource(context);
                 dataSource.open();
-                s = dataSource.loadSessionData(id);
-//                s = getFakeSession();
+//                s = dataSource.loadSessionData(id);
+                s = getFakeSession();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -141,7 +151,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         }
 
         private Session getFakeSession() {
-            Session s = new Session(1, "Study", new SessionLocation("McBryde Hall", 5.3, 2.3));
+            Session s = new Session(1, "Having Fun", new SessionLocation("McBryde Hall", 5.3, 2.3));
 
             Random r = new Random(SystemClock.elapsedRealtime());
             for (int i = 0; i <= 60; i++) {
@@ -204,7 +214,9 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
                         float selfReport = (annotation.getAttentionLevel().ordinal() + 1) * 4;
 
-                        scatterEntries.add(new Entry(selfReport, i - 1));
+                        Entry e = new Entry(selfReport, i-1, annotationIndex);
+
+                        scatterEntries.add(e);
                         annotationIndex++;
                     }
                 }
@@ -224,9 +236,9 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
             ScatterDataSet scatterDataSet = new ScatterDataSet(scatterEntries, "Annotations");
             scatterDataSet.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
-            scatterDataSet.setScatterShapeSize(12f);
+            scatterDataSet.setScatterShapeSize(14f);
             scatterDataSet.setColor(Color.parseColor("#9B9B9B"));
-            scatterDataSet.setHighLightColor(Color.WHITE);
+            scatterDataSet.setHighLightColor(Color.GREEN);
             scatterDataSet.setDrawValues(false);
 
             lineData.addDataSet(dataPointSet);
@@ -251,7 +263,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             List<String> xLabels = new ArrayList<>();
 
             for (EEGDataPoint dataPoint : dataPoints) {
-                Log.d("AHHHHHHHHH", dataPoint.timeStampFormatted());
                 xLabels.add(dataPoint.timeStampFormatted());
             }
             return xLabels;

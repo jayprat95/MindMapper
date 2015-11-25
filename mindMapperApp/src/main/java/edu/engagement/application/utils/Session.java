@@ -16,7 +16,7 @@ public class Session {
     private final List<EEGDataPoint> data = new ArrayList<>();
     private final List<Annotation> annotations = new ArrayList<>();
 
-    public Session(int id, String activityName,SessionLocation location) {
+    public Session(int id, String activityName, SessionLocation location) {
         this.activityName = activityName;
         this.id = id;
         this.location = location;

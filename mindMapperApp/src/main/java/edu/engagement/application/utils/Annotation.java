@@ -32,4 +32,19 @@ public class Annotation {
     public String getAnnotation() {
         return annotation;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Annotation)) {
+            return false;
+        }
+
+        Annotation that = (Annotation)o;
+
+        return that.getTimeStamp() == this.getTimeStamp();
+    }
 }
