@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.ScatterChart;
@@ -47,6 +48,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
     private CombinedChart mChart;
 
+    private TextView title;
+
     private RecyclerView rv;
     private List<Annotation> mAnnotations;
 
@@ -57,6 +60,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
         mAnnotations = new ArrayList<>();
         rv = (RecyclerView) findViewById(R.id.graph_recycler_view);
+        title = (TextView) findViewById(R.id.graph_titlebar);
+        title.setText("");
 
         mChart = (CombinedChart) findViewById(R.id.chart);
         mChart.setOnChartValueSelectedListener(this);
@@ -139,6 +144,10 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
         @Override
         protected void onPostExecute(Session session) {
+
+            // Setting title
+            title.setText(session.getActivityName() + " at " + session.getLocation().getName());
+
             AnnotationListAdapter adapter = new AnnotationListAdapter(session.getAnnotations());
 
             LinearLayoutManager llm = new LinearLayoutManager(GraphActivity.this);
@@ -151,7 +160,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         }
 
         private Session getFakeSession() {
-            Session s = new Session(1, "Having Fun", new SessionLocation("McBryde Hall", 5.3, 2.3));
+            Session s = new Session(1, "Programming", new SessionLocation("McBryde Hall", 5.3, 2.3));
 
             Random r = new Random(SystemClock.elapsedRealtime());
             for (int i = 0; i <= 60; i++) {

@@ -1,23 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#ffffff"
-    android:weightSum="1">
+    android:background="#ffffff">
 
-    <com.github.mikephil.charting.charts.CombinedChart
-        android:id="@+id/chart"
+    <TextView
+        android:id="@+id/graph_titlebar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.85"/>
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:gravity="center"
+        android:background="#FFEB3B"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:text="Studying at McBryde Hall" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/graph_recycler_view"
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#B2EBF2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.15" />
+        android:layout_height="match_parent"
+        android:padding="5dp">
+        
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="5dp"
+            android:layout_weight="0.2"
+            android:layout_marginBottom="8dp"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/graph_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textColor="@android:color/black"
+                android:text="9:00 AM for 10 minutes"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:textColor="@android:color/black"
+                    android:text="Average Focus"
+                    android:gravity="right" />
+
+                <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                    android:id="@+id/graph_average_focus"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="0.7"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    app:rcMax="100"
+                    app:rcProgress="65"
+                    app:rcProgressColor="#ffa500"
+                    app:rcBackgroundColor="#cccccc"
+                    app:rcRadius="7dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:textColor="@android:color/black"
+                    android:text="Overall I Felt"
+                    android:gravity="right" />
+
+                <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                    android:id="@+id/graph_overall_feel"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="0.7"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    app:rcMax="100"
+                    app:rcProgress="65"
+                    app:rcProgressColor="#ffa500"
+                    app:rcBackgroundColor="#cccccc"
+                    app:rcRadius="7dp" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.65"
+            android:layout_marginBottom="8dp"
+            android:elevation="2dp">
+
+            <com.github.mikephil.charting.charts.CombinedChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/graph_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.15" />
+        
+    </LinearLayout>
 
 </LinearLayout>
