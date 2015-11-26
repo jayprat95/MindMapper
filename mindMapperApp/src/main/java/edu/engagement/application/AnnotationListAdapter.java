@@ -28,7 +28,6 @@ public class AnnotationListAdapter extends RecyclerView.Adapter<AnnotationListAd
 
         public AnnotationHolder(View itemView) {
             super(itemView);
-            cv = (CardView) itemView.findViewById(R.id.cardView);
 
             annotationTime = (TextView) itemView.findViewById(R.id.annotation_time_label);
             annotationText = (TextView) itemView.findViewById(R.id.annotation_text_label);

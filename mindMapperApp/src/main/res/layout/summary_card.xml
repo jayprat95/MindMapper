@@ -1,88 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardView"
+    android:id="@+id/summary_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="3dp"
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:layout_marginBottom="10dp">
+    android:foreground="?android:attr/selectableItemBackground">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
         android:weightSum="1">
 
+        <!-- Description of the activity -->
         <TextView
-            android:id="@+id/card_location"
+            android:id="@+id/card_description"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:textColor="@color/black"
-            android:textSize="35dp"
-            android:text="McBryde Hall"/>
+            android:textSize="20dp"
+            android:text="Studying at McBryde Hall"/>
 
-        <TextView
-            android:id="@+id/card_time"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:text="8:00 - 9:00 AM" />
-
+        <!-- Linear layout for image, time, and scores -->
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp">
+            android:weightSum="1">
 
-            <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
-                android:id="@+id/card_eeg_average"
-                android:layout_width="fill_parent"
-                android:layout_height="20dp"
-                android:layout_marginBottom="3dp"
-                app:rcMax="100"
-                app:rcProgress="65"
-                app:rcProgressColor="#ffa500"
-                app:rcBackgroundColor="#cccccc"
-                app:rcRadius="7dp" />
+            <ImageView
+                android:id="@+id/card_image"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:src="@drawable/mcbryde"
+                android:scaleType="fitXY" />
 
-            <TextView
-                android:layout_width="fill_parent"
+            <!-- Time and scores -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="10dp"
-                android:text="EEG Attention Average"/>
-        </LinearLayout>
+                android:layout_weight="0.6"
+                android:padding="5dp">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp" >
+                <TextView
+                    android:id="@+id/card_time"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:text="9:00 AM for 10 min"
+                    android:layout_marginBottom="15dp"
+                    android:paddingLeft="10dp" />
 
-            <RatingBar
-                android:id="@+id/card_self_average"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginBottom="3dp"
-                android:layout_gravity="center_horizontal"
-                android:progressDrawable="@drawable/subjective_rating_selector"
-                android:numStars="5"
-                android:isIndicator="true" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1"
+                    android:layout_marginBottom="5dp">
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="10dp"
-                android:text="Self-Report Average"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="18dp"
+                        android:layout_weight="0.4"
+                        android:gravity="center_vertical|right"
+                        android:textColor="@color/black"
+                        android:text="Average Focus"
+                        android:paddingRight="5dp"
+                        android:textSize="11dp"
+                        android:textStyle="bold" />
+
+                    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                        android:id="@+id/card_average_focus"
+                        android:layout_width="0dp"
+                        android:layout_height="18dp"
+                        android:layout_weight="0.6"
+                        app:rcMax="100"
+                        app:rcProgress="65"
+                        app:rcProgressColor="#ffa500"
+                        app:rcBackgroundColor="#cccccc"
+                        app:rcRadius="7dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="18dp"
+                        android:layout_weight="0.4"
+                        android:gravity="center_vertical|right"
+                        android:textColor="@color/black"
+                        android:text="Overall I Felt"
+                        android:paddingRight="5dp"
+                        android:textSize="11dp"
+                        android:textStyle="bold" />
+
+                    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                        android:id="@+id/card_overall_felt"
+                        android:layout_width="0dp"
+                        android:layout_height="18dp"
+                        android:layout_weight="0.6"
+                        app:rcMax="100"
+                        app:rcProgress="65"
+                        app:rcProgressColor="#ffa500"
+                        app:rcBackgroundColor="#cccccc"
+                        app:rcRadius="7dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

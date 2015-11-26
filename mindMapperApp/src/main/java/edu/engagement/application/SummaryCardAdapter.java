@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -22,14 +23,14 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
 
 		private CardView cv;
 
-		private TextView location, time;
-        private RoundCornerProgressBar eegAverage;
-        private RatingBar selfReportAverage;
+		private TextView description, time;
+		private ImageView image;
+        private RoundCornerProgressBar averageFocus, overallFelt;
 
 
 		public SummaryHolder(View itemView) {
 			super(itemView);
-			cv = (CardView) itemView.findViewById(R.id.cardView);
+			cv = (CardView) itemView.findViewById(R.id.summary_card);
 
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -38,10 +39,11 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
                 }
             });
 
-            location = (TextView) itemView.findViewById(R.id.card_location);
+            description = (TextView) itemView.findViewById(R.id.card_description);
             time = (TextView) itemView.findViewById(R.id.card_time);
-			eegAverage = (RoundCornerProgressBar) itemView.findViewById(R.id.card_eeg_average);
-            selfReportAverage = (RatingBar) itemView.findViewById(R.id.card_self_average);
+			image = (ImageView) itemView.findViewById(R.id.card_image);
+			averageFocus = (RoundCornerProgressBar) itemView.findViewById(R.id.card_average_focus);
+            overallFelt = (RoundCornerProgressBar) itemView.findViewById(R.id.card_overall_felt);
 		}
 
 		/**
@@ -50,18 +52,20 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
 		 */
 		public void bindSummary(EventSummary eventSummary) {
 			if(eventSummary.getActivityName().length() == 0){
-				location.setText(eventSummary.getLocation());
+				description.setText(eventSummary.getLocation());
 			}else{
-				location.setText(eventSummary.getActivityName() + " at " + eventSummary.getLocation());
+				description.setText(eventSummary.getActivityName() + " at " + eventSummary.getLocation());
 			}
 
-            time.setText(eventSummary.getTimeRangeFormatted("hh:mm a", " -> "));
+            time.setText(eventSummary.getStartTimeFormatted("hh:mm a") + " for " + eventSummary.getElapsedTimeFormatted());
 
             double att = eventSummary.getEegAttention();
-			eegAverage.setProgress((float)att);
-            eegAverage.setProgressColor(AttentionColor.getAttentionColor(att));
+			averageFocus.setProgress((float)att);
+            averageFocus.setProgressColor(AttentionColor.getAttentionColor(att));
 
-			selfReportAverage.setRating(eventSummary.getSelfReportedAttention() + 1);
+            double felt = (eventSummary.getSelfReportedAttention() + 1) * 4;
+            overallFelt.setProgress((float) felt);
+            overallFelt.setProgressColor(eventSummary.getFeelScore().getColor());
 		}
 	}
 

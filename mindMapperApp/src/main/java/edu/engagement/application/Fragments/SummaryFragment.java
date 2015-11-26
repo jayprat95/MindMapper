@@ -133,7 +133,11 @@ public class SummaryFragment extends Fragment {
 
             Log.d(App.NAME, "Sessions returned: " + sessions.size());
 
-            sessions.add(getFakeSession());
+            sessions.add(getFakeSession("McBryde Hall", "Studying", 25));
+            sessions.add(getFakeSession("Torgerson Hall", "Reading", 48));
+            sessions.add(getFakeSession("Home", "Programming", 72));
+            sessions.add(getFakeSession("Library", "Doing homework", 72));
+            sessions.add(getFakeSession("McBryde Hall", "Research", 72));
 
             for (Session s : sessions) {
                 Log.d(App.NAME, "Sanity Check");
@@ -154,21 +158,21 @@ public class SummaryFragment extends Fragment {
             }
         }
 
-        private Session getFakeSession() {
-            Session s = new Session(1, "",new SessionLocation("McBryde Hall", 5.3, 2.3));
+        private Session getFakeSession(String locName, String des, int mins) {
+            Session s = new Session(1, des, new SessionLocation(locName, 5.3, 2.3));
 
             Random r = new Random(SystemClock.elapsedRealtime());
-            for (int i = 0; i <= 60; i++) {
+            for (int i = 0; i <= mins; i++) {
                 float attention = r.nextInt(50) + 50;
                 s.addDataPoint(1000 * 60 * i, attention);
             }
 
-            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM1, 1000 * 60 * 5);
-            s.addAnnotation("Annotation 2", AttentionLevel.MEDIUM_HIGH2, 1000 * 60 * 22);
-            s.addAnnotation("Annotation 3", AttentionLevel.HIGH3, 1000 * 60 * 30);
-            s.addAnnotation("Annotation 4", AttentionLevel.HIGH1, 1000 * 60 * 39);
-            s.addAnnotation("Annotation 5", AttentionLevel.MEDIUM_HIGH4, 1000 * 60 * 49);
-            s.addAnnotation("Annotation 6", AttentionLevel.MEDIUM_LOW1, 1000 * 60 * 55);
+            s.addAnnotation("Annotation 1", AttentionLevel.fromInt(r.nextInt(25)), 1000 * 60 * 5);
+            s.addAnnotation("Annotation 2", AttentionLevel.fromInt(r.nextInt(25)), 1000 * 60 * 22);
+            s.addAnnotation("Annotation 3", AttentionLevel.fromInt(r.nextInt(25)), 1000 * 60 * 30);
+            s.addAnnotation("Annotation 4", AttentionLevel.fromInt(r.nextInt(25)), 1000 * 60 * 39);
+            s.addAnnotation("Annotation 5", AttentionLevel.fromInt(r.nextInt(25)), 1000 * 60 * 49);
+            s.addAnnotation("Annotation 6", AttentionLevel.fromInt(r.nextInt(25)), 1000 * 60 * 55);
 
             return s;
 
