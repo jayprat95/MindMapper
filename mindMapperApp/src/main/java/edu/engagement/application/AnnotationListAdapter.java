@@ -16,6 +16,7 @@ import java.util.List;
 
 import edu.engagement.application.utils.Annotation;
 import edu.engagement.application.utils.AttentionColor;
+import edu.engagement.application.utils.ColorUtils;
 
 public class AnnotationListAdapter extends RecyclerView.Adapter<AnnotationListAdapter.AnnotationHolder> {
 
@@ -42,8 +43,11 @@ public class AnnotationListAdapter extends RecyclerView.Adapter<AnnotationListAd
         public void bindAnnotation(Annotation annotation) {
             annotationTime.setText(annotation.getTimeFormatted("hh:mm a"));
             annotationText.setText((annotation.getAnnotation()));
-            annotationLevelBar.setProgress((annotation.getAttentionLevel().ordinal() + 1)*4);
-            annotationLevelBar.setProgressColor(annotation.getAttentionLevel().getColor());
+
+            float attentionLevel = (float)annotation.getAttentionLevel();
+
+            annotationLevelBar.setProgress(attentionLevel);
+            annotationLevelBar.setProgressColor(ColorUtils.getAttentionColor(attentionLevel));
         }
     }
 

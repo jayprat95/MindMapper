@@ -372,7 +372,7 @@ public class DataPointSource {
         while (!cursor.isAfterLast()) {
             long timeStamp = cursor.getLong(0);
             String text = cursor.getString(1);
-            AttentionLevel attentionLevel = AttentionLevel.fromInt(cursor.getInt(2));
+            float attentionLevel = cursor.getFloat(2);
 
             annotations.add(new Annotation(text, attentionLevel, timeStamp));
 

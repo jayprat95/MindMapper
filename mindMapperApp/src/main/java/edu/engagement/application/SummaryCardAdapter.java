@@ -16,6 +16,9 @@ import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import java.util.List;
 
 import edu.engagement.application.utils.AttentionColor;
+import edu.engagement.application.utils.ColorUtils;
+import edu.engagement.application.utils.Session;
+import edu.engagement.application.utils.TimeUtils;
 
 public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.SummaryHolder> {
 
@@ -48,31 +51,31 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
 
 		/**
 		 * Takes an EventSummary, and populates the appropriate views with data.
-		 * @param eventSummary the event summary to be shown on the card
+		 * @param session the session to be shown on the card
 		 */
-		public void bindSummary(EventSummary eventSummary) {
-			if(eventSummary.getActivityName().length() == 0){
-				description.setText(eventSummary.getLocation());
+		public void bindSummary(Session session) {
+			if(session.getActivityName().length() == 0){
+				description.setText(session.getLocation().getName());
 			}else{
-				description.setText(eventSummary.getActivityName() + " at " + eventSummary.getLocation());
+				description.setText(session.getActivityName() + " at " + session.getLocation().getName());
 			}
 
-            time.setText(eventSummary.getStartTimeFormatted("hh:mm a") + " for " + eventSummary.getElapsedTimeFormatted());
+            time.setText(TimeUtils.getSessionTimeFormatted(session));
 
-            double att = eventSummary.getEegAttention();
-			averageFocus.setProgress((float)att);
-            averageFocus.setProgressColor(AttentionColor.getAttentionColor(att));
+            float att = session.getEEGAverage();
+			averageFocus.setProgress(att);
+            averageFocus.setProgressColor(ColorUtils.getAttentionColor(att));
 
-            double felt = (eventSummary.getSelfReportedAttention() + 1) * 4;
-            overallFelt.setProgress((float) felt);
-            overallFelt.setProgressColor(eventSummary.getFeelScore().getColor());
+            float felt = (float)session.getSelfReportAverage();
+            overallFelt.setProgress(felt);
+            overallFelt.setProgressColor(ColorUtils.getAttentionColor(felt));
 		}
 	}
 
-	private List<EventSummary> eventSummaryList;
+	private List<Session> sessions;
 
-	public SummaryCardAdapter(List<EventSummary> eventSummaryList) {
-		this.eventSummaryList = eventSummaryList;
+	public SummaryCardAdapter(List<Session> sessions) {
+		this.sessions = sessions;
 	}
 
 	/**
@@ -112,14 +115,14 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
 	 */
 	@Override
 	public void onBindViewHolder(SummaryHolder summaryHolder, int position) {
-		summaryHolder.bindSummary(eventSummaryList.get(position));
-        final EventSummary event = eventSummaryList.get(position);
+		summaryHolder.bindSummary(sessions.get(position));
+        final Session s = sessions.get(position);
 
         summaryHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), GraphActivity.class);
-                intent.putExtra(GraphActivity.SESSION_ID_TAG, event.getSessionId());
+                intent.putExtra(GraphActivity.SESSION_ID_TAG, s.getId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -131,6 +134,6 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
 	 */
 	@Override
 	public int getItemCount() {
-		return eventSummaryList.size();
+		return sessions.size();
 	}
 }

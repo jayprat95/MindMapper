@@ -8,10 +8,10 @@ import edu.engagement.application.AttentionLevel;
 public class Annotation {
 
     private String annotation;
-    private AttentionLevel attentionLevel;
+    private double attentionLevel;
     private long timeStamp;
 
-    public Annotation(String annotation, AttentionLevel attentionLevel, long timeStamp){
+    public Annotation(String annotation, double attentionLevel, long timeStamp){
         this.annotation = annotation;
         this.attentionLevel = attentionLevel;
         this.timeStamp = timeStamp;
@@ -25,7 +25,7 @@ public class Annotation {
         return new SimpleDateFormat(format).format(new Date(timeStamp));
     }
 
-    public AttentionLevel getAttentionLevel() {
+    public double getAttentionLevel() {
         return this.attentionLevel;
     }
 

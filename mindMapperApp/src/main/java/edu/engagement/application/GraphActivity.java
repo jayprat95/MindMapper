@@ -14,6 +14,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -32,15 +33,19 @@ import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.utils.Annotation;
+import edu.engagement.application.utils.ColorUtils;
 import edu.engagement.application.utils.EEGDataPoint;
 import edu.engagement.application.utils.Session;
 import edu.engagement.application.utils.SessionLocation;
+import edu.engagement.application.utils.TimeUtils;
 
 public class GraphActivity extends Activity implements OnChartValueSelectedListener{
 
@@ -48,7 +53,9 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
     private CombinedChart mChart;
 
-    private TextView title;
+    private TextView title, time;
+
+    private RoundCornerProgressBar averageFocus, overallFeel;
 
     private RecyclerView rv;
     private List<Annotation> mAnnotations;
@@ -62,6 +69,11 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         rv = (RecyclerView) findViewById(R.id.graph_recycler_view);
         title = (TextView) findViewById(R.id.graph_titlebar);
         title.setText("");
+
+        time = (TextView)findViewById(R.id.graph_time);
+
+        averageFocus = (RoundCornerProgressBar)findViewById(R.id.graph_average_focus);
+        overallFeel = (RoundCornerProgressBar)findViewById(R.id.graph_overall_feel);
 
         mChart = (CombinedChart) findViewById(R.id.chart);
         mChart.setOnChartValueSelectedListener(this);
@@ -148,6 +160,19 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             // Setting title
             title.setText(session.getActivityName() + " at " + session.getLocation().getName());
 
+            // Setting time
+            time.setText(TimeUtils.getSessionTimeFormatted(session));
+
+            // Setting average focus bar
+            float eegAverage = session.getEEGAverage();
+            averageFocus.setProgress(eegAverage);
+            averageFocus.setProgressColor(ColorUtils.getAttentionColor(eegAverage));
+
+            // Setting average
+            float selfReportAverage = (float)session.getSelfReportAverage();
+            overallFeel.setProgress(selfReportAverage);
+            overallFeel.setProgressColor(ColorUtils.getAttentionColor(selfReportAverage));
+
             AnnotationListAdapter adapter = new AnnotationListAdapter(session.getAnnotations());
 
             LinearLayoutManager llm = new LinearLayoutManager(GraphActivity.this);
@@ -168,12 +193,12 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 s.addDataPoint(1000 * 60 * i, attention);
             }
 
-            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM2, 1000*60*5);
-            s.addAnnotation("Annotation 2", AttentionLevel.MEDIUM_HIGH1, 1000*60*22);
-            s.addAnnotation("Annotation 3", AttentionLevel.HIGH4, 1000 * 60 * 30);
-            s.addAnnotation("Annotation 4", AttentionLevel.HIGH1, 1000 * 60 * 39);
-            s.addAnnotation("Annotation 5", AttentionLevel.MEDIUM_HIGH3, 1000 * 60 * 49);
-            s.addAnnotation("Annotation 6", AttentionLevel.MEDIUM_LOW1, 1000 * 60 * 55);
+            s.addAnnotation("Annotation 1", 60, 1000*60*5);
+            s.addAnnotation("Annotation 2", 75, 1000*60*22);
+            s.addAnnotation("Annotation 3", 90, 1000 * 60 * 30);
+            s.addAnnotation("Annotation 4", 80, 1000 * 60 * 39);
+            s.addAnnotation("Annotation 5", 70, 1000 * 60 * 49);
+            s.addAnnotation("Annotation 6", 45, 1000 * 60 * 55);
 
             return s;
         }
@@ -187,11 +212,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 mAnnotations.add(annotation);
             }
         }
-//
-//            Annotation annotation1 = new Annotation("I am now coding at Mcb student lounge.", AttentionLevel.HIGH, 0);
-//            Annotation annotation2 = new Annotation("I am now do HW at at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
-//            Annotation annotation3 = new Annotation("I am reading book at Mcb student lounge.", AttentionLevel.MEDIUM, 0);
-//            Annotation annotation4 = new Annotation("I am talking with friends at Mcb student lounge.", AttentionLevel.LOW, 0);
 
         private void drawGraph(Session session) {
 
@@ -221,7 +241,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                     Annotation annotation = annotations.get(annotationIndex);
                     if (annotation.getTimeStamp() < dataPoint.timeStamp) {
 
-                        float selfReport = (annotation.getAttentionLevel().ordinal() + 1) * 4;
+                        float selfReport = (float)annotation.getAttentionLevel();
 
                         Entry e = new Entry(selfReport, i-1, annotationIndex);
 
