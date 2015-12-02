@@ -43,11 +43,12 @@ import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.utils.Annotation;
 import edu.engagement.application.utils.ColorUtils;
 import edu.engagement.application.utils.EEGDataPoint;
+import edu.engagement.application.utils.RecyclerViewPositionHelper;
 import edu.engagement.application.utils.Session;
 import edu.engagement.application.utils.SessionLocation;
 import edu.engagement.application.utils.TimeUtils;
 
-public class GraphActivity extends Activity implements OnChartValueSelectedListener{
+public class GraphActivity extends Activity implements OnChartValueSelectedListener {
 
     public static final String SESSION_ID_TAG = "SessionId";
 
@@ -67,6 +68,27 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
         mAnnotations = new ArrayList<>();
         rv = (RecyclerView) findViewById(R.id.graph_recycler_view);
+
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                RecyclerViewPositionHelper helper = RecyclerViewPositionHelper.createHelper(recyclerView);
+
+                int i = helper.findFirstCompletelyVisibleItemPosition();
+
+                if (i >= 0) {
+                    ScatterDataSet sds = mChart.getScatterData().getDataSetByLabel("Annotations", false);
+
+                    Entry e = sds.getYVals().get(i);
+
+                    highlightIndex(sds, i, ColorUtils.getAttentionColor(e.getVal()));
+                }
+            }
+        });
+
+
         title = (TextView) findViewById(R.id.graph_titlebar);
         title.setText("");
 
@@ -97,12 +119,15 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
         mChart.setDrawGridBackground(false);
 
+        mChart.getLegend().setEnabled(false);
+
         mChart.getXAxis().setDrawGridLines(false);
         mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
         mChart.getAxisRight().setEnabled(false);
         mChart.getAxisLeft().setLabelCount(2);
         mChart.getAxisLeft().setDrawGridLines(false);
+        mChart.getAxisLeft().setValueFormatter(new IntegerAxisValueFormatter());
 
         int id = getIntent().getExtras().getInt(SESSION_ID_TAG);
 
@@ -115,17 +140,36 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         if (entryData instanceof Integer) {
             int a = (int)entryData;
 
+            ScatterDataSet sds = mChart.getScatterData().getDataSetByLabel("Annotations", false);
+
             LinearLayoutManager llm  = (LinearLayoutManager)rv.getLayoutManager();
 
             llm.scrollToPositionWithOffset(a, 0);
 
-            mChart.highlightValues(new Highlight[]{ highlight });
+            int color = ColorUtils.getAttentionColor(entry.getVal());
+
+            highlightIndex(sds, a, color);
         }
     }
 
     @Override
     public void onNothingSelected() {
 
+    }
+
+    private void highlightIndex(ScatterDataSet set, int index, int highlightColor) {
+
+        List<Integer> colors = new ArrayList<>(set.getEntryCount());
+
+        for (int i = 0; i < set.getEntryCount(); i++) {
+            colors.add(i, Color.parseColor("#BECDD7"));
+        }
+
+        colors.set(index, highlightColor);
+
+        set.setColors(colors);
+
+        mChart.invalidate();
     }
 
     private class GraphLoadTask extends AsyncTask<Integer, Void, Session> {
@@ -266,7 +310,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             ScatterDataSet scatterDataSet = new ScatterDataSet(scatterEntries, "Annotations");
             scatterDataSet.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
             scatterDataSet.setScatterShapeSize(14f);
-            scatterDataSet.setColor(Color.parseColor("#9B9B9B"));
+            scatterDataSet.setColor(Color.parseColor("#BECDD7"));
             scatterDataSet.setHighLightColor(Color.GREEN);
             scatterDataSet.setDrawValues(false);
 

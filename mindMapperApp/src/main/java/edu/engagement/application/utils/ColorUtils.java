@@ -35,7 +35,7 @@ public class ColorUtils {
             case 5:
                 return Color.parseColor("#B944BC");
             case 6:
-                return Color.parseColor("#A54BC");
+                return Color.parseColor("#A545BC");
             case 7:
                 return Color.parseColor("#9245BC");
             case 8:
