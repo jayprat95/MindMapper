@@ -221,17 +221,19 @@ public class RecordingFragment extends Fragment implements OnClickListener {
         }
         if(requestCode == MAKE_NOTE_REQUEST && resultCode == 3){
             Log.v("messageIconNumber", messagesIconNumber+"");
-            if(messagesIconNumber == 0){
-                messageIcon1.setVisibility(View.VISIBLE);
-                messagesIconNumber += 1;
+            if(messagesIconNumber == 2){
+                messageIcon3.setVisibility(View.VISIBLE);
             }
             if(messagesIconNumber == 1){
                 messageIcon2.setVisibility(View.VISIBLE);
                 messagesIconNumber += 1;
             }
-            if(messagesIconNumber == 2){
-                messageIcon3.setVisibility(View.VISIBLE);
+            if(messagesIconNumber == 0){
+                messageIcon1.setVisibility(View.VISIBLE);
+                messagesIconNumber += 1;
             }
+
+
         }
     }
 

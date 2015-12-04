@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +36,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.Database.DataFilter;
 import edu.engagement.application.Database.DataPointSource;
+import edu.engagement.application.MapListAdapter;
 import edu.engagement.application.R;
+import edu.engagement.application.utils.MapListData;
 
 public class MapFrag extends Fragment implements OnMapReadyCallback {
+
+    private int testFlag = 0;
 
     public static HashMap<String, Location> locationTable;
 	private GoogleMap map; // The map from within the map fragment.
@@ -50,6 +60,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
     private static int status = 1;
     private double eegAverage;
     private double selfAverage;
+
+    private RecyclerView rv;
 
 
 	DataFilter filter;
@@ -67,44 +79,47 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.map, container, false);
 
+        rv = (RecyclerView) view.findViewById(R.id.map_recycler_view);
+        //rv.addOnItemTouchListener();
+
         locationTable = new HashMap<>();
         mapView = (MapView) view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
-        eegButton = (Button) view.findViewById(R.id.eegButton);
-
-        eegButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if( MapFrag.status != 1 && task.optionsList != null){
-                    //
-
-                    for(int i = 0; i < task.optionsList.size(); i++){
-                        Double sessions = task.optionsData.get(i)[2];
-                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[0], 100.0, (int)Math.round(sessions));
-                    }
-                    MapFrag.status = 1;
-                }
-            }
-        });
-
-        reportButton = (Button) view.findViewById(R.id.reportButton);
-
-        reportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(  MapFrag.status != 2 && task.optionsList != null){
-                    //
-                    Log.d("This is from Map frag", "report clicked");
-                    for(int i = 0; i < task.optionsList.size(); i++){
-                        Double sessions = task.optionsData.get(i)[2];
-                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[1], 5.0, (int)Math.round(sessions));
-                    }
-                    MapFrag.status = 2;
-                }
-            }
-        });
+//        eegButton = (Button) view.findViewById(R.id.eegButton);
+//
+//        eegButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if( MapFrag.status != 1 && task.optionsList != null){
+//                    //
+//
+//                    for(int i = 0; i < task.optionsList.size(); i++){
+//                        Double sessions = task.optionsData.get(i)[2];
+//                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[0], 100.0, (int)Math.round(sessions));
+//                    }
+//                    MapFrag.status = 1;
+//                }
+//            }
+//        });
+//
+//        reportButton = (Button) view.findViewById(R.id.reportButton);
+//
+//        reportButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(  MapFrag.status != 2 && task.optionsList != null){
+//                    //
+//                    Log.d("This is from Map frag", "report clicked");
+//                    for(int i = 0; i < task.optionsList.size(); i++){
+//                        Double sessions = task.optionsData.get(i)[2];
+//                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[1], 5.0, (int)Math.round(sessions));
+//                    }
+//                    MapFrag.status = 2;
+//                }
+//            }
+//        });
 
         // Grab the map from the map fragment.
         // TODO: Change to async?
@@ -188,8 +203,14 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
             map.clear();
             task = new MapLoadTask(getActivity().getApplicationContext());
+            System.out.println("execute task..............");
             task.execute();
         }
+
+    }
+
+    public void cameraFocusOnMap(LatLng focus){
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(focus, 14));
     }
 
     private class MapLoadTask extends AsyncTask<Void, Void, List<MarkerOptions>> {
@@ -199,6 +220,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         private List<MarkerOptions> optionsList;
         private List<Double[]> optionsData;
         private HashMap<String, MarkerInfo> markerInfoMap;
+        List<MapListData> lists;
 
 
         public MapLoadTask (Context context) {
@@ -206,6 +228,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             optionsList = new ArrayList<>();
             optionsData = new ArrayList<>();
             markerInfoMap = new HashMap<>();
+            lists = new ArrayList<>();
         }
 
         @Override
@@ -235,6 +258,15 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
         @Override
         protected void onPostExecute(List<MarkerOptions> optionsList) {
+            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+            llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+            rv.setLayoutManager(llm);
+
+            MapListAdapter adapter = new MapListAdapter(lists);
+            rv.setAdapter(adapter);
+
+            cameraFocusOnMap(optionsList.get(0).getPosition());
+
             for (MarkerOptions mo : optionsList) {
                 map.addMarker(mo);
             }
@@ -250,7 +282,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         }
 
         public void loadData(DataPointSource dpSource) {
-            System.out.println("Cleared map");
+            //
 
             //group data by session Id to count the number of sessions
             //compute ave attention for all sessions
@@ -285,7 +317,9 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
              * 4 - lon
              * 5 - self report
              */
+                System.out.println("-------------- inside loop -----------");
                 if (Double.parseDouble(pointArray[1]) == 0) {
+                    System.out.println("-------------- for loop break -----------");
                     //break if there is no eeg attention
                     break;
                 }
@@ -294,7 +328,14 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 String test = "session id: " + pointArray[0] + ", Attention: " + pointArray[1]
                         + ", location name: " + pointArray[2] + ", lat - long: " + pointArray[3] + ", " + pointArray[4] + ", " + pointArray[5];
 
-                Log.v("Mag frg", test);
+                Log.v("Map frg", test);
+
+                MapListData data1 = new MapListData("Foxridge", AttentionLevel.LOW1, AttentionLevel.LOW2, "Coding at home for 1hr");
+                MapListData data2 = new MapListData("Mcb", AttentionLevel.MEDIUM1, AttentionLevel.MEDIUM2, "Studying for 1hr 30mins");
+                MapListData data3 = new MapListData("Newman", AttentionLevel.HIGH1, AttentionLevel.HIGH2, "Doing homework for 2hr 30mins");
+                lists.add(data1);
+                lists.add(data2);
+                lists.add(data3);
 
                 if(locationTable.containsKey(pointArray[2])){
                     MarkerInfo info = markerInfoMap.get(pointArray[2]);
@@ -324,7 +365,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 dataSet[2] = (double)info.getSessions();
                 Log.v("Mag frg", dataSet[0] + ", " + dataSet[1]);
                 optionsData.add(dataSet);
-                addMarker(info.getLatitue(), info.getLongitude(), info.getAttention(), info.getSelfReport(), info.getLocation(), info.getSessions(), 100.0);
+                addMarker(info.getLatitue(), info.getLongitude(), info.getAttention(), info.getSelfReport(), info.getLocation(), info.getSessions(), 4.0);
             }
         }
 
@@ -336,41 +377,47 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                                double eegEngagement, double selfReportEngagement, String location, int sessions, double baselineEngagement) {
 
             MarkerOptions opt = new MarkerOptions();
-            opt.position(new LatLng(latitude, longitude));
+            LatLng lat = new LatLng(latitude, longitude);
+            opt.position(lat);
             opt.title(location);
             //snippet carry data from database for infowindow
             opt.snippet(String.format("%.4f", eegEngagement / sessions) + "/" + String.format("%.4f", selfReportEngagement / sessions));
 
 
-            double percent = eegEngagement/ sessions  / baselineEngagement;
-        /*  5 stage:
-            very low: 0 - 0.2;
-            somewhat low: 0.2 - 0.4;
-            medium: 0.4 - 0.6;
-            somewhat high: 0.6 - 0.8;
-            high: 0.8 - 1;
+            double eegPercent = eegEngagement/ sessions  / baselineEngagement;
+            double reportPercent = selfReportEngagement / sessions;
+        /*  25 stage:
+            low1-5: 0 - 0.2;
+            mid-low1-5: 0.2 - 0.4;
+            mid1-5: 0.4 - 0.6;
+            mid-high1-5: 0.6 - 0.8;
+            high1-5: 0.8 - 1;
          */
 
             IconGenerator iconFactory = new IconGenerator(getActivity());
 
-            if(percent >=0 && percent < 0.2 ){
-                iconFactory.setColor(Color.BLUE);
-            }
-            else if(percent >= 0.2 && percent < 0.4) {
-                iconFactory.setColor(Color.CYAN);
-            }
-            else if(percent >= 0.4 && percent < 0.6){
-                iconFactory.setColor(Color.GREEN);
-            }
-            else if(percent >= 0.6 && percent < 0.8){
-                iconFactory.setColor(Color.YELLOW);
-            }
-            else{
-                iconFactory.setColor(Color.RED);
+            //SemiCircleDrawable icon = new SemiCircleDrawable();
+
+            if(testFlag == 0){
+                testFlag += 1;
+                Log.v("MapFrag", "first icon set");
             }
 
-            opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(sessions + "")));
+//          left half ciecle for eeg
+            Drawable drawable = (Drawable)getActivity().getResources().getDrawable(R.drawable.circle);
+            GradientDrawable leftShape = (GradientDrawable)drawable;
+            leftShape.setColor(AttentionLevel.fromIntTransparent((int) Math.round(eegPercent)).getColor());
+            //right half ciecle for eeg
+            LayerDrawable layers = (LayerDrawable)getActivity().getResources().getDrawable(R.drawable.semicircle);
+            GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.rightHalfLevel1));
+            shape.setColor(AttentionLevel.fromIntTransparent((int) Math.round(reportPercent)).getColor());
 
+            layers.setLevel(5000);
+            iconFactory.setBackground(layers);
+
+
+            opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()));
+            //opt.icon(BitmapDescriptorFactory.fromResource(R.drawable.semicircle));
             optionsList.add(opt);
         }
 

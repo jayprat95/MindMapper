@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="299dp"
+              android:layout_height="fill_parent"
+              android:layout_marginRight="3dp"
+              android:background="#E2E2E2"
+    >
+
+    <TextView
+        android:id="@+id/locationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Location Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:layout_marginLeft="5dp"/>
+    <TextView
+        android:id="@+id/activityTextLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Coding for 1hr 30mins"
+        android:textSize="14sp"
+        android:textColor="#000"
+        android:layout_marginLeft="5dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="30dp">
+
+        <TextView
+            android:id="@+id/focusLabel"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:text="Focus"
+            android:textSize="14sp"
+            android:textColor="#000"
+            />
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+            android:id="@+id/focus_level_bar"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="15dp"
+            android:layout_marginTop="1dp"
+            app:rcMax="100"
+            app:rcProgress="65"
+            app:rcProgressColor="#ffa500"
+            app:rcBackgroundColor="#cccccc"
+            app:rcRadius="7dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="30dp">
+
+        <TextView
+            android:id="@+id/feltLabel"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:text="I Felt"
+            android:textSize="14sp"
+            android:textColor="#000"
+            />
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+            android:id="@+id/felt_level_bar"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="15dp"
+            android:layout_marginTop="1dp"
+            app:rcMax="25"
+            app:rcProgress="65"
+            app:rcProgressColor="#ffa500"
+            app:rcBackgroundColor="#cccccc"
+            app:rcRadius="7dp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
