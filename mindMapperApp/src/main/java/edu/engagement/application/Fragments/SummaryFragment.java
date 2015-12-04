@@ -132,34 +132,35 @@ public class SummaryFragment extends Fragment {
 
             Log.d(App.NAME, "Sessions returned: " + sessions.size());
 
-            sessions.add(getFakeSession("McBryde Hall", "Studying", 25));
-            sessions.add(getFakeSession("Torgerson Hall", "Reading", 48));
-            sessions.add(getFakeSession("Home", "Programming", 72));
-            sessions.add(getFakeSession("Library", "Doing homework", 72));
-            sessions.add(getFakeSession("McBryde Hall", "Research", 72));
+            // Used for debugging when no access to EEG
+//            sessions.add(getFakeSession("McBryde Hall", "Studying", 25));
+//            sessions.add(getFakeSession("Torgerson Hall", "Reading", 48));
+//            sessions.add(getFakeSession("Home", "Programming", 72));
+//            sessions.add(getFakeSession("Library", "Doing homework", 72));
+//            sessions.add(getFakeSession("McBryde Hall", "Research", 72));
 
             for (Session s : sessions) {
                 publishProgress(s);
             }
         }
 
-        private Session getFakeSession(String locName, String des, int mins) {
-            Session s = new Session(1, des, new SessionLocation(locName, 5.3, 2.3));
-
-            Random r = new Random(SystemClock.elapsedRealtime());
-            for (int i = 0; i <= mins; i++) {
-                float attention = r.nextInt(50) + 50;
-                s.addDataPoint(1000 * 60 * i, attention);
-            }
-
-            s.addAnnotation("Annotation 1", r.nextInt(100), 1000 * 60 * 5);
-            s.addAnnotation("Annotation 2", r.nextInt(100), 1000 * 60 * 22);
-            s.addAnnotation("Annotation 3", r.nextInt(100), 1000 * 60 * 30);
-            s.addAnnotation("Annotation 4", r.nextInt(100), 1000 * 60 * 39);
-            s.addAnnotation("Annotation 5", r.nextInt(100), 1000 * 60 * 49);
-            s.addAnnotation("Annotation 6", r.nextInt(100), 1000 * 60 * 55);
-
-            return s;
-        }
+//        private Session getFakeSession(String locName, String des, int mins) {
+////            Session s = new Session(1, des, new SessionLocation(locName, 5.3, 2.3));
+//
+//            Random r = new Random(SystemClock.elapsedRealtime());
+//            for (int i = 0; i <= mins; i++) {
+//                float attention = r.nextInt(50) + 50;
+//                s.addDataPoint(1000 * 60 * i, attention);
+//            }
+//
+//            s.addAnnotation("Annotation 1", r.nextInt(100), 1000 * 60 * 5);
+//            s.addAnnotation("Annotation 2", r.nextInt(100), 1000 * 60 * 22);
+//            s.addAnnotation("Annotation 3", r.nextInt(100), 1000 * 60 * 30);
+//            s.addAnnotation("Annotation 4", r.nextInt(100), 1000 * 60 * 39);
+//            s.addAnnotation("Annotation 5", r.nextInt(100), 1000 * 60 * 49);
+//            s.addAnnotation("Annotation 6", r.nextInt(100), 1000 * 60 * 55);
+//
+//            return s;
+//        }
     }
 }
