@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -15,6 +16,9 @@ import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import java.util.List;
 
 import edu.engagement.application.utils.AttentionColor;
+import edu.engagement.application.utils.ColorUtils;
+import edu.engagement.application.utils.Session;
+import edu.engagement.application.utils.TimeUtils;
 
 public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.SummaryHolder> {
 
@@ -22,14 +26,14 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
 
 		private CardView cv;
 
-		private TextView location, time;
-        private RoundCornerProgressBar eegAverage;
-        private RatingBar selfReportAverage;
+		private TextView description, time;
+		private ImageView image;
+        private RoundCornerProgressBar averageFocus, overallFelt;
 
 
 		public SummaryHolder(View itemView) {
 			super(itemView);
-			cv = (CardView) itemView.findViewById(R.id.cardView);
+			cv = (CardView) itemView.findViewById(R.id.summary_card);
 
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -38,37 +42,40 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
                 }
             });
 
-            location = (TextView) itemView.findViewById(R.id.card_location);
+            description = (TextView) itemView.findViewById(R.id.card_description);
             time = (TextView) itemView.findViewById(R.id.card_time);
-			eegAverage = (RoundCornerProgressBar) itemView.findViewById(R.id.card_eeg_average);
-            selfReportAverage = (RatingBar) itemView.findViewById(R.id.card_self_average);
+			image = (ImageView) itemView.findViewById(R.id.card_image);
+			averageFocus = (RoundCornerProgressBar) itemView.findViewById(R.id.card_average_focus);
+            overallFelt = (RoundCornerProgressBar) itemView.findViewById(R.id.card_overall_felt);
 		}
 
 		/**
 		 * Takes an EventSummary, and populates the appropriate views with data.
-		 * @param eventSummary the event summary to be shown on the card
+		 * @param session the session to be shown on the card
 		 */
-		public void bindSummary(EventSummary eventSummary) {
-			if(eventSummary.getActivityName().length() == 0){
-				location.setText(eventSummary.getLocation());
+		public void bindSummary(Session session) {
+			if(session.getActivityName().length() == 0){
+				description.setText(session.getLocation().getName());
 			}else{
-				location.setText(eventSummary.getActivityName() + " at " + eventSummary.getLocation());
+				description.setText(session.getActivityName() + " at " + session.getLocation().getName());
 			}
 
-            time.setText(eventSummary.getTimeRangeFormatted("hh:mm a", " -> "));
+            time.setText(TimeUtils.getSessionTimeFormatted(session));
 
-            double att = eventSummary.getEegAttention();
-			eegAverage.setProgress((float)att);
-            eegAverage.setProgressColor(AttentionColor.getAttentionColor(att));
+            float att = session.getEEGAverage();
+			averageFocus.setProgress(att);
+            averageFocus.setProgressColor(ColorUtils.getAttentionColor(att));
 
-			selfReportAverage.setRating(eventSummary.getSelfReportedAttention() + 1);
+            float felt = (float)session.getSelfReportAverage();
+            overallFelt.setProgress(felt);
+            overallFelt.setProgressColor(ColorUtils.getAttentionColor(felt));
 		}
 	}
 
-	private List<EventSummary> eventSummaryList;
+	private List<Session> sessions;
 
-	public SummaryCardAdapter(List<EventSummary> eventSummaryList) {
-		this.eventSummaryList = eventSummaryList;
+	public SummaryCardAdapter(List<Session> sessions) {
+		this.sessions = sessions;
 	}
 
 	/**
@@ -108,14 +115,14 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
 	 */
 	@Override
 	public void onBindViewHolder(SummaryHolder summaryHolder, int position) {
-		summaryHolder.bindSummary(eventSummaryList.get(position));
-        final EventSummary event = eventSummaryList.get(position);
+		summaryHolder.bindSummary(sessions.get(position));
+        final Session s = sessions.get(position);
 
         summaryHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), GraphActivity.class);
-                intent.putExtra(GraphActivity.SESSION_ID_TAG, event.getSessionId());
+                intent.putExtra(GraphActivity.SESSION_ID_TAG, s.getId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -127,6 +134,6 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
 	 */
 	@Override
 	public int getItemCount() {
-		return eventSummaryList.size();
+		return sessions.size();
 	}
 }

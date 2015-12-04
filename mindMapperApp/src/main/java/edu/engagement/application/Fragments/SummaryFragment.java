@@ -36,7 +36,7 @@ public class SummaryFragment extends Fragment {
     private MainActivity activity;
 
     private RecyclerView rv;
-    private List<EventSummary> eventSummaryList;
+    private List<Session> sessionList;
 
 
     @Override
@@ -53,7 +53,7 @@ public class SummaryFragment extends Fragment {
         final FragmentActivity fragActivity = getActivity();
 
         // random access needed, so arraylist is better choice
-        eventSummaryList = new ArrayList<>();
+        sessionList = new ArrayList<>();
 
         rv = (RecyclerView) view.findViewById(R.id.rv);
 
@@ -61,7 +61,7 @@ public class SummaryFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        rv.setAdapter(new SummaryCardAdapter(eventSummaryList));
+        rv.setAdapter(new SummaryCardAdapter(sessionList));
 
         new SummaryLoadTask(activity.getApplicationContext()).execute();
 
@@ -74,7 +74,7 @@ public class SummaryFragment extends Fragment {
     }
 
 
-    private class SummaryLoadTask extends AsyncTask<Void, EventSummary, Void> {
+    private class SummaryLoadTask extends AsyncTask<Void, Session, Void> {
 
         private Context context;
 
@@ -108,13 +108,12 @@ public class SummaryFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Log.d("AAAAAAAAAAAAA", String.valueOf(eventSummaryList.size()));
+
         }
 
         @Override
-        protected void onProgressUpdate(EventSummary... values) {
-            EventSummary summary = values[0];
-            eventSummaryList.add(summary);
+        protected void onProgressUpdate(Session... values) {
+            sessionList.add(values[0]);
 
             rv.getAdapter().notifyDataSetChanged();
         }
@@ -133,43 +132,34 @@ public class SummaryFragment extends Fragment {
 
             Log.d(App.NAME, "Sessions returned: " + sessions.size());
 
+            sessions.add(getFakeSession("McBryde Hall", "Studying", 25));
+            sessions.add(getFakeSession("Torgerson Hall", "Reading", 48));
+            sessions.add(getFakeSession("Home", "Programming", 72));
+            sessions.add(getFakeSession("Library", "Doing homework", 72));
+            sessions.add(getFakeSession("McBryde Hall", "Research", 72));
+
             for (Session s : sessions) {
-                Log.d(App.NAME, "Sanity Check");
-                int id = s.getId();
-                String locationName = s.getLocation().getName();
-                String activityName = s.getActivityName();
-                Log.d(App.NAME, locationName);
-
-                // Getting start and stop times
-                List<EEGDataPoint> data = s.getEEGData();
-                int dataLength = data.size();
-                long startTime = data.get(0).timeStamp;
-                long stopTime = data.get(dataLength - 1).timeStamp;
-                float avgEEG = s.getEEGAverage();
-                AttentionLevel avgSelf = s.getSelfReportAverage();
-
-                publishProgress(new EventSummary(id, activityName, locationName, startTime, stopTime, avgSelf, avgEEG));
+                publishProgress(s);
             }
         }
 
-        private Session getFakeSession() {
-            Session s = new Session(1, "",new SessionLocation("McBryde Hall", 5.3, 2.3));
+        private Session getFakeSession(String locName, String des, int mins) {
+            Session s = new Session(1, des, new SessionLocation(locName, 5.3, 2.3));
 
             Random r = new Random(SystemClock.elapsedRealtime());
-            for (int i = 0; i <= 60; i++) {
+            for (int i = 0; i <= mins; i++) {
                 float attention = r.nextInt(50) + 50;
                 s.addDataPoint(1000 * 60 * i, attention);
             }
 
-            s.addAnnotation("Annotation 1", AttentionLevel.MEDIUM1, 1000 * 60 * 5);
-            s.addAnnotation("Annotation 2", AttentionLevel.MEDIUM_HIGH2, 1000 * 60 * 22);
-            s.addAnnotation("Annotation 3", AttentionLevel.HIGH3, 1000 * 60 * 30);
-            s.addAnnotation("Annotation 4", AttentionLevel.HIGH1, 1000 * 60 * 39);
-            s.addAnnotation("Annotation 5", AttentionLevel.MEDIUM_HIGH4, 1000 * 60 * 49);
-            s.addAnnotation("Annotation 6", AttentionLevel.MEDIUM_LOW1, 1000 * 60 * 55);
+            s.addAnnotation("Annotation 1", r.nextInt(100), 1000 * 60 * 5);
+            s.addAnnotation("Annotation 2", r.nextInt(100), 1000 * 60 * 22);
+            s.addAnnotation("Annotation 3", r.nextInt(100), 1000 * 60 * 30);
+            s.addAnnotation("Annotation 4", r.nextInt(100), 1000 * 60 * 39);
+            s.addAnnotation("Annotation 5", r.nextInt(100), 1000 * 60 * 49);
+            s.addAnnotation("Annotation 6", r.nextInt(100), 1000 * 60 * 55);
 
             return s;
-
         }
     }
 }

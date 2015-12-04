@@ -16,7 +16,7 @@ public class Session {
     private final List<EEGDataPoint> data = new ArrayList<>();
     private final List<Annotation> annotations = new ArrayList<>();
 
-    public Session(int id, String activityName,SessionLocation location) {
+    public Session(int id, String activityName, SessionLocation location) {
         this.activityName = activityName;
         this.id = id;
         this.location = location;
@@ -49,14 +49,14 @@ public class Session {
         return sum / data.size();
     }
 
-    public AttentionLevel getSelfReportAverage() {
-        int sum = 0;
+    public double getSelfReportAverage() {
+        double sum = 0;
         for (Annotation annotation : annotations) {
-            sum += annotation.getAttentionLevel().ordinal();
+            sum += annotation.getAttentionLevel();
         }
-        int avg = annotations.size() == 0 ? 0 : (sum / annotations.size());
+        double avg = annotations.size() == 0 ? 0 : (sum / annotations.size());
 
-        return AttentionLevel.fromInt(avg);
+        return avg;
     }
 
     public boolean addDataPoint(EEGDataPoint dataPoint) {
@@ -75,11 +75,19 @@ public class Session {
         return annotations.add(annotation);
     }
 
-    public boolean addAnnotation(String annotation, AttentionLevel attentionLevel, long timeStamp) {
+    public boolean addAnnotation(String annotation, double attentionLevel, long timeStamp) {
         return addAnnotation(new Annotation(annotation, attentionLevel, timeStamp));
     }
 
     public boolean addAnnotations(Collection<? extends Annotation> annotations) {
         return this.annotations.addAll(annotations);
+    }
+
+    public long getStartTime() {
+        return data.get(0).timeStamp;
+    }
+
+    public long getStopTime() {
+        return data.get(data.size() - 1).timeStamp;
     }
 }
