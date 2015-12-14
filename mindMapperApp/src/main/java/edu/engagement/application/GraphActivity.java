@@ -189,8 +189,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
                 DataPointSource dataSource = new DataPointSource(context);
                 dataSource.open();
-//                s = dataSource.loadSessionData(id);
-                s = getFakeSession();
+                s = dataSource.loadSessionData(id);
+//                s = getFakeSession();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -229,7 +229,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         }
 
         private Session getFakeSession() {
-            Session s = new Session(1, "Programming", new SessionLocation("McBryde Hall", 5.3, 2.3));
+//            Session s = new Session(1, "Programming", new SessionLocation("McBryde Hall", 5.3, 2.3));
 
             Random r = new Random(SystemClock.elapsedRealtime());
             for (int i = 0; i <= 60; i++) {

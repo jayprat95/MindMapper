@@ -14,7 +14,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_ATTENTION = "table_attention";
     public static final String TABLE_ANNOTATION = "table_annotation";
     public static final String TABLE_RAW = "table_raw";
+    public static final String TABLE_SESSION_PHOTO = "table_session_photo";
     public static final String COLUMN_SESSION_ID = "Session_Id";
+    public static final String COLUMN_SESSION_PHOTO = "Session_Photo";
     public static final String COLUMN_TIMESTAMP = "Timestamp";
     public static final String COLUMN_USER_ANNOTATION = "UserAnnotation";
     public static final String COLUMN_SUBJECTIVE_ATTENTION = "SubjectiveAttention";
@@ -50,7 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "commments.db";
-    private static final int DATABASE_VERSION = 17;
+    private static final int DATABASE_VERSION = 18;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE_EEG = "CREATE TABLE IF NOT EXISTS "
@@ -64,6 +66,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_BETA2 + " REAL, "
             + COLUMN_THETA + " REAL"
             + COLUMN_POPE + " REAL"
+            + " );";
+
+    private static final String DATABASE_CREATE_SESSION_PHOTO = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_SESSION_PHOTO + "(" + COLUMN_SESSION_ID + " INTEGER, "
+            + COLUMN_SESSION_PHOTO + " BLOB"
             + " );";
 
     private static final String DATABASE_CREATE_HR = "CREATE TABLE IF NOT EXISTS "
@@ -130,6 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(DATABASE_CREATE_ATTENTION);
         database.execSQL(DATABASE_CREATE_ANNOTATION);
         database.execSQL(DATABASE_CREATE_SESSION);
+        database.execSQL(DATABASE_CREATE_SESSION_PHOTO);
         database.execSQL(DATABASE_CREATE_RAW);
     }
 
@@ -149,6 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ATTENTION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANNOTATION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSION_PHOTO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RAW);
         onCreate(db);
     }

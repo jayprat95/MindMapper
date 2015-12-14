@@ -251,7 +251,7 @@ public class MindwaveService extends Service {
         // Remove the listener previously added
         //locationManager.removeUpdates(locationListener);
         //Log.d(App.NAME, "Stop listening for location updates");
-
+        tgDevice.close();
         dataSource.close();
     }
 

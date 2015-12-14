@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -20,6 +22,12 @@ import java.util.List;
 
 import edu.engagement.application.utils.Annotation;
 import edu.engagement.application.utils.EEGDataPoint;
+import edu.engagement.application.AttentionLevel;
+import edu.engagement.application.R;
+import edu.engagement.application.utils.Annotation;
+import edu.engagement.application.utils.EEGDataPoint;
+import edu.engagement.application.utils.PlacePhotoUtils;
+import edu.engagement.application.utils.SessionLocation;
 import edu.engagement.application.utils.Session;
 import edu.engagement.application.utils.SessionLocation;
 import edu.engagement.thrift.EegAttention;
@@ -34,6 +42,7 @@ public class DataPointSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context context;
     /*private String[] allColumns =
     { DatabaseHelper.COLUMN_TIMESTAMP, DatabaseHelper.COLUMN_HEARTRATE, DatabaseHelper.COLUMN_ALPHA,
 			DatabaseHelper.COLUMN_BETA, DatabaseHelper.COLUMN_THETA, DatabaseHelper.COLUMN_ATTENTION,
@@ -41,6 +50,7 @@ public class DataPointSource {
 			DatabaseHelper.COLUMN_CH5, DatabaseHelper.COLUMN_CH6, DatabaseHelper.COLUMN_CH7, DatabaseHelper.COLUMN_CH8 };*/
 
     public DataPointSource(Context context) {
+        this.context = context;
         dbHelper = new DatabaseHelper(context);
     }
 
@@ -295,6 +305,43 @@ public class DataPointSource {
         }
 
     }
+
+    public Bitmap loadSessionPhoto(int sessionId) {
+        String[] columns = { DatabaseHelper.COLUMN_SESSION_PHOTO };
+
+        String selection = DatabaseHelper.COLUMN_SESSION_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(sessionId) };
+
+        Cursor cursor = database.query(
+                DatabaseHelper.TABLE_SESSION_PHOTO,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+            byte[] imageData = cursor.getBlob(0);
+            cursor.close();
+            return PlacePhotoUtils.getImage(imageData);
+        }
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return null;
+    }
+
+    public void saveSessionPhoto(int sessionId, Bitmap image) {
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseHelper.COLUMN_SESSION_ID, sessionId);
+        cv.put(DatabaseHelper.COLUMN_SESSION_PHOTO, PlacePhotoUtils.getBytes(image));
+
+        database.insert(DatabaseHelper.TABLE_SESSION_PHOTO, null, cv);
+    }
+
     /*----------------Retrive data from Database------------------*/
 
 
@@ -343,7 +390,13 @@ public class DataPointSource {
 
         SessionLocation location = loadLocation(locationName);
 
-        Session s = new Session(sessionId, activityName, location);
+        Bitmap sessionImage = loadSessionPhoto(sessionId);
+
+        if (sessionImage == null) {
+            sessionImage = PlacePhotoUtils
+                    .decodeSampledBitmapFromResource(context.getResources(), R.drawable.mcbryde, 400, 200);
+        }
+        Session s = new Session(sessionId, sessionImage, activityName, location);
 
         s.addAnnotations(loadAnnotationData(sessionId));
         s.addDataPoints(loadEEGData(sessionId));

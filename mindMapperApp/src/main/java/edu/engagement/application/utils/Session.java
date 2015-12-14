@@ -1,7 +1,7 @@
 package edu.engagement.application.utils;
 
 import com.google.android.gms.maps.model.LatLng;
-
+import android.graphics.Bitmap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,14 +11,16 @@ import java.util.List;
  */
 public class Session {
     private final int id;
+    private final Bitmap sessionImage;
     private final SessionLocation location;
     private final String activityName;
     private LatLng coordinates;
     private final List<EEGDataPoint> data = new ArrayList<>();
     private final List<Annotation> annotations = new ArrayList<>();
 
-    public Session(int id, String activityName, SessionLocation location) {
+    public Session(int id, Bitmap sessionImage, String activityName, SessionLocation location) {
         this.activityName = activityName;
+        this.sessionImage = sessionImage;
         this.id = id;
         this.location = location;
     }
@@ -28,6 +30,10 @@ public class Session {
     }
     public int getId() {
         return id;
+    }
+
+    public Bitmap getImage() {
+        return sessionImage;
     }
 
     public SessionLocation getLocation() {

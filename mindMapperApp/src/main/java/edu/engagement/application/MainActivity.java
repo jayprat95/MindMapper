@@ -4,6 +4,8 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -15,10 +17,16 @@ import android.util.Log;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlacePhotoMetadata;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResult;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 
+import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Eeg.EegListener;
 import edu.engagement.application.Eeg.EegState;
 import edu.engagement.application.Fragments.RecordingFragment;
@@ -35,6 +43,8 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
 
     private MindwaveService mindwaveService;
     String activityName = "";
+
+    private GoogleApiClient apiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +63,26 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
             startActivity(intent);
         }
 
+        apiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).build();
+        Log.d(App.NAME, "Connected to Google API");
+
         showFragment(REFLECTION_TAG, null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        apiClient.connect();
+        Log.d(App.NAME, "Connected to Google API");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        apiClient.disconnect();
+        Log.d(App.NAME, "Disconnected from Google API");
     }
 
     public void showFragment(String tag, Bundle bundle) {
@@ -107,6 +136,12 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
                 LatLng location = place.getLatLng();
 
                 String locationName = place.getName().toString();
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                int sessionId = prefs.getInt("sessionId", 1);
+
+                Log.d(App.NAME, "Trying to save image for sessionId (" + sessionId + ")");
+                new SessionPhotoSaveTask(sessionId, 400, 200).execute(place.getId());
 
                 // Start recording fragment
                 Bundle bundle = new Bundle();
@@ -207,12 +242,14 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
 
         RecordingFragment rFrag = (RecordingFragment)getSupportFragmentManager().findFragmentByTag(RECORDING_TAG);
 
-        if (state == EegState.DISCONNECTED) {
-            rFrag.onEegDisconnect();
-        } else if (state == EegState.CONNECTED) {
-            rFrag.onEegConnect();
-        } else if (state == EegState.NOT_FOUND) {
-            rFrag.onEegNotFound();
+        if (rFrag != null) {
+            if (state == EegState.DISCONNECTED) {
+                rFrag.onEegDisconnect();
+            } else if (state == EegState.CONNECTED) {
+                rFrag.onEegConnect();
+            } else if (state == EegState.NOT_FOUND) {
+                rFrag.onEegNotFound();
+            }
         }
     }
 
@@ -264,5 +301,57 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
     @Override
     public void onTimeout() {
         Log.d(App.NAME, "Dialog timed out...");
+    }
+
+    public class SessionPhotoSaveTask extends AsyncTask<String, Void, Void> {
+
+        private int sessionId;
+        private int height, width;
+
+        public SessionPhotoSaveTask(int sessionId, int width, int height) {
+            this.sessionId = sessionId;
+            this.height = height;
+            this.width = width;
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            if (params.length < 1) {
+                return null;
+            }
+
+            String placeId = params[0];
+
+            Log.d(App.NAME, "Place ID: " + placeId);
+
+            PlacePhotoMetadataResult result = Places.GeoDataApi
+                    .getPlacePhotos(apiClient, placeId).await();
+
+            Log.d(App.NAME, result.getStatus().toString());
+
+            if (result.getStatus().isSuccess()) {
+                PlacePhotoMetadataBuffer photoMetadataBuffer = result.getPhotoMetadata();
+                if (photoMetadataBuffer.getCount() > 0 && !isCancelled()) {
+                    Log.d(App.NAME, "An image was returned");
+                    // Get the first bitmap and its attributions.
+                    PlacePhotoMetadata photo = photoMetadataBuffer.get(0);
+                    CharSequence attribution = photo.getAttributions();
+
+                    // Load a scaled bitmap for this photo.
+                    Bitmap image = photo.getScaledPhoto(apiClient, width, height).await()
+                            .getBitmap();
+
+                    DataPointSource dpSource = new DataPointSource(MainActivity.this);
+                    dpSource.open();
+                    dpSource.saveSessionPhoto(sessionId, image);
+                    dpSource.close();
+                }
+                // Release the PlacePhotoMetadataBuffer.
+                photoMetadataBuffer.release();
+            }
+
+            return null;
+        }
     }
 }

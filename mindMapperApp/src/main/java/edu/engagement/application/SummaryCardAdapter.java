@@ -60,6 +60,8 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
 				description.setText(session.getActivityName() + " at " + session.getLocation().getName());
 			}
 
+			image.setImageBitmap(session.getImage());
+
             time.setText(TimeUtils.getSessionTimeFormatted(session));
 
             float att = session.getEEGAverage();
