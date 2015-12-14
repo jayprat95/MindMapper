@@ -84,7 +84,7 @@
             android:layout_weight="0.7"
             android:layout_height="15dp"
             android:layout_marginTop="1dp"
-            app:rcMax="25"
+            app:rcMax="100"
             app:rcProgress="65"
             app:rcProgressColor="#ffa500"
             app:rcBackgroundColor="#cccccc"

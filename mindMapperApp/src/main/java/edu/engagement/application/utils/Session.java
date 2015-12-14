@@ -1,10 +1,10 @@
 package edu.engagement.application.utils;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import edu.engagement.application.AttentionLevel;
 
 /**
  * Created by alex on 10/18/15.
@@ -13,6 +13,7 @@ public class Session {
     private final int id;
     private final SessionLocation location;
     private final String activityName;
+    private LatLng coordinates;
     private final List<EEGDataPoint> data = new ArrayList<>();
     private final List<Annotation> annotations = new ArrayList<>();
 
@@ -89,5 +90,13 @@ public class Session {
 
     public long getStopTime() {
         return data.get(data.size() - 1).timeStamp;
+    }
+
+    public void addGPSData(LatLng newCoord){
+        coordinates = newCoord;
+    }
+
+    public LatLng getGPSData(){
+        return coordinates;
     }
 }

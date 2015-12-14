@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +41,12 @@ import edu.engagement.application.MapListAdapter;
 import edu.engagement.application.R;
 import edu.engagement.application.utils.MapListData;
 import edu.engagement.application.utils.RecyclerViewPositionHelper;
+import edu.engagement.application.utils.Session;
+import edu.engagement.application.utils.TimeUtils;
 
 public class MapFrag extends Fragment implements OnMapReadyCallback {
 
+    private static final int FOCUSRADIO = 16;
     private int testFlag = 0;
 
     public static HashMap<String, Location> locationTable;
@@ -227,7 +230,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
     }
 
     public void cameraFocusOnMap(LatLng focus){
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(focus, 14));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(focus, FOCUSRADIO));
     }
 
     private class MapLoadTask extends AsyncTask<Void, Void, List<MarkerOptions>> {
@@ -285,7 +288,6 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             rv.setAdapter(adapter);
 
 
-
             if(optionsList.size() > 0){
                 cameraFocusOnMap(optionsList.get(0).getPosition());
             }
@@ -301,6 +303,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             super.onProgressUpdate(values);
             map.clear();
 
+            rv.getAdapter().notifyDataSetChanged();
+
             cameraFocusOnMap(optionsList.get(selectedItemPosition).getPosition());
             for (MarkerOptions mo : optionsList) {
                 map.addMarker(mo);
@@ -312,7 +316,15 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
             //group data by session Id to count the number of sessions
             //compute ave attention for all sessions
-            List<String[]> results = dpSource.getMapDataset();
+            // time range of day and month
+
+            Calendar c = Calendar.getInstance();
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // The Calendar function returns the index of the month. (ex: Jan = 0, Feb = 1)
+            int month = (c.get(Calendar.MONTH) + 1);
+            List<Session> sessions = dpSource.getSessionsInTimeRange(day);
+            //List<String[]> results = dpSource.getMapDataset();
 
             /** --------------- Test points for place picker------------------- **/
 //            double[] testPoint = new double[5];
@@ -334,60 +346,62 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
             /** --------------- Test points for place picker------------------- **/
 
-            for (String[] pointArray : results) {
-			/*
-             * 0 - session id
-             * 1 - Attention
-             * 2 - LocationName
-             * 3 - lat
-             * 4 - lon
-             * 5 - self report
-             */
-                System.out.println("-------------- inside loop -----------");
-                if (Double.parseDouble(pointArray[1]) == 0) {
-                    System.out.println("-------------- for loop break -----------");
-                    //break if there is no eeg attention
-                    break;
-                }
+            for (Session session : sessions) {
+
+//                System.out.println("-------------- inside loop -----------");
+//                if (Double.parseDouble(pointArray[1]) == 0) {
+//                    System.out.println("-------------- for loop break -----------");
+//                    //break if there is no eeg attention
+//                    break;
+//                }
 
 
-                String test = "session id: " + pointArray[0] + ", Attention: " + pointArray[1]
-                        + ", location name: " + pointArray[2] + ", lat - long: " + pointArray[3] + ", " + pointArray[4] + ", " + pointArray[5];
-
-                Log.v("Map frg", test);
-
-
-                MapListData data1 = new MapListData("Foxridge", AttentionLevel.LOW1, AttentionLevel.LOW2, "Coding at home for 1hr, Studying for 30mins, Doing homework for 2hr 30mins");
-                MapListData data2 = new MapListData("Mcb", AttentionLevel.MEDIUM1, AttentionLevel.MEDIUM2, "Studying for 1hr 30mins");
-                MapListData data3 = new MapListData("Newman", AttentionLevel.HIGH1, AttentionLevel.HIGH2, "Doing homework for 2hr 30mins");
-                lists.add(data1);
-                lists.add(data2);
-                lists.add(data3);
+//                String test = "session id: " + pointArray[0] + ", Attention: " + pointArray[1]
+//                        + ", location name: " + pointArray[2] + ", lat - long: " + pointArray[3] + ", " + pointArray[4] + ", " + pointArray[5];
+//
+//                Log.v("Map frg", test);
 
 
-                if(locationTable.containsKey(pointArray[2])){
-                    MarkerInfo info = markerInfoMap.get(pointArray[2]);
+
+                if(locationTable.containsKey(session.getLocation().getName())){
+                    MarkerInfo info = markerInfoMap.get(session.getLocation().getName());
 
                     info.setSessions(info.getSessions() + 1);
-                    info.setAttention(info.getAttention() + Double.parseDouble(pointArray[1]));
+                    info.setAttention(info.getAttention() + session.getEEGAverage());
+
+                    String list = session.getActivityName() + " for "+ TimeUtils.getElapsedTimeFormatted(session);
+
+                    info.setActivityList(list);
                 }
                 else{
                     Location location = new Location("");
-                    location.setLatitude(Double.parseDouble(pointArray[3]));
-                    location.setLongitude(Double.parseDouble(pointArray[4]));
-                    locationTable.put(pointArray[2], location);
+                    location.setLatitude(session.getGPSData().latitude);
+                    location.setLongitude(session.getGPSData().longitude);
+                    locationTable.put(session.getLocation().getName(), location);
 
-                    MarkerInfo marker = new MarkerInfo(Double.parseDouble(pointArray[3]), Double.parseDouble(pointArray[4]), Double.parseDouble(pointArray[1]), pointArray[2], Double.parseDouble(pointArray[5]));
-                    markerInfoMap.put(pointArray[2], marker);
+                    String list = session.getActivityName() + " for "+ TimeUtils.getElapsedTimeFormatted(session);
+
+                    MarkerInfo marker = new MarkerInfo(session.getGPSData().latitude, session.getGPSData().longitude, session.getEEGAverage(), session.getLocation().getName(), session.getSelfReportAverage(), list);
+                    markerInfoMap.put(session.getLocation().getName(), marker);
                     //
                 }
             }
+
+            lists.clear();
             //two important infomation before adding marker: 1. AVE attetion for all sessions; 2. the number
             // of session to be shown on marker
             for(Map.Entry<String, MarkerInfo> entry : markerInfoMap.entrySet()){
 
+                System.out.println("----loop----");
                 MarkerInfo info = entry.getValue();
                 addMarker(info.getLatitue(), info.getLongitude(), info.getAttention(), info.getSelfReport(), info.getLocation(), info.getSessions(), 4.0);
+
+                double eegPercent = info.getAttention()/ info.getSessions()  / 4.0;
+                double reportPercent = info.getSelfReport() / info.getSessions() / 4.0;;
+
+                MapListData data = new MapListData(info.getLocation(), AttentionLevel.fromInt((int) eegPercent), AttentionLevel.fromInt((int)reportPercent), info.getActivityList());
+
+                lists.add(data);
             }
         }
 
@@ -442,34 +456,61 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 double eegPercent = info.getAttention() / info.getSessions()  / 4.0;
                 double reportPercent = info.getSelfReport() / info.getSessions() / 4.0;
 
-                IconGenerator iconFactory = new IconGenerator(getActivity());
-                //left half ciecle for eeg
-                Drawable drawable = getActivity().getResources().getDrawable(R.drawable.circle);
-                GradientDrawable leftShape = (GradientDrawable)drawable;
-
-                //right half ciecle for eeg
-                LayerDrawable layers = (LayerDrawable)getActivity().getResources().getDrawable(R.drawable.semicircle);
-                GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.rightHalfLevel1));
-
-                if( title == key){
+//                IconGenerator iconFactory = new IconGenerator(getActivity());
+//                //left half ciecle for eeg
+//                Drawable drawable = getActivity().getResources().getDrawable(R.drawable.circle);
+//                GradientDrawable leftShape = (GradientDrawable)drawable;
+//
+//                //right half ciecle for eeg
+//                LayerDrawable layers = (LayerDrawable)getActivity().getResources().getDrawable(R.drawable.semicircle);
+//                GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.rightHalfLevel1));
+//
+                if(title == key){
+                    IconGenerator iconFactory = new IconGenerator(getActivity());
+                    //left half ciecle for eeg
+                    Drawable drawable = getActivity().getResources().getDrawable(R.drawable.circle);
+                    GradientDrawable leftShape = (GradientDrawable)drawable;
                     leftShape.setColor(AttentionLevel.fromInt((int) Math.round(eegPercent)).getColor());
-                    leftShape.setStroke(15, Color.BLACK);
-
+                    leftShape.setStroke(12, Color.BLACK);
+                    //right half ciecle for eeg
+                    LayerDrawable layers = (LayerDrawable)getActivity().getResources().getDrawable(R.drawable.semicircle);
+                    GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.rightHalfLevel1));
                     shape.setColor(AttentionLevel.fromInt((int) Math.round(reportPercent)).getColor());
-                    shape.setStroke(15, Color.BLACK);
+                    shape.setStroke(12, Color.BLACK);
+                    layers.setLevel(5000);
+                    iconFactory.setBackground(layers);
+                    mo.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()));
+//                    leftShape.setColor(AttentionLevel.fromInt((int) Math.round(eegPercent)).getColor());
+//                    leftShape.setStroke(15, Color.BLACK);
+//
+//                    shape.setColor(AttentionLevel.fromInt((int) Math.round(reportPercent)).getColor());
+//                    shape.setStroke(15, Color.BLACK);
                     this.selectedItemPosition = selectedItemPosition;
                 }
                 else{
+                    IconGenerator iconFactory = new IconGenerator(getActivity());
+                    //left half ciecle for eeg
+                    Drawable drawable = getActivity().getResources().getDrawable(R.drawable.circle);
+                    GradientDrawable leftShape = (GradientDrawable)drawable;
                     leftShape.setColor(AttentionLevel.fromIntTransparent((int) Math.round(eegPercent)).getColor());
                     leftShape.setStroke(5, Color.BLACK);
-
+                    //right half ciecle for eeg
+                    LayerDrawable layers = (LayerDrawable)getActivity().getResources().getDrawable(R.drawable.semicircle);
+                    GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.rightHalfLevel1));
                     shape.setColor(AttentionLevel.fromIntTransparent((int) Math.round(reportPercent)).getColor());
                     shape.setStroke(5, Color.BLACK);
+                    layers.setLevel(5000);
+                    iconFactory.setBackground(layers);
+                    mo.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()));
+//                    leftShape.setColor(AttentionLevel.fromIntTransparent((int) Math.round(eegPercent)).getColor());
+//                    leftShape.setStroke(5, Color.BLACK);
+//
+//                    shape.setColor(AttentionLevel.fromIntTransparent((int) Math.round(reportPercent)).getColor());
+//                    shape.setStroke(5, Color.BLACK);
                 }
+                //layers.setLevel(5000);
+                //iconFactory.setBackground(layers);
 
-                layers.setLevel(5000);
-                iconFactory.setBackground(layers);
-                mo.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()));
             }
             publishProgress();
         }
@@ -482,17 +523,17 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         private String location;
         private int sessions;
         private double selfReport;
+        private String activityList = "";
 
         public MarkerInfo(double latitude, double longitude,
-                          double attention, String location, double selfReport){
+                          double attention, String location, double selfReport, String activityList){
             this.latitue = latitude;
             this.longitude = longitude;
             this.attention = attention;
             this.location = location;
             this.sessions = 1;
             this.selfReport = selfReport;
-
-
+            this.activityList = activityList;
         }
 
         public double getSelfReport() {
@@ -539,6 +580,14 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
         public void setSessions(int sessions) {
             this.sessions = sessions;
+        }
+
+        public void setActivityList(String activity){
+            activityList = activityList + ", " + activity;
+        }
+
+        public String getActivityList(){
+            return activityList;
         }
     }
 }

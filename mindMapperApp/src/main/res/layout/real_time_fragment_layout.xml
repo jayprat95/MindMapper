@@ -20,7 +20,7 @@
             android:textSize="30sp"
             android:id="@+id/focusLabel"
             android:textColor="@color/black"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="35dp"
             android:layout_below="@+id/locationTextView"
             android:layout_centerHorizontal="true"
             android:visibility="gone"/>
@@ -99,7 +99,7 @@
             android:gravity="center"
             android:text="Study at Mcb"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:background="#FFEB3B"
             android:layout_alignParentTop="true"
             android:visibility="gone"/>

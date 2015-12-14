@@ -23,4 +23,43 @@
         android:id="@+id/textView3"
         android:paddingBottom="10dp"
         android:background="@android:color/white"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="25dp"
+        android:layout_below="@+id/textView3">
+
+        <Button
+            android:id="@+id/resumeButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/wallet_holo_blue_light"
+            android:text="RESUME"
+            android:layout_below="@+id/annotation"
+            android:layout_toRightOf="@+id/textViewMedium"
+            android:layout_toEndOf="@+id/textViewMedium"
+            />
+
+        <Button
+            android:id="@+id/endButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="30dp"
+            android:text="End Activity"
+            android:background="@color/grey_500"
+            android:layout_alignTop="@+id/saveNotes"
+            android:layout_toLeftOf="@+id/textViewMedium"
+            android:layout_toStartOf="@+id/textViewMedium"
+            />
+    </LinearLayout>
 </LinearLayout>

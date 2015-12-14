@@ -1,8 +1,6 @@
 package edu.engagement.application.Fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -17,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
@@ -45,6 +42,7 @@ public class RecordingFragment extends Fragment implements OnClickListener {
     public static final String ACTIVITY_NAME_KEY = "ACTIVITY_NAME";
     public static final int END_ACTIVITY_REQUEST = 1;
     public static final int MAKE_NOTE_REQUEST = 2;
+    public static final int PAUSE_REQUEST = 3;
 
 
     private Boolean connectionSuccessful = false;
@@ -232,7 +230,7 @@ public class RecordingFragment extends Fragment implements OnClickListener {
             activity.showFragment(MainActivity.REFLECTION_TAG, null);
         }
         if(requestCode == MAKE_NOTE_REQUEST && resultCode == 3){
-            Log.v("messageIconNumber", messagesIconNumber+"");
+            Log.v("messageIconNumber", messagesIconNumber + "");
             if(messagesIconNumber == 3){
                 dots.setVisibility(View.VISIBLE);
             }
@@ -248,7 +246,19 @@ public class RecordingFragment extends Fragment implements OnClickListener {
                 messageIcon1.setVisibility(View.VISIBLE);
                 messagesIconNumber += 1;
             }
-
+        }
+        if(requestCode == PAUSE_REQUEST && resultCode == PauseDialogFragment.PAUSE_RESULT_RESUME){
+            startRecording();
+        }
+        if(requestCode == PAUSE_REQUEST && resultCode == PauseDialogFragment.PAUSE_RESULT_END){
+            realTimeListener.onRecordingStopped();
+            EndRecordingDialogFragment endDialog = new EndRecordingDialogFragment();
+            // Supply num input as an argument.
+            Bundle args = new Bundle();
+            args.putString("activity", activityName);
+            endDialog.setArguments(args);
+            endDialog.setTargetFragment(RecordingFragment.this, END_ACTIVITY_REQUEST);
+            endDialog.show(activity.getSupportFragmentManager(), "dialog");
 
         }
     }
@@ -311,42 +321,31 @@ public class RecordingFragment extends Fragment implements OnClickListener {
                     }
                     break;
                 case R.id.pause:
-
                     stopRecording();
-
                     // display confirm dialog
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-
-                    LayoutInflater factory = LayoutInflater.from(activity);
-                    final View dialogView = factory.inflate(R.layout.pause_alert_dialog, null);
-                    dialogBuilder.setView(dialogView);
-                    dialogBuilder.setCancelable(false);
-                    dialogBuilder.setPositiveButton("      End Activity     ", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-
-                            realTimeListener.onRecordingStopped();
-
-                            EndRecordingDialogFragment endDialog = new EndRecordingDialogFragment();
-
-                            endDialog.setTargetFragment(RecordingFragment.this, END_ACTIVITY_REQUEST);
-                            endDialog.show(activity.getSupportFragmentManager(), "dialog");
-
-                        }
-                    });
-                    dialogBuilder.setNegativeButton("     Resume      ", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            startRecording();
-                        }
-                    });
-
-                    AlertDialog alertDialog = dialogBuilder.create();
-                    alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    alertDialog.show();
-
+                    PauseDialogFragment pauseDialog = new PauseDialogFragment();
+                    pauseDialog.setTargetFragment(RecordingFragment.this, PAUSE_REQUEST);
+                    pauseDialog.show(activity.getSupportFragmentManager(), "dialog");
+//
+//                    LayoutInflater factory = LayoutInflater.from(activity);
+//                    final View dialogView = factory.inflate(R.layout.pause_alert_dialog, null);
+//                    dialogBuilder.setView(dialogView);
+//                    dialogBuilder.setCancelable(false);
+//                    dialogBuilder.setPositiveButton("      End Activity     ", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.cancel();
+//
+//
+//                        }
+//                    });
+//                    dialogBuilder.setNegativeButton("     Resume      ", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.cancel();
+//
+//                        }
+//                    });
                     break;
             }
 
@@ -401,17 +400,20 @@ public class RecordingFragment extends Fragment implements OnClickListener {
             stopRecording();
         }
         //eegStatusImage.setImageResource(R.drawable.disconnected);
-        sdf.show(activity.getSupportFragmentManager(), "statusDialog");
+        if(connectionSuccessful == true){
+            sdf.show(activity.getSupportFragmentManager(), "statusDialog");
+        }
     }
 
     public void onEegConnect() {
-        connectionSuccessful = true;
+
         // The dialog fragment is being shown, so send updates to it
         if (sdf.isVisible()) {
             sdf.onReconnectSuccess();
         } else {
             //hideEEGConnectionLoadingIcon();
             //eegStatusImage.setImageResource(R.drawable.connected);
+            connectionSuccessful = true;
             hideConnectionStatus();
             showConnecttionSuccessful();
         }

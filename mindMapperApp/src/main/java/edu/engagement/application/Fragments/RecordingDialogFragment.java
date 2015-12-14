@@ -58,18 +58,12 @@ public class RecordingDialogFragment extends DialogFragment {
         mSaveNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mAnnotation.getText().length() == 0){
-                    Toast.makeText(getActivity(), "Please describe your experience!", Toast.LENGTH_SHORT).show();
-                }
-                else{
                     //save annotation
-                    //
                     mDataPointSource.createDataPointAnnotation(RecordingFragment.sessionId, System.currentTimeMillis(), mAnnotation.getText().toString(), mSeekBar.getProgress());
                     Toast.makeText(getActivity(), "Your experience saved!", Toast.LENGTH_SHORT).show();
                     mAnnotation.setText("");
                     mSeekBar.setProgress(0);
                     getTargetFragment().onActivityResult(2, 3, null);
-                }
                 dismiss();
 
             }

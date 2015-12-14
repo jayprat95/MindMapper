@@ -59,7 +59,7 @@
         <activity
             android:name=".RecordingStartup"
             android:label="@string/title_activity_recording_startup"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
     </application>
 
