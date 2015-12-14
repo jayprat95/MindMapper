@@ -54,7 +54,7 @@ public class EndRecordingDialogFragment extends DialogFragment {
         mSeekBar = (SeekBar) dialogView.findViewById(R.id.annotation_bar);
         mQuestion = (TextView) dialogView.findViewById(R.id.questionView);
 
-        String question = "<b>" + "Overall, " + "</b> " + "how focused do you feel while " + activityName;
+        String question = "<b>" + "Overall, " + "</b> " + "how focused do you feel while " + activityName + "?";
 
         mQuestion.setText(Html.fromHtml(question));
 
