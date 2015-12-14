@@ -24,6 +24,7 @@
         android:text="Coding for 1hr 30mins"
         android:textSize="14sp"
         android:textColor="#000"
+        android:maxLines="1"
         android:layout_marginLeft="5dp"
         />
     <LinearLayout
@@ -32,21 +33,23 @@
         android:orientation="horizontal"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
-        android:paddingRight="30dp">
+        android:paddingRight="20dp">
 
         <TextView
             android:id="@+id/focusLabel"
             android:layout_width="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.3"
             android:layout_height="wrap_content"
-            android:text="Focus"
-            android:textSize="14sp"
+            android:text="Average Focus"
+            android:textSize="11sp"
             android:textColor="#000"
+            android:gravity="right"
+            android:paddingRight="5dp"
             />
         <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
             android:id="@+id/focus_level_bar"
             android:layout_width="0dp"
-            android:layout_weight="0.8"
+            android:layout_weight="0.7"
             android:layout_height="15dp"
             android:layout_marginTop="1dp"
             app:rcMax="100"
@@ -61,21 +64,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:paddingRight="30dp">
+        android:layout_marginTop="5dp"
+        android:paddingRight="20dp">
 
         <TextView
             android:id="@+id/feltLabel"
             android:layout_width="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.3"
             android:layout_height="wrap_content"
-            android:text="I Felt"
-            android:textSize="14sp"
+            android:text="Overall I Felt"
+            android:textSize="11sp"
+            android:gravity="right"
             android:textColor="#000"
+            android:paddingRight="5dp"
             />
         <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
             android:id="@+id/felt_level_bar"
             android:layout_width="0dp"
-            android:layout_weight="0.8"
+            android:layout_weight="0.7"
             android:layout_height="15dp"
             android:layout_marginTop="1dp"
             app:rcMax="25"

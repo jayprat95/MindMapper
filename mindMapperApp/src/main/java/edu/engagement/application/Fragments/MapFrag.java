@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,7 +26,6 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
@@ -42,6 +40,7 @@ import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.MapListAdapter;
 import edu.engagement.application.R;
 import edu.engagement.application.utils.MapListData;
+import edu.engagement.application.utils.RecyclerViewPositionHelper;
 
 public class MapFrag extends Fragment implements OnMapReadyCallback {
 
@@ -80,7 +79,24 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.map, container, false);
 
         rv = (RecyclerView) view.findViewById(R.id.map_recycler_view);
-        //rv.addOnItemTouchListener();
+//        rv.addOnItemTouchListener();
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                RecyclerViewPositionHelper helper = RecyclerViewPositionHelper.createHelper(recyclerView);
+
+                int i = helper.findFirstCompletelyVisibleItemPosition();
+
+                if (i >= 0) {
+                    if(task != null){
+                        //task.setOptionsColor();
+                        task.setFocus(i);
+                    }
+                }
+            }
+        });
 
         locationTable = new HashMap<>();
         mapView = (MapView) view.findViewById(R.id.mapView);
@@ -155,27 +171,27 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             map.setMyLocationEnabled(true);
 
             //set info window for map marker
-            map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-                @Override
-                public View getInfoWindow(Marker marker) {
-                    return null;
-                }
-
-                @Override
-                public View getInfoContents(Marker marker) {
-                    View v = getActivity().getLayoutInflater().inflate(R.layout.marker_info_window, null);
-                    TextView locationLabel = (TextView) v.findViewById(R.id.locationLabel);
-                    TextView eegLabel = (TextView) v.findViewById(R.id.eegLabel);
-                    TextView reportLabel = (TextView) v.findViewById(R.id.reportLabel);
-
-                    locationLabel.setText(marker.getTitle());
-                    String[] texts = marker.getSnippet().split("/");
-                    eegLabel.setText("AVE EEG: " + texts[0]);
-                    reportLabel.setText("AVE Report: " + texts[1]);
-
-                    return v;
-                }
-            });
+//            map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+//                @Override
+//                public View getInfoWindow(Marker marker) {
+//                    return null;
+//                }
+//
+//                @Override
+//                public View getInfoContents(Marker marker) {
+//                    View v = getActivity().getLayoutInflater().inflate(R.layout.marker_info_window, null);
+//                    TextView locationLabel = (TextView) v.findViewById(R.id.locationLabel);
+//                    TextView eegLabel = (TextView) v.findViewById(R.id.eegLabel);
+//                    TextView reportLabel = (TextView) v.findViewById(R.id.reportLabel);
+//
+//                    locationLabel.setText(marker.getTitle());
+//                    String[] texts = marker.getSnippet().split("/");
+//                    eegLabel.setText("AVE EEG: " + texts[0]);
+//                    reportLabel.setText("AVE Report: " + texts[1]);
+//
+//                    return v;
+//                }
+//            });
             //Bundle testBundle = intent.getExtras();
 
             // For future reference with getting coords, pull up google maps, find
@@ -188,21 +204,22 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
             filter = new DataFilter(7, null, 100, this.getClass().toString());
 
+            task = new MapLoadTask(getActivity().getApplicationContext());
             //set marker on click listener
-            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    if (marker.isInfoWindowShown()) {
-                        marker.hideInfoWindow();
-                    } else {
-                        marker.showInfoWindow();
-                    }
-                    return true;
-                }
-            });
+//            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                @Override
+//                public boolean onMarkerClick(Marker marker) {
+//                    if (marker.isInfoWindowShown()) {
+//                        marker.hideInfoWindow();
+//                    } else {
+//                        marker.showInfoWindow();
+//                    }
+//                    return true;
+//                }
+//            });
 
             map.clear();
-            task = new MapLoadTask(getActivity().getApplicationContext());
+
             System.out.println("execute task..............");
             task.execute();
         }
@@ -218,15 +235,16 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         private Context context;
 
         private List<MarkerOptions> optionsList;
-        private List<Double[]> optionsData;
+        //private List<Double[]> optionsData;
         private HashMap<String, MarkerInfo> markerInfoMap;
-        List<MapListData> lists;
+        private List<MapListData> lists;
+        private int selectedItemPosition = 0;
 
 
         public MapLoadTask (Context context) {
             this.context = context;
             optionsList = new ArrayList<>();
-            optionsData = new ArrayList<>();
+            //optionsData = new ArrayList<>();
             markerInfoMap = new HashMap<>();
             lists = new ArrayList<>();
         }
@@ -262,10 +280,16 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             llm.setOrientation(LinearLayoutManager.HORIZONTAL);
             rv.setLayoutManager(llm);
 
+
             MapListAdapter adapter = new MapListAdapter(lists);
             rv.setAdapter(adapter);
 
-            cameraFocusOnMap(optionsList.get(0).getPosition());
+
+
+            if(optionsList.size() > 0){
+                cameraFocusOnMap(optionsList.get(0).getPosition());
+            }
+
 
             for (MarkerOptions mo : optionsList) {
                 map.addMarker(mo);
@@ -276,6 +300,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
             map.clear();
+
+            cameraFocusOnMap(optionsList.get(selectedItemPosition).getPosition());
             for (MarkerOptions mo : optionsList) {
                 map.addMarker(mo);
             }
@@ -330,12 +356,14 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
                 Log.v("Map frg", test);
 
-                MapListData data1 = new MapListData("Foxridge", AttentionLevel.LOW1, AttentionLevel.LOW2, "Coding at home for 1hr");
+
+                MapListData data1 = new MapListData("Foxridge", AttentionLevel.LOW1, AttentionLevel.LOW2, "Coding at home for 1hr, Studying for 30mins, Doing homework for 2hr 30mins");
                 MapListData data2 = new MapListData("Mcb", AttentionLevel.MEDIUM1, AttentionLevel.MEDIUM2, "Studying for 1hr 30mins");
                 MapListData data3 = new MapListData("Newman", AttentionLevel.HIGH1, AttentionLevel.HIGH2, "Doing homework for 2hr 30mins");
                 lists.add(data1);
                 lists.add(data2);
                 lists.add(data3);
+
 
                 if(locationTable.containsKey(pointArray[2])){
                     MarkerInfo info = markerInfoMap.get(pointArray[2]);
@@ -359,12 +387,6 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             for(Map.Entry<String, MarkerInfo> entry : markerInfoMap.entrySet()){
 
                 MarkerInfo info = entry.getValue();
-                Double[] dataSet = new Double[3];
-                dataSet[0] = info.getAttention();
-                dataSet[1] = info.getSelfReport();
-                dataSet[2] = (double)info.getSessions();
-                Log.v("Mag frg", dataSet[0] + ", " + dataSet[1]);
-                optionsData.add(dataSet);
                 addMarker(info.getLatitue(), info.getLongitude(), info.getAttention(), info.getSelfReport(), info.getLocation(), info.getSessions(), 4.0);
             }
         }
@@ -380,77 +402,75 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             LatLng lat = new LatLng(latitude, longitude);
             opt.position(lat);
             opt.title(location);
-            //snippet carry data from database for infowindow
-            opt.snippet(String.format("%.4f", eegEngagement / sessions) + "/" + String.format("%.4f", selfReportEngagement / sessions));
 
+            System.out.println("------add marker-----");
 
             double eegPercent = eegEngagement/ sessions  / baselineEngagement;
-            double reportPercent = selfReportEngagement / sessions;
-        /*  25 stage:
-            low1-5: 0 - 0.2;
-            mid-low1-5: 0.2 - 0.4;
-            mid1-5: 0.4 - 0.6;
-            mid-high1-5: 0.6 - 0.8;
-            high1-5: 0.8 - 1;
-         */
+            double reportPercent = selfReportEngagement / sessions / baselineEngagement;;
 
             IconGenerator iconFactory = new IconGenerator(getActivity());
-
-            //SemiCircleDrawable icon = new SemiCircleDrawable();
-
-            if(testFlag == 0){
-                testFlag += 1;
-                Log.v("MapFrag", "first icon set");
-            }
-
-//          left half ciecle for eeg
-            Drawable drawable = (Drawable)getActivity().getResources().getDrawable(R.drawable.circle);
+            //left half ciecle for eeg
+            Drawable drawable = getActivity().getResources().getDrawable(R.drawable.circle);
             GradientDrawable leftShape = (GradientDrawable)drawable;
             leftShape.setColor(AttentionLevel.fromIntTransparent((int) Math.round(eegPercent)).getColor());
+            leftShape.setStroke(5, Color.BLACK);
             //right half ciecle for eeg
             LayerDrawable layers = (LayerDrawable)getActivity().getResources().getDrawable(R.drawable.semicircle);
             GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.rightHalfLevel1));
             shape.setColor(AttentionLevel.fromIntTransparent((int) Math.round(reportPercent)).getColor());
-
+            shape.setStroke(5, Color.BLACK);
             layers.setLevel(5000);
             iconFactory.setBackground(layers);
 
-
             opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()));
-            //opt.icon(BitmapDescriptorFactory.fromResource(R.drawable.semicircle));
             optionsList.add(opt);
         }
 
-        private void setOptionsColor(MarkerOptions opt, double engagement, double baselineEngagement, int sessions){
-            double percent = engagement / sessions /baselineEngagement;
-        /*  5 stage:
-            very low: 0 - 0.2;
-            somewhat low: 0.2 - 0.4;
-            medium: 0.4 - 0.6;
-            somewhat high: 0.6 - 0.8;
-            high: 0.8 - 1;
-         */
 
-            IconGenerator iconFactory = new IconGenerator(getActivity());
+        private void setFocus(int selectedItemPosition){
 
-            if(percent >=0 && percent < 0.2 ){
-                iconFactory.setColor(Color.BLUE);
-            }
-            else if(percent >= 0.2 && percent < 0.4) {
-                iconFactory.setColor(Color.CYAN);
-            }
-            else if(percent >= 0.4 && percent < 0.6){
-                iconFactory.setColor(Color.GREEN);
-            }
-            else if(percent >= 0.6 && percent < 0.8){
-                iconFactory.setColor(Color.YELLOW);
-            }
-            else{
-                iconFactory.setColor(Color.RED);
+            if (optionsList.size() <= selectedItemPosition){
+                return;
             }
 
-            opt.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(sessions + "")));
+            MarkerOptions opt = optionsList.get(selectedItemPosition);
+            String key = opt.getTitle();
 
+            for (MarkerOptions mo : optionsList) {
+                String title = mo.getTitle();
+                MarkerInfo info = markerInfoMap.get(title);
+                double eegPercent = info.getAttention() / info.getSessions()  / 4.0;
+                double reportPercent = info.getSelfReport() / info.getSessions() / 4.0;
+
+                IconGenerator iconFactory = new IconGenerator(getActivity());
+                //left half ciecle for eeg
+                Drawable drawable = getActivity().getResources().getDrawable(R.drawable.circle);
+                GradientDrawable leftShape = (GradientDrawable)drawable;
+
+                //right half ciecle for eeg
+                LayerDrawable layers = (LayerDrawable)getActivity().getResources().getDrawable(R.drawable.semicircle);
+                GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.rightHalfLevel1));
+
+                if( title == key){
+                    leftShape.setColor(AttentionLevel.fromInt((int) Math.round(eegPercent)).getColor());
+                    leftShape.setStroke(15, Color.BLACK);
+
+                    shape.setColor(AttentionLevel.fromInt((int) Math.round(reportPercent)).getColor());
+                    shape.setStroke(15, Color.BLACK);
+                    this.selectedItemPosition = selectedItemPosition;
+                }
+                else{
+                    leftShape.setColor(AttentionLevel.fromIntTransparent((int) Math.round(eegPercent)).getColor());
+                    leftShape.setStroke(5, Color.BLACK);
+
+                    shape.setColor(AttentionLevel.fromIntTransparent((int) Math.round(reportPercent)).getColor());
+                    shape.setStroke(5, Color.BLACK);
+                }
+
+                layers.setLevel(5000);
+                iconFactory.setBackground(layers);
+                mo.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()));
+            }
             publishProgress();
         }
     }

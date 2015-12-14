@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFEB3B">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Focus Score"
+            android:textSize="30sp"
+            android:id="@+id/focusLabel"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/locationTextView"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/attentionCircle"
@@ -16,7 +32,8 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/oval"
             android:gravity="center"
-            android:layout_marginTop="50dp"
+            android:layout_below="@+id/focusLabel"
+            android:layout_marginTop="10dp"
             android:text="0"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="62sp"
@@ -27,10 +44,11 @@
             android:id="@+id/elapsedTime"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:format="[Total Time: 0:00:00]"
+            android:format=" for 0:00:00"
             android:gravity="center"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:layout_marginTop="15dp"
+            android:textColor="@color/black"
             android:layout_below="@+id/attentionCircle"
             android:layout_alignLeft="@+id/attentionCircle"
             android:layout_alignStart="@+id/attentionCircle"
@@ -42,7 +60,7 @@
             android:id="@+id/recordingStateButtons"
             android:layout_width="220dp"
             android:layout_height="80dp"
-            android:layout_below="@+id/locationTextView"
+            android:layout_below="@+id/elapsedTime"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="70dp"
             android:layout_centerHorizontal="true"
@@ -75,18 +93,16 @@
 
         <TextView
             android:id="@+id/locationTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal|center_vertical"
-            android:maxLength="26"
-            android:text="    Location     "
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="Study at Mcb"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="25sp"
-            android:layout_below="@+id/elapsedTime"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
-            android:visibility="gone"
-            />
+            android:background="#FFEB3B"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"/>
 
 
             <ImageView
@@ -94,12 +110,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/messages_black"
-                android:layout_below="@+id/locationTextView"
+                android:layout_below="@+id/elapsedTime"
                 android:layout_toLeftOf="@+id/messageIcon1"
                 android:layout_toStartOf="@+id/messageIcon1"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="20dp"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                />
 
             <ImageView
                 android:id="@+id/messageIcon1"
@@ -107,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/messages_black"
-                android:layout_below="@+id/locationTextView"
+                android:layout_below="@+id/elapsedTime"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="20dp"
                 android:visibility="gone"
@@ -117,12 +134,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/messages_black"
-                android:layout_below="@+id/locationTextView"
+                android:layout_below="@+id/elapsedTime"
                 android:layout_toRightOf="@+id/messageIcon1"
                 android:layout_toEndOf="@+id/messageIcon1"
                 android:layout_marginTop="20dp"
                 android:visibility="gone"
                 />
+        <TextView
+            android:id="@+id/dots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text=" ..."
+            android:textSize="25sp"
+            android:layout_below="@+id/elapsedTime"
+            android:layout_toRightOf="@+id/messageIcon3"
+            android:layout_toEndOf="@+id/messageIcon3"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"/>
 
 
 
@@ -134,6 +163,7 @@
             android:layout_below="@+id/recordingStateButtons"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+
             />
 
         <TextView
@@ -145,7 +175,9 @@
             android:layout_below="@+id/progressBar"
             android:layout_centerHorizontal="true"
             android:gravity="center"
+            android:textColor="#000"
             android:layout_marginTop="47dp"
+
             />
 
         <TextView
@@ -153,10 +185,10 @@
             android:layout_height="70dp"
             android:gravity="center"
             android:text="Ready to start"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:id="@+id/readyText"
-            android:textSize="30sp"
-            android:background="@color/orange_500"
+            android:textSize="25sp"
+            android:background="#FFEB3B"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -168,10 +200,11 @@
             android:layout_height="wrap_content"
             android:background="@drawable/checkmark"
             android:layout_below="@+id/readyText"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="18dp"
             android:layout_centerHorizontal="true"
             android:id="@+id/checkmarkImage"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            />
 
 
         <TextView
@@ -180,11 +213,12 @@
             android:text="I am"
             android:id="@+id/iAmLabel"
             android:textSize="18sp"
-            android:textColor="@color/white"
-            android:layout_below="@+id/checkmarkImage"
+            android:textColor="@color/black"
+            android:layout_below="@+id/connectLabel"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"/>
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -196,8 +230,9 @@
             android:id="@+id/activityLabel"
             android:layout_below="@+id/iAmLabel"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:visibility="gone"/>
+            android:layout_marginTop="2dp"
+            android:visibility="gone"
+            />
 
 
         <TextView
@@ -205,12 +240,13 @@
             android:layout_height="wrap_content"
             android:text="at"
             android:textSize="18sp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:id="@+id/atLabel"
             android:layout_below="@+id/activityLabel"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:visibility="gone"/>
+            android:layout_marginTop="2dp"
+            android:visibility="gone"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -222,36 +258,37 @@
             android:id="@+id/locationLabel"
             android:layout_below="@+id/atLabel"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:visibility="gone"/>
-
+            android:layout_marginTop="2dp"
+            android:visibility="gone"
+            />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Start"
+            android:text="START"
             android:textSize="20sp"
             android:id="@+id/startButton"
-            android:background="@color/orange_500"
+            android:background="#D4C22F"
             android:paddingRight="10dp"
+            android:textColor="@color/black"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical|right"
             android:visibility="gone"
             />
 
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Retry"
+            android:text="Retry CONNECTION"
             android:textSize="20sp"
             android:id="@+id/retryConnectButton"
-            android:background="@color/orange_500"
+            android:background="#D4C22F"
             android:paddingRight="10dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical|right"
+            android:textColor="@color/black"
             android:visibility="gone"
             />
 
@@ -264,6 +301,7 @@
             android:layout_marginTop="30dp"
             android:textSize="40sp"
             android:paddingLeft="10dp"
+            android:textColor="@color/black"
             android:visibility="gone"
             />
 
@@ -277,6 +315,7 @@
             android:layout_below="@+id/noConnectionText"
             android:paddingLeft="20dp"
             android:layout_marginTop="15dp"
+            android:textColor="@color/black"
             android:visibility="gone"
             />
 
@@ -288,7 +327,22 @@
             android:layout_marginTop="10dp"
             android:id="@+id/bluetoothImage"
             android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="EEG Connected"
+            android:id="@+id/connectLabel"
+            android:textColor="@color/black"
+            android:layout_below="@+id/checkmarkImage"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
             android:visibility="gone"/>
+
 
 
         <!--<TextView-->

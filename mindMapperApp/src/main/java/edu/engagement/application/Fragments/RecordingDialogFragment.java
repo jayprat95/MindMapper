@@ -82,7 +82,7 @@ public class RecordingDialogFragment extends DialogFragment {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                attentionLevel = AttentionLevel.fromInt(progress);
+                attentionLevel = AttentionLevel.fromInt((int) ((progress-0.0001)/4));
                 setProgressBarColor(seekBar, attentionLevel.getColor());
             }
 

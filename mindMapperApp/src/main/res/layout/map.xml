@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Apparently we need to use a fragment instead of a MapView if we're going to use an ActionBar. -->
-<!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:id="@+id/mapView"-->
-    <!--android:name="com.google.android.gms.maps.SupportMapFragment"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent" />-->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_height="fill_parent"
               android:layout_width="fill_parent"
-              android:orientation="vertical"
-              android:weightSum="1"
+              android:background="#ffffff"
     >
+
+
+
+    <com.google.android.gms.maps.MapView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/mapView" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/map_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.18" />
-
-    <com.google.android.gms.maps.MapView
-        android:layout_height="0dp"
-        android:layout_width="match_parent"
-        android:layout_weight="0.82"
-        android:id="@+id/mapView" />
+        android:layout_height="100dp"
+        />
         <!--android:layout_above="@id/color_scale"/>-->
 
     <!--<ImageView-->
@@ -78,5 +73,5 @@
         <!--android:visibility="gone"/>-->
 
 
-</LinearLayout>
+</RelativeLayout>
 

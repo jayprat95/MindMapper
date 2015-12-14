@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.Database.DataPointSource;
@@ -48,9 +49,18 @@ public class EndRecordingDialogFragment extends DialogFragment {
         mSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getTargetFragment().onActivityResult(1, 3, null);
-                dismiss();
+                if(mAnnotation.getText().length() == 0){
+                    Toast.makeText(getActivity(), "Please describe your experience!", Toast.LENGTH_SHORT).show();
+                }else
+                {
+                    mDataPointSource.createDataPointAnnotation(RecordingFragment.sessionId, System.currentTimeMillis(), mAnnotation.getText().toString(), mSeekBar.getProgress());
+                    Toast.makeText(getActivity(), "Your experience saved!", Toast.LENGTH_SHORT).show();
+                    mAnnotation.setText("");
+                    mSeekBar.setProgress(0);
+                    getTargetFragment().onActivityResult(1, 3, null);
+                    dismiss();
 
+                }
             }
         });
 
@@ -61,7 +71,7 @@ public class EndRecordingDialogFragment extends DialogFragment {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                attentionLevel = AttentionLevel.fromInt(progress);
+                attentionLevel = AttentionLevel.fromInt((int) ((progress-0.0001)/4));
                 setProgressBarColor(seekBar, attentionLevel.getColor());
             }
 
