@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/white"
     >
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,13 +14,14 @@
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:text="Overall, how focused did you feel?"
+            android:text="@string/dialog_string"
             android:textSize="18sp"
             android:textStyle="normal"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:layout_marginTop="50dp"
             android:id="@+id/textView"
+            android:textColor="@color/black"
             />
 
         <ImageView
@@ -42,8 +44,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:indeterminate="false"
-        android:max="24"
-        android:progress="0"
+        android:max="100"
+        android:progress="50"
         android:progressDrawable="@drawable/progressbar"
         android:secondaryProgress="0"
         android:layout_marginTop="25dp"
@@ -53,12 +55,13 @@
 
     <TextView
         android:id="@+id/textViewLow"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/annotation_bar"
         android:layout_below="@+id/annotation_bar"
         android:layout_marginLeft="15dp"
-        android:text="Not at all"
+        android:text="Not at all Focused"
+        android:textColor="@color/black"
         android:textSize="10sp"/>
 
 
@@ -70,14 +73,22 @@
         android:layout_below="@+id/annotation_bar"
         android:layout_marginRight="15dp"
         android:text="Very Focused"
+        android:textColor="@color/black"
         android:textSize="10sp"/>
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#D8F2F5"
+        android:lines="4"
+        android:minLines="3"
+        android:maxLines="4"
+        android:textColor="@color/grey_500"
         android:id="@+id/annotation"
-        android:hint="Describe your experience here [Text Input]"
-        android:layout_marginTop="35dp"
+        android:textColorHint="@color/grey_500"
+        android:hint="Describe your experience here"
+        android:layout_marginTop="60dp"
+        android:paddingLeft="10dp"
         android:layout_below="@+id/annotation_bar"
         android:layout_centerHorizontal="true"/>
 
@@ -96,7 +107,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="20dp"
-            android:background="@color/wallet_holo_blue_light"
+            android:background="@color/grey_500"
             android:text="Cancel"
             android:layout_below="@+id/annotation"
             android:layout_toRightOf="@+id/textViewMedium"
@@ -118,6 +129,20 @@
             />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Anything else?"
+        android:paddingTop="5dp"
+        android:id="@+id/textView5"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/textViewLow"
+        android:background="#D8F2F5"
+        android:paddingLeft="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 
 </RelativeLayout>

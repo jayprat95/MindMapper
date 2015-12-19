@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+       <item android:id="@+id/rightHalfLevel1" >
+              <shape android:shape="oval">
+                     <solid android:color="#90A545BC" />
+                     <size android:height="40dp" android:width="40dp"></size>
+                     <stroke android:color="#000" android:width="2dp"></stroke>
+              </shape>
+       </item>
+       <item android:id="@+id/leftHalfLevel1">
+              <clip android:clipOrientation="horizontal"
+                    android:gravity="left"
+                    android:drawable="@drawable/circle">
+              </clip>
+       </item>
+
+</layer-list>

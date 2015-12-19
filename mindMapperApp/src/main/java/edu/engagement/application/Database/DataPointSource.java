@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +20,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import edu.engagement.application.utils.Annotation;
+import edu.engagement.application.utils.EEGDataPoint;
 import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.R;
 import edu.engagement.application.utils.Annotation;
@@ -25,6 +29,7 @@ import edu.engagement.application.utils.EEGDataPoint;
 import edu.engagement.application.utils.PlacePhotoUtils;
 import edu.engagement.application.utils.SessionLocation;
 import edu.engagement.application.utils.Session;
+import edu.engagement.application.utils.SessionLocation;
 import edu.engagement.thrift.EegAttention;
 import edu.engagement.thrift.EegPower;
 import edu.engagement.thrift.EegRaw;
@@ -341,7 +346,7 @@ public class DataPointSource {
 
 
     /**
-     * Loads and returns a list of sessions from the database that occur between t1 and t2.
+     * Loads and returns a list of sessions from the database that occur on day.
      * @return
      */
     public List<Session> getSessionsInTimeRange(int day) {
@@ -395,9 +400,38 @@ public class DataPointSource {
 
         s.addAnnotations(loadAnnotationData(sessionId));
         s.addDataPoints(loadEEGData(sessionId));
+        s.addGPSData(loadGPSData(locationName));
 
         return s;
     }
+
+    public LatLng loadGPSData(String location){
+
+        String[] columns = {    DatabaseHelper.COLUMN_LATITUDE,
+                DatabaseHelper.COLUMN_LONGITUDE,
+                };
+
+        String selection = DatabaseHelper.COLUMN_LOCATION_NAME + " = ?";
+        String[] selectionArgs = { location };
+
+        Cursor cursor = database.query(
+                DatabaseHelper.TABLE_GPS,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+
+        cursor.moveToFirst();
+
+        Double lat = cursor.getDouble(0);
+        Double lng = cursor.getDouble(1);
+
+        return new LatLng(lat, lng);
+    }
+
+
 
     public List<Annotation> loadAnnotationData(int sessionId) {
         String[] columns = {    DatabaseHelper.COLUMN_TIMESTAMP,

@@ -30,7 +30,7 @@ public class TimeUtils {
         return sdf.format(new Date(s.getStopTime()));
     }
 
-    private static String getElapsedTimeFormatted(Session s) {
+    public static String getElapsedTimeFormatted(Session s) {
             long timeDiff = s.getStopTime() - s.getStartTime();
 
             if (timeDiff > DateUtils.HOUR_IN_MILLIS) {
