@@ -42,7 +42,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:indeterminate="false"
-        android:max="4"
+        android:max="100"
         android:progress="0"
         android:progressDrawable="@drawable/progressbar"
         android:secondaryProgress="0"

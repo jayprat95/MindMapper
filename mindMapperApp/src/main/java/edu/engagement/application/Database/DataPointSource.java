@@ -389,7 +389,7 @@ public class DataPointSource {
 
         if (sessionImage == null) {
             sessionImage = PlacePhotoUtils
-                    .decodeSampledBitmapFromResource(context.getResources(), R.drawable.mcbryde, 400, 200);
+                    .decodeSampledBitmapFromResource(context.getResources(), R.drawable.summary_default, 400, 200);
         }
         Session s = new Session(sessionId, sessionImage, activityName, location);
 

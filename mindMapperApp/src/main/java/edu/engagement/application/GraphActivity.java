@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -59,6 +61,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
     private RoundCornerProgressBar averageFocus, overallFeel;
 
     private RecyclerView rv;
+    private TextView noCommentsText;
+
     private List<Annotation> mAnnotations;
 
     @Override
@@ -88,6 +92,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             }
         });
 
+        noCommentsText = (TextView)findViewById(R.id.no_comments_text);
 
         title = (TextView) findViewById(R.id.graph_titlebar);
         title.setText("");
@@ -128,6 +133,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         mChart.getAxisLeft().setLabelCount(2);
         mChart.getAxisLeft().setDrawGridLines(false);
         mChart.getAxisLeft().setValueFormatter(new IntegerAxisValueFormatter());
+        mChart.getAxisLeft().setAxisMinValue(0);
+        mChart.getAxisLeft().setAxisMaxValue(100);
 
         int id = getIntent().getExtras().getInt(SESSION_ID_TAG);
 
@@ -225,6 +232,11 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             rv.setLayoutManager(llm);
             rv.setAdapter(adapter);
 
+            if (session.getAnnotations().isEmpty()) {
+                rv.setVisibility(View.GONE);
+                noCommentsText.setVisibility(View.VISIBLE);
+            }
+
             drawGraph(session);
         }
 
@@ -237,7 +249,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 s.addDataPoint(1000 * 60 * i, attention);
             }
 
-            s.addAnnotation("Annotation 1", 60, 1000*60*5);
+            s.addAnnotation("Annotation 1", 60, 1000 * 60 * 5);
             s.addAnnotation("Annotation 2", 75, 1000*60*22);
             s.addAnnotation("Annotation 3", 90, 1000 * 60 * 30);
             s.addAnnotation("Annotation 4", 80, 1000 * 60 * 39);
@@ -320,14 +332,28 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             combinedData.setData(lineData);
             combinedData.setData(scatterData);
 
-            LimitLine ll = new LimitLine(avg, "Focus Average");
-            ll.setLineColor(Color.parseColor("#778490"));
-            ll.setLineWidth(2f);
-            ll.setTextColor(Color.parseColor("#778490"));
-            ll.setTextSize(12f);
-            ll.setLabelPosition(LimitLine.LimitLabelPosition.POS_LEFT);
+            LimitLine focusAvg = new LimitLine(avg, "Focus Average");
+            focusAvg.setLineColor(Color.parseColor("#778490"));
+            focusAvg.setLineWidth(2f);
+            focusAvg.setTextColor(Color.parseColor("#778490"));
+            focusAvg.setTextSize(12f);
+            focusAvg.setLabelPosition(LimitLine.LimitLabelPosition.POS_LEFT);
 
-            mChart.getAxisLeft().addLimitLine(ll);
+
+            float feltAvg = 5f;
+            if (session.getAnnotations().size() > 0) {
+                feltAvg = (float) session.getAnnotations().get(session.getAnnotations().size() - 1).getAttentionLevel();
+            }
+
+            LimitLine overallFelt = new LimitLine(feltAvg, "Overall I Felt");
+            overallFelt.setLineColor(Color.parseColor("#778490"));
+            overallFelt.setLineWidth(2f);
+            overallFelt.setTextColor(Color.parseColor("#778490"));
+            overallFelt.setTextSize(12f);
+            overallFelt.setLabelPosition(LimitLine.LimitLabelPosition.POS_LEFT);
+
+            mChart.getAxisLeft().addLimitLine(focusAvg);
+            mChart.getAxisLeft().addLimitLine(overallFelt);
             mChart.setData(combinedData);
             mChart.invalidate();
         }

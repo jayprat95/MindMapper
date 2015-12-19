@@ -13,9 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -36,8 +39,9 @@ public class SummaryFragment extends Fragment {
     private MainActivity activity;
 
     private RecyclerView rv;
-    private List<Session> sessionList;
+    private RelativeLayout noActivities;
 
+    private List<Session> sessionList;
 
     @Override
     public void onAttach(Activity activity) {
@@ -56,6 +60,7 @@ public class SummaryFragment extends Fragment {
         sessionList = new ArrayList<>();
 
         rv = (RecyclerView) view.findViewById(R.id.rv);
+        noActivities = (RelativeLayout) view.findViewById(R.id.no_activities);
 
         LinearLayoutManager llm = new LinearLayoutManager(fragActivity);
         rv.setLayoutManager(llm);
@@ -108,7 +113,10 @@ public class SummaryFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
+            if (sessionList.isEmpty()) {
+                rv.setVisibility(View.GONE);
+                noActivities.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -129,6 +137,9 @@ public class SummaryFragment extends Fragment {
             int month = (c.get(Calendar.MONTH) + 1);
 
             List<Session> sessions = dbSource.getSessionsInTimeRange(day);
+
+            //TODO: This is a quick fix, need to have a better solution.
+            Collections.reverse(sessions);
 
             Log.d(App.NAME, "Sessions returned: " + sessions.size());
 
