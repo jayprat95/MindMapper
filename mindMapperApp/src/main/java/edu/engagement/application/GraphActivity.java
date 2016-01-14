@@ -5,14 +5,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
@@ -20,26 +15,17 @@ import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
-import com.github.mikephil.charting.interfaces.ScatterDataProvider;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.utils.Annotation;
@@ -47,7 +33,6 @@ import edu.engagement.application.utils.ColorUtils;
 import edu.engagement.application.utils.EEGDataPoint;
 import edu.engagement.application.utils.RecyclerViewPositionHelper;
 import edu.engagement.application.utils.Session;
-import edu.engagement.application.utils.SessionLocation;
 import edu.engagement.application.utils.TimeUtils;
 
 public class GraphActivity extends Activity implements OnChartValueSelectedListener {
@@ -169,7 +154,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         List<Integer> colors = new ArrayList<>(set.getEntryCount());
 
         for (int i = 0; i < set.getEntryCount(); i++) {
-            colors.add(i, Color.parseColor("#BECDD7"));
+            colors.add(i, Color.parseColor("#44BECDD7"));
         }
 
         colors.set(index, highlightColor);
@@ -197,7 +182,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 DataPointSource dataSource = new DataPointSource(context);
                 dataSource.open();
                 s = dataSource.loadSessionData(id);
-//                s = getFakeSession();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -220,7 +204,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             averageFocus.setProgressColor(ColorUtils.getAttentionColor(eegAverage));
 
             // Setting average
-            float selfReportAverage = (float)session.getSelfReportAverage();
+            float selfReportAverage = (float)session.getOverallIFeltScore();
             overallFeel.setProgress(selfReportAverage);
             overallFeel.setProgressColor(ColorUtils.getAttentionColor(selfReportAverage));
 
@@ -238,35 +222,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             }
 
             drawGraph(session);
-        }
-
-        private Session getFakeSession() {
-//            Session s = new Session(1, "Programming", new SessionLocation("McBryde Hall", 5.3, 2.3));
-
-            Random r = new Random(SystemClock.elapsedRealtime());
-            for (int i = 0; i <= 60; i++) {
-                float attention = r.nextInt(50) + 50;
-                s.addDataPoint(1000 * 60 * i, attention);
-            }
-
-            s.addAnnotation("Annotation 1", 60, 1000 * 60 * 5);
-            s.addAnnotation("Annotation 2", 75, 1000*60*22);
-            s.addAnnotation("Annotation 3", 90, 1000 * 60 * 30);
-            s.addAnnotation("Annotation 4", 80, 1000 * 60 * 39);
-            s.addAnnotation("Annotation 5", 70, 1000 * 60 * 49);
-            s.addAnnotation("Annotation 6", 45, 1000 * 60 * 55);
-
-            return s;
-        }
-
-        private void loadSession(Session s) {
-
-            List<Annotation> annotations = s.getAnnotations();
-            int size = annotations.size();
-            for (int i = 0; i < size; i++) {
-                Annotation annotation = new Annotation(annotations.get(i).getAnnotation(), annotations.get(i).getAttentionLevel(), annotations.get(i).getTimeStamp());
-                mAnnotations.add(annotation);
-            }
         }
 
         private void drawGraph(Session session) {
@@ -339,13 +294,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             focusAvg.setTextSize(12f);
             focusAvg.setLabelPosition(LimitLine.LimitLabelPosition.POS_LEFT);
 
-
-            float feltAvg = 5f;
-            if (session.getAnnotations().size() > 0) {
-                feltAvg = (float) session.getAnnotations().get(session.getAnnotations().size() - 1).getAttentionLevel();
-            }
-
-            LimitLine overallFelt = new LimitLine(feltAvg, "Overall I Felt");
+            LimitLine overallFelt = new LimitLine((float)session.getOverallIFeltScore(), "Overall I Felt");
             overallFelt.setLineColor(Color.parseColor("#778490"));
             overallFelt.setLineWidth(2f);
             overallFelt.setTextColor(Color.parseColor("#778490"));

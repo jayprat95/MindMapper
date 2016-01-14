@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,25 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import edu.engagement.application.App;
-import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.Database.DataPointSource;
-import edu.engagement.application.EventSummary;
 
 import edu.engagement.application.MainActivity;
 import edu.engagement.application.R;
 import edu.engagement.application.SummaryCardAdapter;
-import edu.engagement.application.utils.EEGDataPoint;
 import edu.engagement.application.utils.Session;
-import edu.engagement.application.utils.SessionLocation;
 
 public class SummaryFragment extends Fragment {
 
@@ -53,7 +46,7 @@ public class SummaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.card_recycle_view_activity, container, false);
+        View view = inflater.inflate(R.layout.fragment_summary, container, false);
         final FragmentActivity fragActivity = getActivity();
 
         // random access needed, so arraylist is better choice

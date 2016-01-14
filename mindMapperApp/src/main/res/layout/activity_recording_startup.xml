@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="What are you going to do?"
+        android:text="What activity are you starting?"
         android:id="@+id/textView2"
         android:textColor="@color/black"
         android:layout_alignParentTop="true"
@@ -44,7 +44,12 @@
         android:gravity="center"
         android:textColor="#00BCD6"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:imeOptions="actionGo"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
 
     <TextView
         android:layout_width="wrap_content"
