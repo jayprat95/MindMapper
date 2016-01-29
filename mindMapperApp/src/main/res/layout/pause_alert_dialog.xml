@@ -19,6 +19,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/background_dark"
         android:text="Your activity is paused"
+        android:textSize="18sp"
         android:gravity="center"
         android:id="@+id/textView3"
         android:paddingBottom="10dp"
