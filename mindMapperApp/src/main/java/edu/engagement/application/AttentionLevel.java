@@ -31,7 +31,6 @@ public enum AttentionLevel {
     MEDIUM_HIGH4(Color.parseColor("#48C196")),
     MEDIUM_HIGH5(Color.parseColor("#48C183")),
 
-
     HIGH1(Color.parseColor("#48C16F")),
     HIGH2(Color.parseColor("#49C25B")),
     HIGH3(Color.parseColor("#4BC249")),
@@ -63,7 +62,6 @@ public enum AttentionLevel {
     TRANSMEDIUM_HIGH4(Color.parseColor("#9048C196")),
     TRANSMEDIUM_HIGH5(Color.parseColor("#9048C183")),
 
-
     TRANSHIGH1(Color.parseColor("#9048C16F")),
     TRANSHIGH2(Color.parseColor("#9049C25B")),
     TRANSHIGH3(Color.parseColor("#904BC249")),
@@ -87,8 +85,8 @@ public enum AttentionLevel {
 
     /**
      * Return an attention level based on the int passed in.
-     * The integer should be between 1 and 25.
-     * @param i the integer level of attentiveness out of 4
+     * The integer should be between 0 and 24 inclusive
+     * @param i the integer level of attentiveness out of 24
      * @return the attention level
      */
     public static AttentionLevel fromInt(int i) {

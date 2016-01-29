@@ -262,8 +262,6 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
                 }
             }
 
-            float avg = sum / lineEntries.size();
-
             LineDataSet dataPointSet = new LineDataSet(lineEntries, "EEG Data");
             dataPointSet.setDrawCubic(true);
             dataPointSet.setColor(Color.parseColor("#B5D9AF"));
@@ -287,7 +285,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             combinedData.setData(lineData);
             combinedData.setData(scatterData);
 
-            LimitLine focusAvg = new LimitLine(avg, "Focus Average");
+            LimitLine focusAvg = new LimitLine(session.getEEGAverage(), "Focus Average");
             focusAvg.setLineColor(Color.parseColor("#778490"));
             focusAvg.setLineWidth(2f);
             focusAvg.setTextColor(Color.parseColor("#778490"));

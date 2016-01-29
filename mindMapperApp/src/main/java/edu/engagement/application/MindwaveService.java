@@ -475,10 +475,6 @@ public class MindwaveService extends Service {
                     break;
                 case TGDevice.MSG_ATTENTION:
 
-                    // If we're not recording, don't save data
-                    if (!recording)
-                        return true;
-
                     Calendar c = Calendar.getInstance();
                     int day = c.get(Calendar.DAY_OF_MONTH);
 
@@ -501,6 +497,12 @@ public class MindwaveService extends Service {
                             int sharedSessionId = prefs.getInt("sessionId", RecordingFragment.sessionId);
                             Log.v("The sessionId","The service session id: " + sharedSessionId);
                             if(RecordingFragment.sessionId == sharedSessionId){
+
+                                // If we're paused, save a 0 in the database
+                                if (!recording) {
+                                    att = 0;
+                                }
+
                                 dataSource.createDataPointAttention(RecordingFragment.sessionId, att, System.currentTimeMillis(), day, month);
                             }
                         }

@@ -51,10 +51,14 @@ public class Session {
 
     public float getEEGAverage() {
         float sum = 0;
+        int count = 0;
         for (EEGDataPoint point : data) {
-            sum += point.attention;
+            if (point.attention != 0) {
+                sum += point.attention;
+                count++;
+            }
         }
-        return sum / data.size();
+        return sum / count;
     }
 
     public double getOverallIFeltScore() {
