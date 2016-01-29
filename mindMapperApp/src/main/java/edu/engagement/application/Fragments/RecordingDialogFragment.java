@@ -28,7 +28,6 @@ public class RecordingDialogFragment extends DialogFragment {
     private Button mDone;
     private SeekBar mSeekBar;
 
-    private AttentionLevel attentionLevel;
     DataPointSource mDataPointSource = null;
 
     //static RecordingDialogFragment newInstance(){
@@ -69,15 +68,17 @@ public class RecordingDialogFragment extends DialogFragment {
             }
         });
 
-        //
-        attentionLevel = AttentionLevel.LOW1;
         mSeekBar = (SeekBar) dialogView.findViewById(R.id.annotation_bar);
+
+        // Setting initial color
+        setProgressBarColor(mSeekBar, mSeekBar.getProgress());
+
+        // Seek bar change listener
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                attentionLevel = AttentionLevel.fromInt((int) ((progress-0.0001)/4));
-                setProgressBarColor(seekBar, attentionLevel.getColor());
+                setProgressBarColor(seekBar, progress);
             }
 
             @Override
@@ -94,10 +95,10 @@ public class RecordingDialogFragment extends DialogFragment {
         return dialogView;
     }
 
-    private void setProgressBarColor(SeekBar seekBar, int newColor) {
+    private void setProgressBarColor(SeekBar seekBar, int progress) {
         LayerDrawable ld = (LayerDrawable) seekBar.getProgressDrawable();
         ClipDrawable d1 = (ClipDrawable) ld.findDrawableByLayerId(R.id.progressShape);
-        d1.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
+        d1.setColorFilter(AttentionLevel.fromInt((int) ((progress - 0.0001) / 4)).getColor(), PorterDuff.Mode.SRC_IN);
     }
 
 }
