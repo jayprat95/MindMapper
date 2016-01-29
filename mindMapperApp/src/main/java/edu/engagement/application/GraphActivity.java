@@ -154,7 +154,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         List<Integer> colors = new ArrayList<>(set.getEntryCount());
 
         for (int i = 0; i < set.getEntryCount(); i++) {
-            colors.add(i, Color.parseColor("#44BECDD7"));
+            colors.add(i, Color.parseColor("#80BECDD7"));
         }
 
         colors.set(index, highlightColor);
