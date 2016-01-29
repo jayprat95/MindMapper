@@ -44,6 +44,8 @@ public class EndRecordingDialogFragment extends DialogFragment {
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
+        setCancelable(false);
+
         activityName = getArguments().getString("activity");
 
         mDataPointSource = new DataPointSource(this.getActivity().getApplicationContext());
