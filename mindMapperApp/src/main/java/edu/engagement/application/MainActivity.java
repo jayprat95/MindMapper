@@ -38,11 +38,14 @@ import edu.engagement.application.Fragments.StatusDialogFragment;
  */
 public class MainActivity extends FragmentActivity implements EegListener, RecordingFragment.RealTimeListener, StatusDialogFragment.ConnectionLostDialogListener {
 
-    public static final String RECORDING_TAG = "REAL_TIME_FRAGMENT";
-    public static final String REFLECTION_TAG = "REFLECTION_FRAGMENT";
+    private static final String RECORDING_TAG = "REAL_TIME_FRAGMENT";
+    private static final String REFLECTION_TAG = "REFLECTION_FRAGMENT";
+
+    private static final int STARTUP_ACTIVITY_REQUEST = 0;
+    private static final int PLACE_PICKER_ACTIVITY_REQUEST = 1;
 
     private MindwaveService mindwaveService;
-    String activityName = "";
+    private String activityName = "";
 
     private GoogleApiClient apiClient;
 
@@ -54,7 +57,7 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         boolean boardingStart = prefs.getBoolean("first", true);
-//
+
         if(boardingStart) {
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean("first", false);
@@ -64,7 +67,6 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
         }
 
         apiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).build();
-        Log.d(App.NAME, "Connected to Google API");
 
         showFragment(REFLECTION_TAG, null);
     }
@@ -91,8 +93,6 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
         // The fragment is not being shown right now
         if (fragmentManager.findFragmentByTag(tag) == null) {
 
-            Log.d(App.NAME, "INNNNNNNNNNNNNNNNNNNNNN");
-
             Fragment f;
             switch (tag) {
                 case RECORDING_TAG:
@@ -108,7 +108,6 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
             f.setArguments(bundle);
             transaction.replace(R.id.content_frame, f, tag).commit();
         }
-
     }
 
     /*
@@ -118,18 +117,16 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         //return result from recording startup
-        if(requestCode == 0){
+        if(requestCode == STARTUP_ACTIVITY_REQUEST){
             if(resultCode == RESULT_OK){
-                activityName = data.getStringExtra(RecordingStartup.RETURN_RESULT_KEY);
+                activityName = data.getStringExtra(RecordingStartup.ACTIVITY_DESCRIPTION);
 
                 showPlacePicker();
             }
-
         }
         //return result from place picker
-        if (requestCode == 1) {
+        if (requestCode == PLACE_PICKER_ACTIVITY_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
 
@@ -160,12 +157,9 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
 
     public void showStartupActivity(){
         /* Place Picker Experiment */
-        int STARTUP_ACTIVIY_REQUEST = 0;
         Intent intent = new Intent(this, RecordingStartup.class);
             // identified by a request code.
-        startActivityForResult(intent,
-                    STARTUP_ACTIVIY_REQUEST);
-
+        startActivityForResult(intent, STARTUP_ACTIVITY_REQUEST);
     }
 
     /**
@@ -174,13 +168,12 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
      */
     public void showPlacePicker() {
         /* Place Picker Experiment */
-        int PLACE_PICKER_REQUEST = 1;
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             // Start the intent by requesting a result,
             // identified by a request code.
             startActivityForResult(builder.build(this),
-                    PLACE_PICKER_REQUEST);
+                    PLACE_PICKER_ACTIVITY_REQUEST);
             // PlacePicker.getPlace(builder, context);
 
         } catch (GooglePlayServicesRepairableException e1) {
