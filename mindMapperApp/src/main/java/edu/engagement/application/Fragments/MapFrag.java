@@ -25,6 +25,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
@@ -91,6 +92,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 RecyclerViewPositionHelper helper = RecyclerViewPositionHelper.createHelper(recyclerView);
 
                 int i = helper.findFirstCompletelyVisibleItemPosition();
+
+
 
                 if (i >= 0) {
                     if(task != null){
@@ -203,34 +206,30 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
             // Updates the location and zoom of the MapView
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(blacksburg, 14));
-            System.out.println("Animated camera on map ");
+
 
             filter = new DataFilter(7, null, 100, this.getClass().toString());
 
             task = new MapLoadTask(getActivity().getApplicationContext());
-            //set marker on click listener
-//            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//                @Override
-//                public boolean onMarkerClick(Marker marker) {
-//                    if (marker.isInfoWindowShown()) {
-//                        marker.hideInfoWindow();
-//                    } else {
-//                        marker.showInfoWindow();
-//                    }
-//                    return true;
-//                }
-//            });
+//            set marker on click listener
+            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    rv.scrollToPosition(Integer.parseInt(marker.getSnippet()));
+                    return true;
+                }
+            });
 
             map.clear();
 
-            System.out.println("execute task..............");
             task.execute();
         }
 
     }
 
     public void cameraFocusOnMap(LatLng focus){
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(focus, FOCUSRADIO));
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(focus, FOCUSRADIO), 10, null);
+
     }
 
     private class MapLoadTask extends AsyncTask<Void, Void, List<MarkerOptions>> {
@@ -416,6 +415,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             LatLng lat = new LatLng(latitude, longitude);
             opt.position(lat);
             opt.title(location);
+            opt.snippet(optionsList.size() - 1 + "");
 
             System.out.println("------add marker-----");
 
