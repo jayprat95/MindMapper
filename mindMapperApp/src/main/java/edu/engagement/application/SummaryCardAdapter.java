@@ -8,14 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.util.List;
 
-import edu.engagement.application.utils.AttentionColor;
 import edu.engagement.application.utils.ColorUtils;
 import edu.engagement.application.utils.Session;
 import edu.engagement.application.utils.TimeUtils;
@@ -68,7 +66,7 @@ public class SummaryCardAdapter extends RecyclerView.Adapter<SummaryCardAdapter.
 			averageFocus.setProgress(att);
             averageFocus.setProgressColor(ColorUtils.getAttentionColor(att));
 
-            float felt = (float)session.getSelfReportAverage();
+            float felt = (float)session.getOverallIFeltScore();
             overallFelt.setProgress(felt);
             overallFelt.setProgressColor(ColorUtils.getAttentionColor(felt));
 		}

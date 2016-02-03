@@ -3,29 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <GridLayout
-        android:id="@+id/gridlayout"
+    
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="405dp"
-        android:columnCount="10" >
-
-    </GridLayout>
+        android:layout_height="match_parent" >
+    </android.support.v7.widget.RecyclerView>
 
     <RelativeLayout
+        android:id="@+id/no_activities"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_black" >
+        android:visibility="gone" >
+
 
         <TextView
-            android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textColor="#FFFFFF"
-            android:text="Drag circles here to compare!" />
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:text="Looks like you don’t have any\nactivities recorded yet. Tap the plus\nto get started!"/>
 
     </RelativeLayout>
-
 </LinearLayout>

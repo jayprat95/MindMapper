@@ -1,5 +1,6 @@
 package edu.engagement.application.Fragments;
 
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -56,5 +57,13 @@ public class PauseDialogFragment extends DialogFragment {
         });
 
         return dialogView;
+    }
+
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        getTargetFragment().onActivityResult(RecordingFragment.PAUSE_REQUEST, PAUSE_RESULT_RESUME, null);
+        dismiss();
     }
 }

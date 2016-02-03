@@ -394,11 +394,18 @@ public class DataPointSource {
 
         if (sessionImage == null) {
             sessionImage = PlacePhotoUtils
-                    .decodeSampledBitmapFromResource(context.getResources(), R.drawable.mcbryde, 400, 200);
+                    .decodeSampledBitmapFromResource(context.getResources(), R.drawable.summary_default, 400, 200);
         }
         Session s = new Session(sessionId, sessionImage, activityName, location);
 
-        s.addAnnotations(loadAnnotationData(sessionId));
+        // Annotations from the database include annotations during the recording
+        // as well as the final "summary" annotation, which is the last one in the list
+        List<Annotation> annotations = loadAnnotationData(sessionId);
+
+        // Remove the last annotation and use it as our summary annotation
+        s.setFinalAnnotation(annotations.remove(annotations.size() - 1));
+
+        s.addAnnotations(annotations);
         s.addDataPoints(loadEEGData(sessionId));
         s.addGPSData(loadGPSData(locationName));
 

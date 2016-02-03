@@ -6,7 +6,7 @@
               android:layout_height="fill_parent"
               android:layout_marginRight="3dp"
               android:background="#E2E2E2"
-    >
+              android:elevation="5dp">
 
     <TextView
         android:id="@+id/locationName"

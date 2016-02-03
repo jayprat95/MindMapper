@@ -380,7 +380,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
                     String list = session.getActivityName() + " for "+ TimeUtils.getElapsedTimeFormatted(session);
 
-                    MarkerInfo marker = new MarkerInfo(session.getGPSData().latitude, session.getGPSData().longitude, session.getEEGAverage(), session.getLocation().getName(), session.getSelfReportAverage(), list);
+                    MarkerInfo marker = new MarkerInfo(session.getGPSData().latitude, session.getGPSData().longitude, session.getEEGAverage(), session.getLocation().getName(), session.getOverallIFeltScore(), list);
                     markerInfoMap.put(session.getLocation().getName(), marker);
                     //
                 }

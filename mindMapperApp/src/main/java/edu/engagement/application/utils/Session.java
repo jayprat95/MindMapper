@@ -17,6 +17,7 @@ public class Session {
     private LatLng coordinates;
     private final List<EEGDataPoint> data = new ArrayList<>();
     private final List<Annotation> annotations = new ArrayList<>();
+    private Annotation finalAnnotation;
 
     public Session(int id, Bitmap sessionImage, String activityName, SessionLocation location) {
         this.activityName = activityName;
@@ -50,20 +51,18 @@ public class Session {
 
     public float getEEGAverage() {
         float sum = 0;
+        int count = 0;
         for (EEGDataPoint point : data) {
-            sum += point.attention;
+            if (point.attention != 0) {
+                sum += point.attention;
+                count++;
+            }
         }
-        return sum / data.size();
+        return sum / count;
     }
 
-    public double getSelfReportAverage() {
-        double sum = 0;
-        for (Annotation annotation : annotations) {
-            sum += annotation.getAttentionLevel();
-        }
-        double avg = annotations.size() == 0 ? 0 : (sum / annotations.size());
-
-        return avg;
+    public double getOverallIFeltScore() {
+        return finalAnnotation.getAttentionLevel();
     }
 
     public boolean addDataPoint(EEGDataPoint dataPoint) {
@@ -104,5 +103,9 @@ public class Session {
 
     public LatLng getGPSData(){
         return coordinates;
+    }
+
+    public void setFinalAnnotation(Annotation finalAnnotation) {
+        this.finalAnnotation = finalAnnotation;
     }
 }
