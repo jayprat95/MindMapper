@@ -6,18 +6,30 @@
               android:background="#ffffff"
     >
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:text="Looks like you don’t have any\nactivities recorded yet. Tap the plus\nto get started!"/>
 
     <com.google.android.gms.maps.MapView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:id="@+id/mapView" />
+        android:id="@+id/mapView"
+        android:visibility="gone"/>
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/map_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="102dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
         />
         <!--android:layout_above="@id/color_scale"/>-->
 

@@ -94,7 +94,6 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 int i = helper.findFirstCompletelyVisibleItemPosition();
 
 
-
                 if (i >= 0) {
                     if(task != null){
                         //task.setOptionsColor();
@@ -215,20 +214,21 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    rv.scrollToPosition(Integer.parseInt(marker.getSnippet()));
+                    int index = Integer.parseInt(marker.getSnippet());
+                    rv.smoothScrollToPosition(index);
+                    task.setFocus(index);
                     return true;
                 }
             });
 
             map.clear();
-
             task.execute();
         }
 
     }
 
     public void cameraFocusOnMap(LatLng focus){
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(focus, FOCUSRADIO), 10, null);
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(focus, FOCUSRADIO), 1000, null);
 
     }
 
@@ -241,6 +241,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         private HashMap<String, MarkerInfo> markerInfoMap;
         private List<MapListData> lists;
         private int selectedItemPosition = 0;
+        List<Session> sessions;
 
 
         public MapLoadTask (Context context) {
@@ -280,8 +281,20 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         protected void onPostExecute(List<MarkerOptions> optionsList) {
             LinearLayoutManager llm = new LinearLayoutManager(getActivity());
             llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+            llm.setReverseLayout(true);
+            llm.setSmoothScrollbarEnabled(true);
             rv.setLayoutManager(llm);
 
+            if(sessions.size() == 0){
+                rv.setVisibility(View.GONE);
+                mapView.setVisibility(View.GONE);
+            }
+            else{
+
+                rv.setVisibility(View.VISIBLE);
+                mapView.setVisibility(View.VISIBLE);
+
+            }
 
             MapListAdapter adapter = new MapListAdapter(lists);
             rv.setAdapter(adapter);
@@ -322,7 +335,9 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
             // The Calendar function returns the index of the month. (ex: Jan = 0, Feb = 1)
             int month = (c.get(Calendar.MONTH) + 1);
-            List<Session> sessions = dpSource.getSessionsInTimeRange(day);
+            sessions = dpSource.getSessionsInTimeRange(day);
+
+
             //List<String[]> results = dpSource.getMapDataset();
 
             /** --------------- Test points for place picker------------------- **/
@@ -346,6 +361,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             /** --------------- Test points for place picker------------------- **/
 
             for (Session session : sessions) {
+
 
 //                System.out.println("-------------- inside loop -----------");
 //                if (Double.parseDouble(pointArray[1]) == 0) {
@@ -415,7 +431,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             LatLng lat = new LatLng(latitude, longitude);
             opt.position(lat);
             opt.title(location);
-            opt.snippet(optionsList.size() - 1 + "");
+            opt.snippet(optionsList.size()+ "");
 
             System.out.println("------add marker-----");
 

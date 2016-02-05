@@ -43,10 +43,11 @@
         android:textSize="30sp"
         android:gravity="center"
         android:textColor="#00BCD6"
+        android:inputType="text|textNoSuggestions"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:imeOptions="actionGo"
-        android:inputType="text" >
+         >
 
         <requestFocus />
     </EditText>
