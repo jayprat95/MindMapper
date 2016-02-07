@@ -17,7 +17,7 @@
         android:background="#FFEB3B"
         android:textSize="24sp"
         android:textColor="@android:color/black"
-        android:text="Studying at McBryde Hall" />
+        android:text="" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:layout_weight="1"
                 android:textColor="@android:color/black"
-                android:text="9:00 AM for 10 minutes"
+                android:text=""
                 android:textStyle="bold"
                 android:layout_marginBottom="20dp" />
 
@@ -69,7 +69,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     app:rcMax="100"
-                    app:rcProgress="65"
+                    app:rcProgress="0"
                     app:rcProgressColor="#ffa500"
                     app:rcBackgroundColor="#cccccc"
                     app:rcRadius="7dp" />
@@ -97,7 +97,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     app:rcMax="100"
-                    app:rcProgress="65"
+                    app:rcProgress="0"
                     app:rcProgressColor="#ffa500"
                     app:rcBackgroundColor="#cccccc"
                     app:rcRadius="7dp" />
