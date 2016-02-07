@@ -37,21 +37,34 @@
             android:layout_marginBottom="8dp"
             android:elevation="2dp">
 
-            <TextView
-                android:id="@+id/graph_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text=""
-                android:textStyle="bold"
-                android:layout_marginBottom="20dp" />
-
+            <!-- Time and Comment-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/graph_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/graph_final_annotation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:maxLines="3" />
+
+            </LinearLayout>
+
+            <!-- Average Focus-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1">
 
                 <TextView
@@ -77,6 +90,7 @@
 
             </LinearLayout>
 
+            <!-- Overall I felt-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

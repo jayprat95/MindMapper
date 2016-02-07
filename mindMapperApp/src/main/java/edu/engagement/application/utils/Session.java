@@ -105,6 +105,10 @@ public class Session {
         return coordinates;
     }
 
+    public String getFinalAnnotation() {
+        return finalAnnotation.getAnnotation();
+    }
+
     public void setFinalAnnotation(Annotation finalAnnotation) {
         this.finalAnnotation = finalAnnotation;
     }

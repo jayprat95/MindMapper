@@ -41,7 +41,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
     private CombinedChart mChart;
 
-    private TextView title, time;
+    private TextView title, time, finalAnnotation;
 
     private RoundCornerProgressBar averageFocus, overallFeel;
 
@@ -83,6 +83,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         title.setText("");
 
         time = (TextView)findViewById(R.id.graph_time);
+        finalAnnotation = (TextView)findViewById(R.id.graph_final_annotation);
 
         averageFocus = (RoundCornerProgressBar)findViewById(R.id.graph_average_focus);
         overallFeel = (RoundCornerProgressBar)findViewById(R.id.graph_overall_feel);
@@ -197,6 +198,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
 
             // Setting time
             time.setText(TimeUtils.getSessionTimeFormatted(session));
+            finalAnnotation.setText(session.getFinalAnnotation());
 
             // Setting average focus bar
             float eegAverage = session.getEEGAverage();
