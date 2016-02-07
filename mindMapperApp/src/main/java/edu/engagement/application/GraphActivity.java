@@ -119,7 +119,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         mChart.getAxisLeft().setDrawGridLines(false);
         mChart.getAxisLeft().setValueFormatter(new IntegerAxisValueFormatter());
         mChart.getAxisLeft().setAxisMinValue(0);
-        mChart.getAxisLeft().setAxisMaxValue(100);
+        mChart.getAxisLeft().setAxisMaxValue(110);
 
         int id = getIntent().getExtras().getInt(SESSION_ID_TAG);
 
