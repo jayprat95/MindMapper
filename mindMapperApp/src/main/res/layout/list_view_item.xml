@@ -11,35 +11,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:padding="8dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/annotation_time_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="at 8.30 am"
-                android:textColor="#000"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/annotation_text_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="I am now coding at Mcb student lounge."
-                android:textColor="#000"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
+            android:id="@+id/annotation_card_i_felt"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_alignParentBottom="true"
@@ -64,6 +39,33 @@
                 app:rcProgress="65"
                 app:rcProgressColor="#ffa500"
                 app:rcRadius="7dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@id/annotation_card_i_felt"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/annotation_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:text="05:42 PM"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/annotation_text_label"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="I am now coding at Mcb student lounge."
+                android:maxLines="3"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
         </LinearLayout>
 
     </RelativeLayout>
