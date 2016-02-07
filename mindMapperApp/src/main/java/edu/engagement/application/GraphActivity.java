@@ -282,8 +282,8 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             lineData.addDataSet(dataPointSet);
             scatterData.addDataSet(scatterDataSet);
 
-            combinedData.setData(lineData);
             combinedData.setData(scatterData);
+            combinedData.setData(lineData);
 
             LimitLine focusAvg = new LimitLine(session.getEEGAverage(), "Focus Average");
             focusAvg.setLineColor(Color.parseColor("#778490"));
