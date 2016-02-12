@@ -42,16 +42,14 @@
 
         <Chronometer
             android:id="@+id/elapsedTime"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:format=" for 0:00:00"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:textSize="20sp"
             android:layout_marginTop="15dp"
             android:textColor="@color/black"
             android:layout_below="@+id/attentionCircle"
-            android:layout_alignLeft="@+id/attentionCircle"
-            android:layout_alignStart="@+id/attentionCircle"
             android:visibility="gone"
             />
 

@@ -10,6 +10,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,8 +81,7 @@ public class RecordingFragment extends Fragment implements OnClickListener {
     private Button retryButton;
     private TextView noConnectionText;
     private TextView noConnectionTip;
-    private  ImageView bluetoothImage;
-
+    private ImageView bluetoothImage;
 
     private ImageView eegStatusImage;
 
@@ -92,7 +92,6 @@ public class RecordingFragment extends Fragment implements OnClickListener {
     private SeekBar annotationBar = null;
     private ImageButton notesButton;
     private ImageButton pauseButton;
-
 
     // The elapsed timer
     private Chronometer timer;
@@ -108,6 +107,7 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 
     private String activityName;
     private String locationStr;
+    private String startTimeFormatted;
 
     @Override
     public void onAttach(Activity activity) {
@@ -150,6 +150,17 @@ public class RecordingFragment extends Fragment implements OnClickListener {
         notesButton = (ImageButton) view.findViewById(R.id.makeNoteButton);
         //submitButton = (Button) view.findViewById(R.id.submit);
         timer = (Chronometer) view.findViewById(R.id.elapsedTime);
+
+        timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+                chronometer.setText(startTimeFormatted + " for " +
+                        DateFormat.format("mm", time) + " min " +
+                        DateFormat.format("ss", time) + " sec");
+            }
+        });
+
         //eegStatusImage = (ImageView)view.findViewById(R.id.statusView);
         messageIcon1 = (ImageView) view.findViewById(R.id.messageIcon1);
         messageIcon2 = (ImageView) view.findViewById(R.id.messageIcon2);
@@ -306,13 +317,13 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 
                         Calendar c = Calendar.getInstance();
                         int hour = c.get(Calendar.HOUR);
+                        int min = c.get(Calendar.MINUTE);
                         int AorP = c.get(Calendar.AM_PM);
-                        if(AorP == 1){
-                            timer.setFormat(hour + " PM " + " for %s");
-                        }else{
-                            timer.setFormat(hour + " AM " + " for %s");
+                        if(AorP == 1) {
+                            startTimeFormatted = hour + ":" + min + " PM";
+                        } else {
+                            startTimeFormatted = hour + ":" + min + " AM";
                         }
-
 
                         startRecording();
                     }
