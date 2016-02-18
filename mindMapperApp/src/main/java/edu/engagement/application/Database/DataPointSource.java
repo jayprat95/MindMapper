@@ -2,11 +2,13 @@ package edu.engagement.application.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -306,6 +308,17 @@ public class DataPointSource {
 
     }
 
+    /**
+     * Delete a session and all of its focus data
+     * @param id the id of the session to delete
+     */
+    public void deleteSession(int id) {
+        database.delete(DatabaseHelper.TABLE_SESSION, DatabaseHelper.COLUMN_SESSION_ID + " = " + id, null);
+        database.delete(DatabaseHelper.TABLE_ATTENTION, DatabaseHelper.COLUMN_SESSION_ID + " = " + id, null);
+        database.delete(DatabaseHelper.TABLE_SESSION_PHOTO, DatabaseHelper.COLUMN_SESSION_ID + " = " + id, null);
+        database.delete(DatabaseHelper.TABLE_ANNOTATION, DatabaseHelper.COLUMN_SESSION_ID + " = " + id, null);
+    }
+
     public Bitmap loadSessionPhoto(int sessionId) {
         String[] columns = { DatabaseHelper.COLUMN_SESSION_PHOTO };
 
@@ -354,7 +367,15 @@ public class DataPointSource {
 
         List<Session> sessions = new ArrayList<>();
 
+        // Get current session id from preferences to see if we have an unfinished recording
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        int currSessId = prefs.getInt("sessionId", 1);
+
         for (int sessionId : sessionIds) {
+
+            if (sessionId == currSessId)
+                continue;
+
             Session s = loadSessionData(sessionId);
             sessions.add(s);
         }

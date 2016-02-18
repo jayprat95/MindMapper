@@ -32,6 +32,7 @@ import edu.engagement.application.Eeg.EegState;
 import edu.engagement.application.Fragments.RecordingFragment;
 import edu.engagement.application.Fragments.ReflectionFragment;
 import edu.engagement.application.Fragments.StatusDialogFragment;
+import edu.engagement.application.Fragments.UnfinishedRecordingDialogFragment;
 
 /**
  * MainActivity June 16
@@ -64,6 +65,14 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
             edit.commit();
             Intent intent = new Intent(this, OnboardActivity.class);
             startActivity(intent);
+        }
+
+        // Didn't finish recording, so ask to continue or delete the recording
+        if (!prefs.getBoolean("finishedRecording", true)) {
+            Log.d(App.NAME, "Unfinished recording detected!!");
+
+            UnfinishedRecordingDialogFragment dialogFragment = new UnfinishedRecordingDialogFragment();
+            dialogFragment.show(getSupportFragmentManager(), "unfinishedRecordingDialog");
         }
 
         apiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).build();
@@ -201,6 +210,7 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         int sessionId = prefs.getInt("sessionId", RecordingFragment.sessionId);
         SharedPreferences.Editor edit = prefs.edit();
+        edit.putBoolean("finishedRecording", true);
         edit.putInt("sessionId", ++sessionId);
         Log.v("The sessionId", "The end session id: " + sessionId);
         edit.commit();
