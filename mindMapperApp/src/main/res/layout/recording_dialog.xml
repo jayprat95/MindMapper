@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <TextView
@@ -15,10 +16,10 @@
             android:layout_weight="5"
             android:layout_height="wrap_content"
             android:text="@string/dialog_string"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="normal"
+            android:paddingLeft="5dp"
             android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
             android:layout_marginTop="50dp"
             android:id="@+id/textView"
             android:textColor="@color/black"
@@ -29,11 +30,8 @@
             android:layout_weight="2"
             android:layout_height="80dp"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp"
             android:id="@+id/imageView"
-            android:layout_toRightOf="@+id/textView"
-            android:layout_alignRight="@+id/textViewHigh"
-            android:layout_alignEnd="@+id/textViewHigh"
+            android:paddingRight="5dp"
             android:background="@drawable/brai_blue"/>
 
     </LinearLayout>
@@ -78,12 +76,14 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:background="#D8F2F5"
         android:lines="4"
         android:minLines="3"
         android:maxLines="4"
+        android:textSize="22sp"
         android:textColor="@color/grey_500"
+        android:imeOptions="actionDone"
         android:id="@+id/annotation"
         android:textColorHint="@color/grey_500"
         android:hint="Describe your experience here"
@@ -96,15 +96,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="35dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
         android:layout_below="@+id/annotation">
 
         <Button
             android:id="@+id/doneButton"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="20dp"
             android:background="@color/grey_500"
@@ -118,7 +118,7 @@
             android:id="@+id/saveNotes"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="30dp"
             android:text="Save"
@@ -140,6 +140,7 @@
         android:layout_marginTop="15dp"
         android:layout_below="@+id/textViewLow"
         android:background="#D8F2F5"
+        android:textSize="22sp"
         android:paddingLeft="10dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>

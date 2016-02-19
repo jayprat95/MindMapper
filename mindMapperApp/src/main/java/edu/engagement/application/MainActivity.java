@@ -38,8 +38,8 @@ import edu.engagement.application.Fragments.StatusDialogFragment;
  */
 public class MainActivity extends FragmentActivity implements EegListener, RecordingFragment.RealTimeListener, StatusDialogFragment.ConnectionLostDialogListener {
 
-    private static final String RECORDING_TAG = "REAL_TIME_FRAGMENT";
-    private static final String REFLECTION_TAG = "REFLECTION_FRAGMENT";
+    public static final String RECORDING_TAG = "REAL_TIME_FRAGMENT";
+    public static final String REFLECTION_TAG = "REFLECTION_FRAGMENT";
 
     private static final int STARTUP_ACTIVITY_REQUEST = 0;
     private static final int PLACE_PICKER_ACTIVITY_REQUEST = 1;
@@ -133,6 +133,10 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
                 LatLng location = place.getLatLng();
 
                 String locationName = place.getName().toString();
+
+                if(locationName.length() > 16){
+                    locationName = locationName.substring(0,17);
+                }
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                 int sessionId = prefs.getInt("sessionId", 1);

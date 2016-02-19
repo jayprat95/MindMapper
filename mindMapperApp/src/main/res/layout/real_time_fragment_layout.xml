@@ -170,10 +170,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Headband is Connecting\nPlease wait..."
+            android:text="Headband is Connecting\nPlease Wait"
             android:id="@+id/connectionText"
             android:layout_below="@+id/progressBar"
             android:layout_centerHorizontal="true"
+            android:textSize="25sp"
             android:gravity="center"
             android:textColor="#000"
             android:layout_marginTop="47dp"
@@ -196,11 +197,11 @@
             />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:background="@drawable/checkmark"
             android:layout_below="@+id/readyText"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="14dp"
             android:layout_centerHorizontal="true"
             android:id="@+id/checkmarkImage"
             android:visibility="gone"
@@ -212,7 +213,7 @@
             android:layout_height="wrap_content"
             android:text="I am"
             android:id="@+id/iAmLabel"
-            android:textSize="18sp"
+            android:textSize="25sp"
             android:textColor="@color/black"
             android:layout_below="@+id/connectLabel"
             android:layout_centerHorizontal="true"
@@ -239,7 +240,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="at"
-            android:textSize="18sp"
+            android:textSize="25sp"
             android:textColor="@color/black"
             android:id="@+id/atLabel"
             android:layout_below="@+id/activityLabel"
@@ -302,6 +303,7 @@
             android:textSize="40sp"
             android:paddingLeft="10dp"
             android:textColor="@color/black"
+            android:textStyle="bold"
             android:visibility="gone"
             />
 
@@ -309,7 +311,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="1. Make sure your phone's bluetooth is turned on.\n2. Pair your phone with the headband.\n3. Make sure Location Services is enabled in your phone's settings."
+            android:text="1. Make sure your phone's \n\t\t\t\tbluetooth is turned on.\n2. Pair your phone with the \n\t\t\t\theadband.\n3. Make sure Location Services \n\t\t\t\tis enabled in your phone's \n\t\t\t\tsettings."
             android:id="@+id/noConnectionTips"
             android:layout_weight="1"
             android:layout_below="@+id/noConnectionText"
@@ -320,11 +322,11 @@
             />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_below="@id/noConnectionTips"
             android:background="@drawable/bluetooth_black"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="18dp"
             android:id="@+id/bluetoothImage"
             android:layout_centerHorizontal="true"
             android:visibility="gone"
@@ -337,11 +339,12 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="EEG Connected"
             android:id="@+id/connectLabel"
-            android:textColor="@color/black"
+            android:textColor="#9C9C9C"
             android:layout_below="@+id/checkmarkImage"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            />
 
 
 

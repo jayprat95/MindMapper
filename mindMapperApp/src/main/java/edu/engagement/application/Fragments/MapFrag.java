@@ -31,6 +31,7 @@ import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -337,7 +338,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             int month = (c.get(Calendar.MONTH) + 1);
             sessions = dpSource.getSessionsInTimeRange(day);
 
-
+            //TODO: This is a quick fix, need to have a better solution.
+            Collections.reverse(sessions);
             //List<String[]> results = dpSource.getMapDataset();
 
             /** --------------- Test points for place picker------------------- **/

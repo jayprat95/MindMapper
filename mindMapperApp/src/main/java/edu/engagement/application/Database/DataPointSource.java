@@ -2,11 +2,12 @@ package edu.engagement.application.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -20,14 +21,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import edu.engagement.application.utils.Annotation;
-import edu.engagement.application.utils.EEGDataPoint;
-import edu.engagement.application.AttentionLevel;
 import edu.engagement.application.R;
 import edu.engagement.application.utils.Annotation;
 import edu.engagement.application.utils.EEGDataPoint;
 import edu.engagement.application.utils.PlacePhotoUtils;
-import edu.engagement.application.utils.SessionLocation;
 import edu.engagement.application.utils.Session;
 import edu.engagement.application.utils.SessionLocation;
 import edu.engagement.thrift.EegAttention;
@@ -342,6 +339,8 @@ public class DataPointSource {
         database.insert(DatabaseHelper.TABLE_SESSION_PHOTO, null, cv);
     }
 
+
+
     /*----------------Retrive data from Database------------------*/
 
 
@@ -393,8 +392,36 @@ public class DataPointSource {
         Bitmap sessionImage = loadSessionPhoto(sessionId);
 
         if (sessionImage == null) {
-            sessionImage = PlacePhotoUtils
-                    .decodeSampledBitmapFromResource(context.getResources(), R.drawable.summary_default, 400, 200);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
+            int imageIndex = prefs.getInt("summaryImage",0);
+            Log.v("imageindex",""+imageIndex);
+            int reminder = imageIndex % 6;
+            switch (reminder) {
+                case 0:
+                    sessionImage = PlacePhotoUtils.decodeSampledBitmapFromResource(context.getResources(), R.drawable.summary_default, 400, 200);
+                    break;
+                case 1:
+                    sessionImage = PlacePhotoUtils.decodeSampledBitmapFromResource(context.getResources(), R.drawable.summary_1, 400, 200);
+                    break;
+                case 2:
+                    sessionImage = PlacePhotoUtils.decodeSampledBitmapFromResource(context.getResources(), R.drawable.summary_2, 400, 200);
+                    break;
+                case 3:
+                    sessionImage = PlacePhotoUtils.decodeSampledBitmapFromResource(context.getResources(), R.drawable.summary_3, 400, 200);
+                    break;
+                case 4:
+                    sessionImage = PlacePhotoUtils.decodeSampledBitmapFromResource(context.getResources(), R.drawable.summary_4, 400, 200);
+                    break;
+                case 5:
+                    sessionImage = PlacePhotoUtils.decodeSampledBitmapFromResource(context.getResources(), R.drawable.summary_5, 400, 200);
+                    break;
+                default:
+                    sessionImage = PlacePhotoUtils.decodeSampledBitmapFromResource(context.getResources(), R.drawable.summary_default, 400, 200);
+                    break;
+            }
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putInt("summaryImage", ++imageIndex);
+            edit.commit();
         }
         Session s = new Session(sessionId, sessionImage, activityName, location);
 

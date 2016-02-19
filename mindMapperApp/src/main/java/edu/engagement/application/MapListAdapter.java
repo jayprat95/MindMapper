@@ -17,8 +17,6 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.MapViewH
 
     public class MapViewHolder extends RecyclerView.ViewHolder {
 
-
-
         private TextView locationNameText;
         private TextView activityText;
         private RoundCornerProgressBar focusLevelBar;
@@ -40,7 +38,11 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.MapViewH
          */
         public void bindView(MapListData data) {
             locationNameText.setText(data.getLocation());
-            activityText.setText(data.getActivityText());
+            if(data.getActivityText().length() > 50){
+                activityText.setText(data.getActivityText().substring(0,51) + " ...");
+            }else{
+                activityText.setText(data.getActivityText());
+            }
             focusLevelBar.setProgress((data.getFocusLevel().ordinal() + 1) * 4);
             focusLevelBar.setProgressColor(data.getFocusLevel().getColor());
             feltLevelBar.setProgress((data.getFeltLevel().ordinal() + 1)*4);

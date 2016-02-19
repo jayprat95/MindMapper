@@ -42,8 +42,8 @@ public class RecordingStartup extends Activity {
     }
 
     private boolean processInput(String input) {
-        if (input.length() <= 0) {
-            Toast.makeText(getApplicationContext(), "Please input something...", Toast.LENGTH_SHORT).show();
+        if (input.length() <= 0 || input.length() > 10) {
+            Toast.makeText(getApplicationContext(), "Please input something within 10 chars", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             Intent returnIntent = new Intent();

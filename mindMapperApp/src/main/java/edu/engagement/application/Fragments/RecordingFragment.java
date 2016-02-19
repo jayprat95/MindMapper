@@ -257,6 +257,8 @@ public class RecordingFragment extends Fragment implements OnClickListener {
             Bundle args = new Bundle();
             args.putString("activity", activityName);
             endDialog.setArguments(args);
+            endDialog.setCancelable(false);
+
             endDialog.setTargetFragment(RecordingFragment.this, END_ACTIVITY_REQUEST);
             endDialog.show(activity.getSupportFragmentManager(), "dialog");
 
@@ -282,6 +284,7 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 //                }
                     RecordingDialogFragment dialog = new RecordingDialogFragment();
                     dialog.setTargetFragment(RecordingFragment.this, MAKE_NOTE_REQUEST);
+                    dialog.setCancelable(false);
                     dialog.show(activity.getSupportFragmentManager(), "dialog");
                     break;
                 case R.id.startButton:
@@ -325,6 +328,7 @@ public class RecordingFragment extends Fragment implements OnClickListener {
                     // display confirm dialog
                     PauseDialogFragment pauseDialog = new PauseDialogFragment();
                     pauseDialog.setTargetFragment(RecordingFragment.this, PAUSE_REQUEST);
+                    pauseDialog.setCancelable(false);
                     pauseDialog.show(activity.getSupportFragmentManager(), "dialog");
 //
 //                    LayoutInflater factory = LayoutInflater.from(activity);

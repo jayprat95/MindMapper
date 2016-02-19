@@ -38,6 +38,8 @@ public class RecordingDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.recording_dialog, container, false);
 
+        this.setCancelable(false);
+
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         mDataPointSource = new DataPointSource(this.getActivity().getApplicationContext());
         mDataPointSource.open();

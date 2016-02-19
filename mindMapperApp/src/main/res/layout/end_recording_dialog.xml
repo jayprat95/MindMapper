@@ -8,17 +8,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:text="Overall, how focused did you feel?"
-            android:textSize="18sp"
+            android:text="Overall, how focused do you feel?"
+            android:textSize="20sp"
             android:textStyle="normal"
             android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             android:layout_marginTop="50dp"
             android:id="@+id/questionView"
             android:textColor="@color/black"
@@ -29,11 +30,7 @@
             android:layout_weight="2"
             android:layout_height="80dp"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp"
             android:id="@+id/imageView"
-            android:layout_toRightOf="@+id/questionView"
-            android:layout_alignRight="@+id/textViewHigh"
-            android:layout_alignEnd="@+id/textViewHigh"
             android:background="@drawable/brai_blue"/>
 
     </LinearLayout>
@@ -78,16 +75,18 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:background="#D8F2F5"
         android:lines="4"
         android:minLines="3"
         android:maxLines="4"
+        android:imeOptions="actionDone"
         android:textColor="@color/grey_500"
         android:id="@+id/annotation"
         android:textColorHint="@color/grey_500"
         android:hint="Describe your experience here"
         android:layout_marginTop="60dp"
+        android:textSize="22sp"
         android:paddingLeft="10dp"
         android:layout_below="@+id/annotation_bar"
         android:layout_centerHorizontal="true"/>
@@ -96,11 +95,11 @@
         <Button
             android:id="@+id/saveNotes"
             android:layout_width="150dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="30dp"
             android:background="@color/wallet_holo_blue_light"
             android:text="Save"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="35dp"
             android:layout_below="@+id/annotation"
             android:layout_centerHorizontal="true"/>
 
@@ -113,6 +112,7 @@
         android:id="@+id/textView5"
         android:textColor="@color/black"
         android:layout_marginTop="15dp"
+        android:textSize="22sp"
         android:layout_below="@+id/textViewLow"
         android:background="#D8F2F5"
         android:paddingLeft="10dp"
