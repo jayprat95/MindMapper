@@ -201,11 +201,13 @@ public class RecordingFragment extends Fragment implements OnClickListener {
 
         notesButton.setOnClickListener(this);
 
+
+
         //showEEGConnectionLoadingIcon();
 
         activity.startService();
 
-        sdf = new StatusDialogFragment();
+
 
         return view;
     }
@@ -416,14 +418,16 @@ public class RecordingFragment extends Fragment implements OnClickListener {
         }
         //eegStatusImage.setImageResource(R.drawable.disconnected);
         if(connectionSuccessful == true){
-            sdf.show(activity.getSupportFragmentManager(), "statusDialog");
+            sdf = new StatusDialogFragment();
+            sdf.show(activity.getSupportFragmentManager(), "statusDialogFragment");
+
         }
     }
 
     public void onEegConnect() {
 
         // The dialog fragment is being shown, so send updates to it
-        if (sdf.isVisible()) {
+        if (sdf != null && sdf.isVisible()) {
             sdf.onReconnectSuccess();
         } else {
             //hideEEGConnectionLoadingIcon();

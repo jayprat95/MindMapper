@@ -303,11 +303,11 @@ public class DataPointSource {
 
     }
 
-    public Bitmap loadSessionPhoto(int sessionId) {
+    public Bitmap loadSessionPhoto(String locationName) {
         String[] columns = { DatabaseHelper.COLUMN_SESSION_PHOTO };
 
-        String selection = DatabaseHelper.COLUMN_SESSION_ID + " = ?";
-        String[] selectionArgs = { String.valueOf(sessionId) };
+        String selection = DatabaseHelper.COLUMN_LOCATION_NAME + " = ?";
+        String[] selectionArgs = { String.valueOf(locationName) };
 
         Cursor cursor = database.query(
                 DatabaseHelper.TABLE_SESSION_PHOTO,
@@ -331,9 +331,9 @@ public class DataPointSource {
         return null;
     }
 
-    public void saveSessionPhoto(int sessionId, Bitmap image) {
+    public void saveSessionPhoto(String locationName, Bitmap image) {
         ContentValues cv = new ContentValues();
-        cv.put(DatabaseHelper.COLUMN_SESSION_ID, sessionId);
+        cv.put(DatabaseHelper.COLUMN_LOCATION_NAME, locationName);
         cv.put(DatabaseHelper.COLUMN_SESSION_PHOTO, PlacePhotoUtils.getBytes(image));
 
         database.insert(DatabaseHelper.TABLE_SESSION_PHOTO, null, cv);
@@ -389,7 +389,7 @@ public class DataPointSource {
 
         SessionLocation location = loadLocation(locationName);
 
-        Bitmap sessionImage = loadSessionPhoto(sessionId);
+        Bitmap sessionImage = loadSessionPhoto(locationName);
 
         if (sessionImage == null) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);

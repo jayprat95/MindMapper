@@ -139,10 +139,10 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
                 }
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                int sessionId = prefs.getInt("sessionId", 1);
-
-                Log.d(App.NAME, "Trying to save image for sessionId (" + sessionId + ")");
-                new SessionPhotoSaveTask(sessionId, 400, 200).execute(place.getId());
+//                int sessionId = prefs.getInt("sessionId", 1);
+//
+//                Log.d(App.NAME, "Trying to save image for sessionId (" + sessionId + ")");
+                new SessionPhotoSaveTask(locationName, 400, 200).execute(place.getId());
 
                 // Start recording fragment
                 Bundle bundle = new Bundle();
@@ -302,11 +302,11 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
 
     public class SessionPhotoSaveTask extends AsyncTask<String, Void, Void> {
 
-        private int sessionId;
+        private String locationName;
         private int height, width;
 
-        public SessionPhotoSaveTask(int sessionId, int width, int height) {
-            this.sessionId = sessionId;
+        public SessionPhotoSaveTask(String locationName, int width, int height) {
+            this.locationName = locationName;
             this.height = height;
             this.width = width;
         }
@@ -341,7 +341,7 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
 
                     DataPointSource dpSource = new DataPointSource(MainActivity.this);
                     dpSource.open();
-                    dpSource.saveSessionPhoto(sessionId, image);
+                    dpSource.saveSessionPhoto(locationName, image);
                     dpSource.close();
                 }
                 // Release the PlacePhotoMetadataBuffer.

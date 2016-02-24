@@ -52,7 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "commments.db";
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 19;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE_EEG = "CREATE TABLE IF NOT EXISTS "
@@ -69,7 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " );";
 
     private static final String DATABASE_CREATE_SESSION_PHOTO = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_SESSION_PHOTO + "(" + COLUMN_SESSION_ID + " INTEGER, "
+            + TABLE_SESSION_PHOTO + "(" +  COLUMN_LOCATION_NAME + " VARCHAR, "
             + COLUMN_SESSION_PHOTO + " BLOB"
             + " );";
 
