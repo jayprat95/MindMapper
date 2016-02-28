@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import edu.engagement.application.Database.DataPointSource;
 import edu.engagement.application.Eeg.EegListener;
 import edu.engagement.application.Eeg.EegState;
+import edu.engagement.application.Fragments.EndRecordingDialogFragment;
 import edu.engagement.application.Fragments.RecordingFragment;
 import edu.engagement.application.Fragments.ReflectionFragment;
 import edu.engagement.application.Fragments.StatusDialogFragment;
@@ -37,7 +38,7 @@ import edu.engagement.application.Fragments.UnfinishedRecordingDialogFragment;
 /**
  * MainActivity June 16
  */
-public class MainActivity extends FragmentActivity implements EegListener, RecordingFragment.RealTimeListener, StatusDialogFragment.ConnectionLostDialogListener {
+public class MainActivity extends FragmentActivity implements EndRecordingDialogFragment.OnFragmentInterfaceListener, UnfinishedRecordingDialogFragment.OnFragmentInterfaceListener,EegListener, RecordingFragment.RealTimeListener, StatusDialogFragment.ConnectionLostDialogListener {
 
     public static final String RECORDING_TAG = "REAL_TIME_FRAGMENT";
     public static final String REFLECTION_TAG = "REFLECTION_FRAGMENT";
@@ -53,7 +54,6 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -70,14 +70,15 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
         // Didn't finish recording, so ask to continue or delete the recording
         if (!prefs.getBoolean("finishedRecording", true)) {
             Log.d(App.NAME, "Unfinished recording detected!!");
-
+            Log.v("The sessionId", "The end session id: " + prefs.getInt("sessionId",1));
             UnfinishedRecordingDialogFragment dialogFragment = new UnfinishedRecordingDialogFragment();
             dialogFragment.show(getSupportFragmentManager(), "unfinishedRecordingDialog");
+        }else{
+            showFragment(REFLECTION_TAG, null);
         }
 
         apiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).build();
 
-        showFragment(REFLECTION_TAG, null);
     }
 
     @Override
@@ -101,13 +102,14 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         // The fragment is not being shown right now
         if (fragmentManager.findFragmentByTag(tag) == null) {
-
             Fragment f;
             switch (tag) {
                 case RECORDING_TAG:
+                    System.out.println("------new recording------");
                     f = new RecordingFragment();
                     break;
                 case REFLECTION_TAG:
+                    System.out.println("------new reflection------");
                     f = new ReflectionFragment();
                     break;
                 default:
@@ -130,7 +132,10 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
         if(requestCode == STARTUP_ACTIVITY_REQUEST){
             if(resultCode == RESULT_OK){
                 activityName = data.getStringExtra(RecordingStartup.ACTIVITY_DESCRIPTION);
-
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.putString("activityName", activityName);
+                edit.commit();
                 showPlacePicker();
             }
         }
@@ -208,12 +213,13 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
         Log.d(App.NAME, "Stopping MindwaveService!!");
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        int sessionId = prefs.getInt("sessionId", RecordingFragment.sessionId);
+        int sessionId = prefs.getInt("sessionId", 1);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putBoolean("finishedRecording", true);
         edit.putInt("sessionId", ++sessionId);
         Log.v("The sessionId", "The end session id: " + sessionId);
         edit.commit();
+
         stopService(new Intent(getBaseContext(), MindwaveService.class));
     }
 
@@ -297,13 +303,30 @@ public class MainActivity extends FragmentActivity implements EegListener, Recor
         Log.d(App.NAME, "Ending session from disconnect dialog...");
 
         stopService();
-
         showFragment(REFLECTION_TAG, null);
     }
 
     @Override
     public void onTimeout() {
         Log.d(App.NAME, "Dialog timed out...");
+    }
+
+    //callback method from unfinishedrecordingDialog
+    @Override
+    public void onButtonClicked() {
+        EndRecordingDialogFragment endDialog = new EndRecordingDialogFragment();
+
+        Bundle args = new Bundle();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        args.putString("activity", prefs.getString("activityName",""));
+        endDialog.setArguments(args);
+        endDialog.show(this.getSupportFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void onEndCall() {
+        System.out.println("-------------onEndCall---------");
+        this.showFragment(MainActivity.REFLECTION_TAG, null);
     }
 
     public class SessionPhotoSaveTask extends AsyncTask<String, Void, Void> {

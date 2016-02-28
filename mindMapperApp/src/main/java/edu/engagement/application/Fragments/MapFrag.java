@@ -90,9 +90,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
                 super.onScrolled(recyclerView, dx, dy);
 
                 RecyclerViewPositionHelper helper = RecyclerViewPositionHelper.createHelper(recyclerView);
-
                 int i = helper.findFirstCompletelyVisibleItemPosition();
-
 
                 if (i >= 0) {
                     if(task != null){
@@ -285,7 +283,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             llm.setSmoothScrollbarEnabled(true);
             rv.setLayoutManager(llm);
 
-            if(sessions.size() == 0){
+            if(sessions == null || sessions.size() == 0){
                 rv.setVisibility(View.GONE);
                 mapView.setVisibility(View.GONE);
             }
@@ -338,45 +336,9 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             sessions = dpSource.getSessionsInTimeRange(day);
 
 
-            //List<String[]> results = dpSource.getMapDataset();
-
-            /** --------------- Test points for place picker------------------- **/
-//            double[] testPoint = new double[5];
-//            testPoint[0] = 0;
-//            testPoint[1] = 40; //average eeg attention
-//            testPoint[2] = 37.230632; // Latitude
-//            testPoint[3] = -80.423106; // Longitude
-//            testPoint[4] = 5.0; //average self report
-//
-//            double[] testPoint1 = new double[5];
-//            testPoint1[0] = 0;
-//            testPoint1[1] = 60;
-//            testPoint1[2] = 37.233061; // Latitude
-//            testPoint1[3] = -80.423106; // Longitude
-//            testPoint[4] = 1.0; //average self report
-//
-//            mapData.add(testPoint);
-//            mapData.add(testPoint1);
-
             /** --------------- Test points for place picker------------------- **/
 
             for (Session session : sessions) {
-
-
-//                System.out.println("-------------- inside loop -----------");
-//                if (Double.parseDouble(pointArray[1]) == 0) {
-//                    System.out.println("-------------- for loop break -----------");
-//                    //break if there is no eeg attention
-//                    break;
-//                }
-
-
-//                String test = "session id: " + pointArray[0] + ", Attention: " + pointArray[1]
-//                        + ", location name: " + pointArray[2] + ", lat - long: " + pointArray[3] + ", " + pointArray[4] + ", " + pointArray[5];
-//
-//                Log.v("Map frg", test);
-
-
 
                 if(locationTable.containsKey(session.getLocation().getName())){
                     MarkerInfo info = markerInfoMap.get(session.getLocation().getName());

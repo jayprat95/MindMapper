@@ -1,8 +1,8 @@
 package edu.engagement.application.Fragments;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Shader;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
@@ -19,6 +19,12 @@ public class UnfinishedRecordingDialogFragment extends DialogFragment {
 
     private Button deleteButton;
     private Button saveButton;
+    private OnFragmentInterfaceListener mListener;
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+         mListener = (OnFragmentInterfaceListener) activity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,7 +38,7 @@ public class UnfinishedRecordingDialogFragment extends DialogFragment {
         saveButton = (Button) dialogView.findViewById(R.id.unfinished_resume_button);
 
         /*
-         *  The delete button is pressed
+         * The delete button is pressed
          */
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,10 +51,9 @@ public class UnfinishedRecordingDialogFragment extends DialogFragment {
                 dps.open();
                 dps.deleteSession(sessionId);
                 dps.close();
-
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean("finishedRecording", true);
-
+                mListener.onEndCall();
                 dismiss();
             }
         });
@@ -59,6 +64,8 @@ public class UnfinishedRecordingDialogFragment extends DialogFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mListener.onButtonClicked();
                 dismiss();
             }
         });
@@ -71,5 +78,11 @@ public class UnfinishedRecordingDialogFragment extends DialogFragment {
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
         dismiss();
+    }
+
+
+    public interface OnFragmentInterfaceListener{
+        void onEndCall();
+        void onButtonClicked();
     }
 }

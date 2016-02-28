@@ -1,11 +1,15 @@
 package edu.engagement.application.Fragments;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +37,17 @@ public class EndRecordingDialogFragment extends DialogFragment {
 
     private AttentionLevel attentionLevel;
     DataPointSource mDataPointSource = null;
+    private OnFragmentInterfaceListener mListener;
 
     //static RecordingDialogFragment newInstance(){
     //    return new RecordingDialogFragment();
     //}
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        mListener = (OnFragmentInterfaceListener) activity;
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,13 +78,24 @@ public class EndRecordingDialogFragment extends DialogFragment {
                     Toast.makeText(getActivity(), "Please describe your experience!", Toast.LENGTH_SHORT).show();
                 }else
                 {
-                    mDataPointSource.createDataPointAnnotation(RecordingFragment.sessionId, System.currentTimeMillis(), mAnnotation.getText().toString(), mSeekBar.getProgress());
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    int sessionId = prefs.getInt("sessionId", 1);
+                    mDataPointSource.createDataPointAnnotation(sessionId, System.currentTimeMillis(), mAnnotation.getText().toString(), mSeekBar.getProgress());
                     Toast.makeText(getActivity(), "Your experience saved!", Toast.LENGTH_SHORT).show();
                     mAnnotation.setText("");
                     mSeekBar.setProgress(0);
-                    getTargetFragment().onActivityResult(1, 3, null);
-                    dismiss();
+                    if(getTargetFragment() != null){
+                        getTargetFragment().onActivityResult(1, 3, null);
+                    }else{
+                        SharedPreferences.Editor edit = prefs.edit();
+                        edit.putBoolean("finishedRecording", true);
+                        edit.putInt("sessionId", ++sessionId);
+                        edit.commit();
+                        Log.v("The sessionId", "The end session id: " + sessionId);
+                        mListener.onEndCall();
+                    }
 
+                    dismiss();
                 }
             }
         });
@@ -107,6 +129,10 @@ public class EndRecordingDialogFragment extends DialogFragment {
         LayerDrawable ld = (LayerDrawable) seekBar.getProgressDrawable();
         ClipDrawable d1 = (ClipDrawable) ld.findDrawableByLayerId(R.id.progressShape);
         d1.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
+    }
+
+    public interface OnFragmentInterfaceListener{
+        void onEndCall();
     }
 
 }

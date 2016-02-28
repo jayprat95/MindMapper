@@ -136,12 +136,6 @@ public class SummaryFragment extends Fragment {
 
             Log.d(App.NAME, "Sessions returned: " + sessions.size());
 
-            // Used for debugging when no access to EEG
-//            sessions.add(getFakeSession("McBryde Hall", "Studying", 25));
-//            sessions.add(getFakeSession("Torgerson Hall", "Reading", 48));
-//            sessions.add(getFakeSession("Home", "Programming", 72));
-//            sessions.add(getFakeSession("Library", "Doing homework", 72));
-//            sessions.add(getFakeSession("McBryde Hall", "Research", 72));
 
             for (Session s : sessions) {
                 publishProgress(s);
