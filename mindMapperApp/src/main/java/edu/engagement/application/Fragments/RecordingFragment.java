@@ -308,6 +308,11 @@ public class RecordingFragment extends Fragment implements OnClickListener {
                         //log
                         Log.v("The sessionId", "The init session id: " + sessionId);
 
+                        // Set finished recording value to false
+                        SharedPreferences.Editor edit = prefs.edit();
+                        edit.putBoolean("finishedRecording", false);
+                        edit.commit();
+
                         //saving data tp GPS table and Session table when this is a new location:
                         if (!MapFrag.locationTable.containsKey(locationStr)) {
                             mDataPointSource.createDataPointGps(location.latitude, location.longitude, locationStr);

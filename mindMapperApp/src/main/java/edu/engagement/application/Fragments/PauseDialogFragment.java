@@ -1,8 +1,8 @@
 package edu.engagement.application.Fragments;
 
 import android.content.DialogInterface;
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +50,7 @@ public class PauseDialogFragment extends DialogFragment {
         mResume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getTargetFragment().onActivityResult(RecordingFragment.PAUSE_REQUEST, PAUSE_RESULT_RESUME, null);
+
                 dismiss();
 
             }
@@ -66,4 +66,5 @@ public class PauseDialogFragment extends DialogFragment {
         getTargetFragment().onActivityResult(RecordingFragment.PAUSE_REQUEST, PAUSE_RESULT_RESUME, null);
         dismiss();
     }
+
 }

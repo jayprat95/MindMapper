@@ -173,6 +173,7 @@ public class MindwaveService extends Service {
      * @param state the state change
      */
     private void sendStateChangeToListeners(EegState state) {
+        Log.d(App.NAME, String.valueOf(listeners.size()));
         for (EegListener listener : listeners) {
             listener.onEegStateChange(state);
         }
