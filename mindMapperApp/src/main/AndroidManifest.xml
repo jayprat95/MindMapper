@@ -38,6 +38,11 @@
 
         <service android:name=".MindwaveService" />
 
+        <service
+            android:name="org.acra.sender.SenderService"
+            android:exported="false"
+            android:process=":acra" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
