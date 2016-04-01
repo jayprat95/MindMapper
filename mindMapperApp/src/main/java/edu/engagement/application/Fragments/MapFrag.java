@@ -67,9 +67,20 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
     private RecyclerView rv;
 
-
 	DataFilter filter;
 	Intent intent;
+
+    private final static String BUNDLE_KEY_MAP_STATE = "mapData";
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Save the map state to it's own bundle
+        Bundle mapState = new Bundle();
+        mapView.onSaveInstanceState(mapState);
+        // Put the map bundle in the main outState
+        outState.putBundle(BUNDLE_KEY_MAP_STATE, mapState);
+        super.onSaveInstanceState(outState);
+    }
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -78,8 +89,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.map, container, false);
 
@@ -103,46 +113,19 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         });
 
         locationTable = new HashMap<>();
-        mapView = (MapView) view.findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
 
-//        eegButton = (Button) view.findViewById(R.id.eegButton);
-//
-//        eegButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if( MapFrag.status != 1 && task.optionsList != null){
-//                    //
-//
-//                    for(int i = 0; i < task.optionsList.size(); i++){
-//                        Double sessions = task.optionsData.get(i)[2];
-//                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[0], 100.0, (int)Math.round(sessions));
-//                    }
-//                    MapFrag.status = 1;
-//                }
-//            }
-//        });
-//
-//        reportButton = (Button) view.findViewById(R.id.reportButton);
-//
-//        reportButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(  MapFrag.status != 2 && task.optionsList != null){
-//                    //
-//                    Log.d("This is from Map frag", "report clicked");
-//                    for(int i = 0; i < task.optionsList.size(); i++){
-//                        Double sessions = task.optionsData.get(i)[2];
-//                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[1], 5.0, (int)Math.round(sessions));
-//                    }
-//                    MapFrag.status = 2;
-//                }
-//            }
-//        });
+        mapView = (MapView) view.findViewById(R.id.mapView);
+
+        // Pass the map view a bundle only with its own data
+        Bundle mapState = null;
+        if (savedInstanceState != null) {
+            // Load the map state bundle from the main savedInstanceState
+            mapState = savedInstanceState.getBundle(BUNDLE_KEY_MAP_STATE);
+        }
+
+        mapView.onCreate(mapState);
 
         // Grab the map from the map fragment.
-        // TODO: Change to async?
         mapView.getMapAsync(this);
 
 		return view;
