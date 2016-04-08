@@ -67,7 +67,6 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
 
     private RecyclerView rv;
 
-
 	DataFilter filter;
 	Intent intent;
 
@@ -106,40 +105,6 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
         mapView = (MapView) view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
-//        eegButton = (Button) view.findViewById(R.id.eegButton);
-//
-//        eegButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if( MapFrag.status != 1 && task.optionsList != null){
-//                    //
-//
-//                    for(int i = 0; i < task.optionsList.size(); i++){
-//                        Double sessions = task.optionsData.get(i)[2];
-//                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[0], 100.0, (int)Math.round(sessions));
-//                    }
-//                    MapFrag.status = 1;
-//                }
-//            }
-//        });
-//
-//        reportButton = (Button) view.findViewById(R.id.reportButton);
-//
-//        reportButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(  MapFrag.status != 2 && task.optionsList != null){
-//                    //
-//                    Log.d("This is from Map frag", "report clicked");
-//                    for(int i = 0; i < task.optionsList.size(); i++){
-//                        Double sessions = task.optionsData.get(i)[2];
-//                        task.setOptionsColor(task.optionsList.get(i), task.optionsData.get(i)[1], 5.0, (int)Math.round(sessions));
-//                    }
-//                    MapFrag.status = 2;
-//                }
-//            }
-//        });
 
         // Grab the map from the map fragment.
         // TODO: Change to async?
@@ -174,28 +139,6 @@ public class MapFrag extends Fragment implements OnMapReadyCallback {
             		MapsInitializer.initialize(this.getActivity());
             map.setMyLocationEnabled(true);
 
-            //set info window for map marker
-//            map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-//                @Override
-//                public View getInfoWindow(Marker marker) {
-//                    return null;
-//                }
-//
-//                @Override
-//                public View getInfoContents(Marker marker) {
-//                    View v = getActivity().getLayoutInflater().inflate(R.layout.marker_info_window, null);
-//                    TextView locationLabel = (TextView) v.findViewById(R.id.locationLabel);
-//                    TextView eegLabel = (TextView) v.findViewById(R.id.eegLabel);
-//                    TextView reportLabel = (TextView) v.findViewById(R.id.reportLabel);
-//
-//                    locationLabel.setText(marker.getTitle());
-//                    String[] texts = marker.getSnippet().split("/");
-//                    eegLabel.setText("AVE EEG: " + texts[0]);
-//                    reportLabel.setText("AVE Report: " + texts[1]);
-//
-//                    return v;
-//                }
-//            });
             //Bundle testBundle = intent.getExtras();
 
             // For future reference with getting coords, pull up google maps, find

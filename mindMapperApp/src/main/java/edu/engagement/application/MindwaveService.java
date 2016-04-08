@@ -283,14 +283,12 @@ public class MindwaveService extends Service {
         if (RecordingFragment.sessionId != 0) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             int sharedSessionId = prefs.getInt("sessionId", RecordingFragment.sessionId);
-            Log.v("The sessionId", "The service session id: " + sharedSessionId);
             if (RecordingFragment.sessionId == sharedSessionId) {
-
                 // If we're paused, save a 0 in the database
                 if (!recording) {
+                    Log.v("Recording", "The focusLevel: " + focusLevel);
                     focusLevel = 0;
                 }
-
                 dataSource.createDataPointAttention(RecordingFragment.sessionId, focusLevel, System.currentTimeMillis(), day, month);
             }
         }

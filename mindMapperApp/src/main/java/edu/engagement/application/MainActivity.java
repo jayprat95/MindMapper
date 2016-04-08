@@ -1,18 +1,22 @@
 package edu.engagement.application;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -45,6 +49,7 @@ public class MainActivity extends FragmentActivity implements EndRecordingDialog
 
     private static final int STARTUP_ACTIVITY_REQUEST = 0;
     private static final int PLACE_PICKER_ACTIVITY_REQUEST = 1;
+    private static final int MY_PERMISSIONS_REQUEST = 2;
 
     private MindwaveService mindwaveService;
     private String activityName = "";
@@ -55,6 +60,8 @@ public class MainActivity extends FragmentActivity implements EndRecordingDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         boolean boardingStart = prefs.getBoolean("first", true);
@@ -79,6 +86,43 @@ public class MainActivity extends FragmentActivity implements EndRecordingDialog
 
         apiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).build();
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay!
+
+                } else {
+                    //force require location
+                    requestLocationPermission();
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        requestLocationPermission();
+    }
+
+    public void requestLocationPermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MY_PERMISSIONS_REQUEST);
+        }
     }
 
     @Override
@@ -278,6 +322,7 @@ public class MainActivity extends FragmentActivity implements EndRecordingDialog
     @Override
     public void onRecordingStarted() {
         if (mindwaveService != null) {
+            Log.v("Recording", "Recording started from main");
             mindwaveService.startRecording();
         }
     }

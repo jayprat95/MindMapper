@@ -261,6 +261,8 @@ public class RecordingFragment extends Fragment implements OnClickListener {
             }
         }
         if(requestCode == PAUSE_REQUEST && resultCode == PauseDialogFragment.PAUSE_RESULT_RESUME){
+            Log.v("Recording", "Callback from resume");
+            realTimeListener.onRecordingStarted();
             startRecording();
         }
         if(requestCode == PAUSE_REQUEST && resultCode == PauseDialogFragment.PAUSE_RESULT_END){
@@ -372,7 +374,6 @@ public class RecordingFragment extends Fragment implements OnClickListener {
             }
 
     }
-
 
 
     public void restoreRecordingState() {
