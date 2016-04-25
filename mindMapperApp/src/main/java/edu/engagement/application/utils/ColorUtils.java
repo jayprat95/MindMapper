@@ -1,9 +1,6 @@
 package edu.engagement.application.utils;
 
-import android.content.res.Resources;
 import android.graphics.Color;
-
-import edu.engagement.application.R;
 
 /**
  * Created by alex on 11/26/15.
@@ -76,6 +73,69 @@ public class ColorUtils {
                 return Color.parseColor("#74C34A");
             default:
                 return Color.parseColor("#ffffff");
+        }
+    }
+
+    public static int getTransAttentionColor(float value) {
+        int colorIndex = Math.round(value/4);
+
+        // Make sure our number is between 1 and 25
+        if (colorIndex < 1) colorIndex = 1;
+        else if (colorIndex > 25) colorIndex = 25;
+
+        switch (colorIndex) {
+            case 1:
+                return Color.parseColor("#90BB446E");
+            case 2:
+                return Color.parseColor("#90BB4483");
+            case 3:
+                return Color.parseColor("#90BB4497");
+            case 4:
+                return Color.parseColor("#90BC44AB");
+            case 5:
+                return Color.parseColor("#90B944BC");
+            case 6:
+                return Color.parseColor("#90A545BC");
+            case 7:
+                return Color.parseColor("#909245BC");
+            case 8:
+                return Color.parseColor("#907E45BD");
+            case 9:
+                return Color.parseColor("#906B45BD");
+            case 10:
+                return Color.parseColor("#905746BD");
+            case 11:
+                return Color.parseColor("#904649BE");
+            case 12:
+                return Color.parseColor("#90465DBE");
+            case 13:
+                return Color.parseColor("#904671BF");
+            case 14:
+                return Color.parseColor("#904785BF");
+            case 15:
+                return Color.parseColor("#904799BF");
+            case 16:
+                return Color.parseColor("#9047AEC0");
+            case 17:
+                return Color.parseColor("#9047C0BE");
+            case 18:
+                return Color.parseColor("#9048C0AA");
+            case 19:
+                return Color.parseColor("#9048C196");
+            case 20:
+                return Color.parseColor("#9048C183");
+            case 21:
+                return Color.parseColor("#9048C16F");
+            case 22:
+                return Color.parseColor("#9049C25B");
+            case 23:
+                return Color.parseColor("#904BC249");
+            case 24:
+                return Color.parseColor("#905FC249");
+            case 25:
+                return Color.parseColor("#9074C34A");
+            default:
+                return Color.parseColor("#90ffffff");
         }
     }
 }

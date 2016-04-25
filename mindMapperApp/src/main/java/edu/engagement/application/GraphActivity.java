@@ -155,7 +155,7 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
         List<Integer> colors = new ArrayList<>(set.getEntryCount());
 
         for (int i = 0; i < set.getEntryCount(); i++) {
-            colors.add(i, Color.parseColor("#80BECDD7"));
+            colors.add(i, ColorUtils.getTransAttentionColor(set.getYVals().get(i).getVal()));
         }
 
         colors.set(index, highlightColor);
@@ -277,7 +277,14 @@ public class GraphActivity extends Activity implements OnChartValueSelectedListe
             ScatterDataSet scatterDataSet = new ScatterDataSet(scatterEntries, "Annotations");
             scatterDataSet.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
             scatterDataSet.setScatterShapeSize(14f);
-            scatterDataSet.setColor(Color.parseColor("#BECDD7"));
+
+            List<Integer> colors = new ArrayList<>(scatterDataSet.getEntryCount());
+
+            for (int i = 0; i < scatterDataSet.getEntryCount(); i++) {
+                colors.add(i, ColorUtils.getTransAttentionColor(scatterEntries.get(i).getVal()));
+            }
+
+            scatterDataSet.setColors(colors);
             scatterDataSet.setHighLightColor(Color.GREEN);
             scatterDataSet.setDrawValues(false);
 
