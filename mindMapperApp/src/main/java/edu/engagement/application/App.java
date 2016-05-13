@@ -10,7 +10,7 @@ import org.acra.annotation.ReportsCrashes;
  * Created by alex on 7/27/15.
  */
 @ReportsCrashes(
-        formUri = "https://collector.tracepot.com/3e0ff4c0"
+//        formUri = "https://collector.tracepot.com/3e0ff4c0"
 )
 public class App extends Application {
     public static final String NAME = "MindMapper";

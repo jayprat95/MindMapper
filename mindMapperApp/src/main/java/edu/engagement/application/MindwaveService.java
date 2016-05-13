@@ -62,6 +62,8 @@ public class MindwaveService extends Service {
      */
     private int setAttentionInteval = 1;
 
+    private boolean firstRecord;
+
     /**
      * Called when the service is being created.
      */
@@ -77,6 +79,7 @@ public class MindwaveService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(App.NAME, "MindwaveService started");
 
+        firstRecord = true;
         /**** DATABASE STUFF ****/
         dataSource = new DataPointSource(this.getApplicationContext());
         dataSource.open();
@@ -286,10 +289,12 @@ public class MindwaveService extends Service {
             if (RecordingFragment.sessionId == sharedSessionId) {
                 // If we're paused, save a 0 in the database
                 if (!recording) {
-                    Log.v("Recording", "The focusLevel: " + focusLevel);
                     focusLevel = 0;
                 }
+
                 dataSource.createDataPointAttention(RecordingFragment.sessionId, focusLevel, System.currentTimeMillis(), day, month);
+                Log.v("Recording", "The focusLevel: " + focusLevel);
+
             }
         }
     }
